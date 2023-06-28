@@ -14,6 +14,6 @@ fun PageApp(){
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
-        Text(text = "tutto funziona")
+        SignUpScreen()
     }
 }

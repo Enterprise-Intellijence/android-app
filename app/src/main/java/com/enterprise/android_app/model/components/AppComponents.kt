@@ -1,8 +1,17 @@
 package com.enterprise.android_app.model.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -13,8 +22,11 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -29,6 +41,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.ui.theme.Primary
+import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.ui.theme.componentShapes
 
 
@@ -155,8 +169,62 @@ fun PasswordTextFieldComponent(labelValue: String, painterResource: Painter){
 
         visualTransformation = if(passwordVisible.value) VisualTransformation.None else
             PasswordVisualTransformation()
-
-
-
     )
+}
+
+@Composable
+fun ButtonComponent(value: String){
+    Button(onClick = { /*TODO*/ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp),
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(Color.Transparent)
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(48.dp)
+            .background(
+                brush = Brush.horizontalGradient(listOf(Secondary, Primary)),
+                shape = RoundedCornerShape(50.dp)
+            ),
+            contentAlignment = Alignment.Center
+        ){
+            Text(text = value,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun DividerTextComponent(){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+        )
+
+    {
+        
+        Divider(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+            color = colorResource(id = R.color.colorGray),
+            thickness = 1.dp
+        )
+        
+        Text(modifier = Modifier.padding(8.dp),
+            text = stringResource(id = R.string.or),
+            fontSize = 18.sp,
+            color = colorResource(id = R.color.colorText))
+
+        Divider(
+            modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+            color = colorResource(id = R.color.colorGray),
+            thickness = 1.dp
+        )
+    }
 }

@@ -1,13 +1,12 @@
 package com.enterprise.android_app.view
 
-import android.widget.Space
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,14 +21,14 @@ import com.enterprise.android_app.model.components.ClickableLoginTextComponent
 import com.enterprise.android_app.model.components.DividerTextComponent
 import com.enterprise.android_app.model.components.HeadingTextComponent
 import com.enterprise.android_app.model.components.NormalTextComponent
-import com.enterprise.android_app.model.components.PasswordTextFieldComponent
 import com.enterprise.android_app.model.components.TextFieldComponent
+import com.enterprise.android_app.model.components.UnderLinedTextComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 
 
 @Composable
-fun SignUpScreen(){
+fun LoginScreen(){
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -38,47 +37,44 @@ fun SignUpScreen(){
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             NormalTextComponent(value = stringResource(id = R.string.hello))
-            HeadingTextComponent(value = stringResource(id = R.string.create_an_account))
-            Spacer(modifier = Modifier.height(20.dp))
-            TextFieldComponent(
-                labelValue = stringResource(id = R.string.first_name),
-                painterResource(id = R.drawable.profileicon)
 
-            )
-            TextFieldComponent(
-                labelValue = stringResource(id = R.string.last_name),
-                painterResource = painterResource(id = R.drawable.profileicon)
-            )
+            HeadingTextComponent(value = stringResource(id = R.string.welcome_back))
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             TextFieldComponent(
                 labelValue = stringResource(id = R.string.email),
-                painterResource = painterResource(id = R.drawable.message)
-            )
+                painterResource = painterResource(id = R.drawable.message))
 
-            PasswordTextFieldComponent(
+            TextFieldComponent(
                 labelValue = stringResource(id = R.string.password),
                 painterResource = painterResource(id = R.drawable.password)
             )
-            
-            Spacer(modifier = Modifier.height(40.dp))
-            ButtonComponent(value = stringResource(id = R.string.register))
 
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(40.dp))
+            UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password))
+            Spacer(modifier = Modifier.height(40.dp))
+
+            ButtonComponent(value = stringResource(id = R.string.button_login))
+            Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
 
-            ClickableLoginTextComponent(tryingToLogin = true,onTextSelected = {
-                    AppRouter.navigateTo(Screen.LoginScreen)
+            ClickableLoginTextComponent(tryingToLogin = false ,onTextSelected = {
+                    AppRouter.navigateTo(Screen.SignUpScreen)
             })
+
+
+
         }
-        
-        
 
     }
-
+    BackHandler() {
+        AppRouter.navigateTo(Screen.SignUpScreen)
+    }
 }
-
 
 @Preview
 @Composable
-fun DefaultPreviewOfSignUpScreen(){
-    SignUpScreen()
+fun PreviewLoginScreen(){
+    LoginScreen()
 }

@@ -1,5 +1,6 @@
 package com.enterprise.android_app.model.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,19 +33,24 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.ui.theme.componentShapes
+import kotlin.contracts.contract
 
 
 @Composable
@@ -221,10 +228,68 @@ fun DividerTextComponent(){
 
         Divider(
             modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
+                .fillMaxWidth()
+                .weight(1f),
             color = colorResource(id = R.color.colorGray),
             thickness = 1.dp
         )
     }
+}
+
+
+@Composable
+fun ClickableLoginTextComponent(tryingToLogin:Boolean = true, onTextSelected: (String) -> Unit){
+    val initialText = if(tryingToLogin) stringResource(id = R.string.login) else stringResource(id = R.string.toRegister)
+    val loginText = if(tryingToLogin) " Login" else " Register"
+
+
+    val annotatedString = buildAnnotatedString {
+        append(initialText)
+        withStyle(style = SpanStyle(color = Primary)){
+            pushStringAnnotation(tag = loginText, annotation = loginText)
+            append(loginText)
+        }
+
+    }
+    ClickableText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            textAlign = TextAlign.Center
+        ),
+        text = annotatedString,
+        onClick = {
+        offset ->
+            annotatedString.getStringAnnotations(offset,offset)
+                .firstOrNull()?.also { span ->
+                    Log.d("ClickableTextComponent","{$span}")
+                    if (span.item == loginText){
+                             onTextSelected(span.item)
+                        }
+                }
+    } )
+    
+}
+
+
+@Composable
+fun UnderLinedTextComponent(value:String){
+    Text(
+        text = value,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal
+        ),
+        color = colorResource(id = R.color.colorGray),
+        textAlign = TextAlign.Center,
+        textDecoration = TextDecoration.Underline
+    )
 }

@@ -25,10 +25,12 @@ import com.enterprise.android_app.model.components.TextFieldComponent
 import com.enterprise.android_app.model.components.UnderLinedTextComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
+import io.swagger.client.apis.UserControllerApi
 
 
 @Composable
 fun LoginScreen(){
+    val userController: UserControllerApi = UserControllerApi()
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +57,10 @@ fun LoginScreen(){
             UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password))
             Spacer(modifier = Modifier.height(40.dp))
 
-            ButtonComponent(value = stringResource(id = R.string.button_login))
+            ButtonComponent(value = stringResource(id = R.string.button_login),
+                onClickAction = {
+                    userController.authenticate("username13", "password13")
+                })
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
 

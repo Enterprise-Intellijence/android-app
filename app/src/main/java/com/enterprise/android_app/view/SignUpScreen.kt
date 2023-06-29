@@ -60,7 +60,7 @@ fun SignUpScreen(){
             )
             
             Spacer(modifier = Modifier.height(40.dp))
-            ButtonComponent(value = stringResource(id = R.string.register))
+            ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {})
 
             Spacer(modifier = Modifier.height(15.dp))
             DividerTextComponent()

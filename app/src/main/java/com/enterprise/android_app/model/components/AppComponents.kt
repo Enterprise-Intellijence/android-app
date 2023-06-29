@@ -1,5 +1,6 @@
 package com.enterprise.android_app.model.components
 
+import android.service.autofill.OnClickAction
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -180,8 +182,8 @@ fun PasswordTextFieldComponent(labelValue: String, painterResource: Painter){
 }
 
 @Composable
-fun ButtonComponent(value: String){
-    Button(onClick = { /*TODO*/ },
+fun ButtonComponent(value: String, onClickAction: () -> Unit){
+    Button(onClick = onClickAction ,
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),

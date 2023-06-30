@@ -11,12 +11,13 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.NotificationDTO
 import io.swagger.client.models.PageNotificationDTO
 
 import io.swagger.client.infrastructure.*
 
-class NotificationControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class NotificationControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

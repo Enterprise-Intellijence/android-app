@@ -11,6 +11,7 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.ConversationDTO
 import io.swagger.client.models.MessageCreateDTO
 import io.swagger.client.models.MessageDTO
@@ -18,7 +19,7 @@ import io.swagger.client.models.PageMessageDTO
 
 import io.swagger.client.infrastructure.*
 
-class MessageControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class MessageControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

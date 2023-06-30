@@ -11,6 +11,7 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.AdminProductsBody
 import io.swagger.client.models.InlineResponse200
 import io.swagger.client.models.OrderBasicDTO
@@ -24,8 +25,9 @@ import io.swagger.client.models.ProductsIdBody1
 import io.swagger.client.models.V1ProductsBody
 
 import io.swagger.client.infrastructure.*
+import java.time.LocalDateTime.parse
 
-class ProductControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class ProductControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 
@@ -203,7 +205,9 @@ class ProductControllerApi(basePath: kotlin.String = "https://localhost:8443") :
                 put("userId", listOf(userId.toString()))
             }
             if (uploadDate != null) {
-                //put("uploadDate", listOf(parseDateToQueryString(uploadDate)))
+
+                //TODO: Support LocalDateTime
+                put("uploadDate", listOf(uploadDate.toString()))
             }
             if (availability != null) {
                 put("availability", listOf(availability.toString()))

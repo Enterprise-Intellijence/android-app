@@ -60,12 +60,7 @@ fun LoginScreen(){
             Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(value = stringResource(id = R.string.button_login),
-                onClickAction = {
-                    val userController = UserControllerApi()
-                    CoroutineScope(Dispatchers.IO).launch {
-                        userController.authenticate("username13", "password13")
-                    }
-                })
+                onClickAction = { })
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
 

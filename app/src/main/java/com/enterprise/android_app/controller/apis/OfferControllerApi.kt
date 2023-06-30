@@ -11,12 +11,13 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.OfferCreateDTO
 import io.swagger.client.models.OfferDTO
 
 import io.swagger.client.infrastructure.*
 
-class OfferControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class OfferControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

@@ -11,6 +11,7 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.ImagesProductBody
 import io.swagger.client.models.PhotoprofileIdBody
 import io.swagger.client.models.ProductIdBody
@@ -20,7 +21,7 @@ import io.swagger.client.models.UsersPhotoprofileBody
 
 import io.swagger.client.infrastructure.*
 
-class ImageControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class ImageControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

@@ -11,6 +11,7 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.AddressCreateDTO
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.DeliveryCreateDTO
@@ -18,7 +19,7 @@ import io.swagger.client.models.DeliveryDTO
 
 import io.swagger.client.infrastructure.*
 
-class DeliveryControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class DeliveryControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

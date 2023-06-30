@@ -11,6 +11,7 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.LoginWithGoogleBody
 import io.swagger.client.models.PageOfferBasicDTO
@@ -21,7 +22,7 @@ import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
 
-class UserControllerApi(basePath: kotlin.String = "http://192.168.1.10:8080") : ApiClient(basePath) {
+class UserControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

@@ -21,7 +21,7 @@ import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
 
-class UserControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class UserControllerApi(basePath: kotlin.String = "http://192.168.1.10:8080") : ApiClient(basePath) {
 
     /**
      * 

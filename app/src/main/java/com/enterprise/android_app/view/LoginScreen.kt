@@ -26,7 +26,9 @@ import com.enterprise.android_app.model.components.UnderLinedTextComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(){
@@ -59,7 +61,10 @@ fun LoginScreen(){
 
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
-                    userController.authenticate("username13", "password13")
+                    val userController = UserControllerApi()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        userController.authenticate("username13", "password13")
+                    }
                 })
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()

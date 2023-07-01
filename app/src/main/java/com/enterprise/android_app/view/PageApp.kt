@@ -28,6 +28,7 @@ import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.components.TopBarSearch
+import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
@@ -43,7 +44,8 @@ fun PageApp(){
             when(currentState.value){
                 is Screen.SignUpScreen -> {
                     //SignUpScreen()
-                    ProductScreen()
+                    //ProductScreen()
+                    MainScreen()
                 }
                 is Screen.LoginScreen -> {
                     LoginPage()
@@ -88,6 +90,12 @@ fun MainScreen(){
                 }
                 is Navigation.SettingsPage ->{
                     SettingsPage()
+                }
+                is Navigation.OrdersPage ->{
+                    OrdersPage()
+                }
+                is Navigation.AboutScreen ->{
+                    AboutScreen()
                 }
             }
 

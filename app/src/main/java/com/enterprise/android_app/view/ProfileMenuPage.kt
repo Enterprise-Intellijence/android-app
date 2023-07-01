@@ -1,27 +1,22 @@
 package com.enterprise.android_app.view
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
@@ -80,26 +75,32 @@ fun ProfileMenuPage(user: UserDTO, pic : Int){
                 }
             }
         }
-        SingleRowTemplate(name = "Favourite Items", icona = Icons.Filled.Favorite, icon_label = stringResource(id = R.string.favourite ), modifier= modifier) {}
-        SingleRowTemplate(name = "Settings", icona = Icons.Filled.Settings, icon_label = stringResource(
-            id = R.string.settings) , modifier = modifier) {
-
-        }
+        SingleRowTemplate(name = "Favourite Items", icona = Icons.Filled.Favorite, icon_label = stringResource(id = R.string.favourite ), modifier= modifier,
+            onClick = { MainRouter.changePage(Navigation.FavouriteProductScreen) }
+        )
+        SingleRowTemplate(
+            name = "Settings",
+            icona = Icons.Filled.Settings,
+            icon_label = stringResource( id = R.string.settings),
+            modifier = modifier,
+            onClick = {MainRouter.changePage(Navigation.SettingsPage)})
         SingleRowTemplate(name = "My orders", icona = Icons.Filled.Menu, icon_label = stringResource(
             id = R.string.watch_orders
-        ), modifier = modifier) {
-
-        }
+        ), modifier = modifier, onClick =  {MainRouter.changePage(Navigation.OrdersPage)})
         SingleRowTemplate(name = "About Svinted", icona = Icons.Filled.Info, icon_label = stringResource(
             id = R.string.aboutSvinted
-        ) , modifier = modifier ) {
-
-        }
+        ), modifier = modifier, onClick = {MainRouter.changePage(Navigation.AboutScreen)} )
     }
 }
 
 @Composable
-fun SingleRowTemplate(name : String, icona : ImageVector, icon_label : String, modifier: Modifier, onClick : ()->Unit){
+fun SingleRowTemplate(
+    name: String,
+    icona: ImageVector,
+    icon_label: String,
+    modifier: Modifier,
+    onClick: ()->Unit
+){
     Row(modifier = modifier.height(80.dp)/*.padding(top = 10.dp)*/, verticalAlignment = Alignment.CenterVertically) {
         Button(
             onClick = onClick,
@@ -128,7 +129,9 @@ fun ClickableBox(
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = modifier.clickable(onClick = onClick).height(120.dp),
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .height(120.dp),
         contentAlignment = contentAlignment
     ) {
         content()

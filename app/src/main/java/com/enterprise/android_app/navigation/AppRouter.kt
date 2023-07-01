@@ -23,6 +23,8 @@ sealed class Navigation() {
     object ProfilePage : Navigation()
     object FavouriteProductScreen : Navigation()
     object SettingsPage : Navigation ()
+    object OrdersPage : Navigation()
+    object AboutScreen : Navigation()
 
 
 }

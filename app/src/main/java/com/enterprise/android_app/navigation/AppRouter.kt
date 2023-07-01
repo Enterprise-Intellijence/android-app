@@ -20,6 +20,8 @@ sealed class Navigation() {
     object MessagesPage : Navigation()
 
     object ProfileMenuPage : Navigation()
+    object ProfilePage : Navigation()
+    object FavouriteProductScreen : Navigation()
 
 
 }

@@ -26,4 +26,9 @@
     <string name="sell">Sell Product</string>
     <string name="inbox">Message</string>
     <string name="profile">My Profile</string>
+    <string name="favourite">favourite</string>
+    <string name="enter">enter</string>
+    <string name="watch_orders">Watch your orders</string>
+    <string name="aboutSvinted">About Svinted</string>
+    <string name="viewMyProfile">View my profile</string>
 </resources>

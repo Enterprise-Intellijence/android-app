@@ -15,4 +15,15 @@
     <string name="forgot_password">"Forgot your password? "</string>
     <string name="button_login">Login</string>
     <string name="toRegister">"Don't have an account yet? "</string>
+    <string name="review_insert">"Insert your review"</string>
+    <string name="reviewing">"Let a review"</string>
+    <string name="give_a_vote">Rate the seller (1 - 5):</string>
+    <string name="submit_review">Submit</string>
+    <string name="back">back</string>
+    <string name="settings">settings</string>
+    <string name="home">Home Page</string>
+    <string name="search">Search Page</string>
+    <string name="sell">Sell Product</string>
+    <string name="inbox">Message</string>
+    <string name="profile">My Profile</string>
 </resources>

@@ -7,6 +7,7 @@ sealed class Screen() {
     object SignUpScreen : Screen()
     object LoginScreen : Screen()
 
+
 }
 
 

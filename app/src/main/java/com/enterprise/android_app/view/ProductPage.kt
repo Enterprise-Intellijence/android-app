@@ -21,8 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.view.components.ImageCarousell
-import com.enterprise.android_app.view.components.SellerRow
+import com.enterprise.android_app.model.components.ImageCarousell
+import com.enterprise.android_app.model.components.SellerRow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

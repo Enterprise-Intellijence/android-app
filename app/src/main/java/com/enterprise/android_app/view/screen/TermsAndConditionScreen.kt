@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.enterprise.android_app.view.components.HeadingTextComponent
+import com.enterprise.android_app.model.components.HeadingTextComponent
 
 @Composable
 fun TermsAndConditionScreen(){

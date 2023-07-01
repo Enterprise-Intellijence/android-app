@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.view.components.ButtonComponent
-import com.enterprise.android_app.view.components.NormalTextComponent
-import com.enterprise.android_app.view.components.TextFieldComponent
+import com.enterprise.android_app.model.components.ButtonComponent
+import com.enterprise.android_app.model.components.NormalTextComponent
+import com.enterprise.android_app.model.components.TextFieldComponent
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import io.swagger.client.apis.ReviewControllerApi

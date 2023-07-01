@@ -27,6 +27,8 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
+import io.swagger.client.models.User
+import io.swagger.client.models.UserDTO
 
 
 @Composable
@@ -39,7 +41,7 @@ fun PageApp(){
             when(currentState.value){
                 is Screen.SignUpScreen -> {
                     //SignUpScreen()
-                    ProductPage()
+                    MainScreen()
                 }
                 is Screen.LoginScreen -> {
                     LoginScreen()
@@ -74,7 +76,13 @@ fun MainScreen(){
                     MessagesPage()
                 }
                 is Navigation.ProfileMenuPage ->{
-                    ProfileMenuPage()
+                    ProfileMenuPage(UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
+                }
+                is Navigation.ProfilePage ->{
+                    ProfilePage()
+                }
+                is Navigation.FavouriteProductScreen ->{
+                    FavouriteProductScreen()
                 }
             }
 

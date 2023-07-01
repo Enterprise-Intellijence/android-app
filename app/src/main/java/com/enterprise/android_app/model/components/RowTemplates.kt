@@ -61,7 +61,7 @@ fun SellerRow(username: String, rating: Float, pic: Int) {
                 onValueChange = { })
         }
 
-        Button(onClick = { /*TODO go to seller page*/ }) {
+        Button(onClick = { /*TODO go to seller page*/ }, modifier = Modifier.padding(end = 20.dp)) {
             Text(text = stringResource(id = R.string.ask_seller))
         }
     }

@@ -49,11 +49,13 @@ fun PageApp(){
         Crossfade(targetState = AppRouter.currentScreen) { currentState ->
             when(currentState.value){
                 is Screen.SignUpScreen -> {
-                    //SignUpScreen()
-                    MainScreen()
+                    SignUpScreen()
                 }
                 is Screen.LoginScreen -> {
                     LoginScreen()
+                }
+                is Screen.MainScreen -> {
+                    MainScreen()
                 }
 
             }
@@ -65,7 +67,7 @@ fun PageApp(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(){
-/*    val navigation: Navigation*/
+
     Scaffold(topBar = { SearchTopBar()}, bottomBar = { MainBottomBar()}, floatingActionButton = {}, floatingActionButtonPosition = FabPosition.End) {
         Box(modifier = Modifier.padding(it)){
             when(MainRouter.currentPage.value){
@@ -97,6 +99,12 @@ fun MainScreen(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTopBar(){
+
+    if (MainRouter.currentPage.value == Navigation.HomePage || MainRouter.currentPage.value == Navigation.SearchPage)
+    {
+        //TODO barra di ricerca
+    }
+    /*
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name))},
         navigationIcon = { IconButton(onClick = { /*TODO*/ }) {
@@ -110,11 +118,12 @@ fun SearchTopBar(){
         }
 
         )
+     */
 }
 
 @Composable
 fun MainBottomBar(){
-    var selectedIndex = remember { mutableStateOf(0)}
+
     BottomAppBar() {
         NavigationBar() {
             NavigationBarItem(
@@ -129,7 +138,7 @@ fun MainBottomBar(){
             )
             NavigationBarItem(
                 selected = MainRouter.currentPage.value == Navigation.SellProductPage,
-                onClick = { MainRouter.changePage(Navigation.SearchPage) },
+                onClick = { MainRouter.changePage(Navigation.SellProductPage) },
                 icon = {Icon(Icons.Filled.AddCircle, contentDescription = stringResource(id = R.string.sell))}
             )
             NavigationBarItem(

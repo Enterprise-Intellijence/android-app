@@ -1,6 +1,5 @@
 package com.enterprise.android_app.model.components
 
-import android.service.autofill.OnClickAction
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +24,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,7 +50,6 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.ui.theme.componentShapes
-import kotlin.contracts.contract
 
 
 @Composable

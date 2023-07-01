@@ -1,13 +1,11 @@
 package com.enterprise.android_app.view
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,19 +15,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.components.ButtonComponent
-import com.enterprise.android_app.model.components.ClickableLoginTextComponent
-import com.enterprise.android_app.model.components.DividerTextComponent
-import com.enterprise.android_app.model.components.HeadingTextComponent
-import com.enterprise.android_app.model.components.NormalTextComponent
-import com.enterprise.android_app.model.components.PasswordTextFieldComponent
-import com.enterprise.android_app.model.components.TextFieldComponent
+import com.enterprise.android_app.view.components.ButtonComponent
+import com.enterprise.android_app.view.components.ClickableLoginTextComponent
+import com.enterprise.android_app.view.components.DividerTextComponent
+import com.enterprise.android_app.view.components.HeadingTextComponent
+import com.enterprise.android_app.view.components.NormalTextComponent
+import com.enterprise.android_app.view.components.PasswordTextFieldComponent
+import com.enterprise.android_app.view.components.TextFieldComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 
 
 @Composable
-fun SignUpScreen(){
+fun SignUpPage(){
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -80,5 +78,5 @@ fun SignUpScreen(){
 @Preview
 @Composable
 fun DefaultPreviewOfSignUpScreen(){
-    SignUpScreen()
+    SignUpPage()
 }

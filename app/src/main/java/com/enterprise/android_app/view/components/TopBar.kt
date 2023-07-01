@@ -1,4 +1,4 @@
-package com.enterprise.android_app.view
+package com.enterprise.android_app.view.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft

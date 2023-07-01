@@ -1,7 +1,5 @@
-package com.enterprise.android_app.view
+package com.enterprise.android_app.view.screen
 
-import android.widget.RatingBar
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,28 +20,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.compose.ui.modifier.ModifierLocalReadScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.components.ButtonComponent
-import com.enterprise.android_app.model.components.HeadingTextComponent
-import com.enterprise.android_app.model.components.NormalTextComponent
-import com.enterprise.android_app.model.components.TextFieldComponent
+import com.enterprise.android_app.view.components.ButtonComponent
+import com.enterprise.android_app.view.components.NormalTextComponent
+import com.enterprise.android_app.view.components.TextFieldComponent
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import io.swagger.client.apis.ReviewControllerApi
-import io.swagger.client.models.Review
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ReviewScreen(){

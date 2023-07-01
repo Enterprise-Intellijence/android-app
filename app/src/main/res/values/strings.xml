@@ -26,4 +26,5 @@
     <string name="sell">Sell Product</string>
     <string name="inbox">Message</string>
     <string name="profile">My Profile</string>
+    <string name="ask_seller">Ask seller</string>
 </resources>

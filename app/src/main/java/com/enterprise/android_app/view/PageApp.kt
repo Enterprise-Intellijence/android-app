@@ -39,7 +39,7 @@ fun PageApp(){
             when(currentState.value){
                 is Screen.SignUpScreen -> {
                     //SignUpScreen()
-                    MainScreen()
+                    ProductPage()
                 }
                 is Screen.LoginScreen -> {
                     LoginScreen()

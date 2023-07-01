@@ -10,12 +10,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ProductHeader(name: String, condition: String, price: Double) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text( text = name, fontWeight = FontWeight.Medium)
-        Text( text = condition, fontWeight = FontWeight.Light)
-        Text( text = price.toString())
+        Text( text = name, fontWeight = FontWeight.Medium, fontSize = 20.sp)
+        Text( text = condition, fontWeight = FontWeight.Light, fontSize = 16.sp)
+        Text( text = price.toString(), fontWeight = FontWeight.Normal, fontSize = 16.sp)
     }
 }

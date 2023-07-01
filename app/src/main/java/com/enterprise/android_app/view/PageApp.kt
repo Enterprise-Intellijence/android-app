@@ -1,6 +1,5 @@
 package com.enterprise.android_app.view
 
-import android.provider.ContactsContract.Profile
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,27 +8,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -49,7 +38,8 @@ fun PageApp(){
         Crossfade(targetState = AppRouter.currentScreen) { currentState ->
             when(currentState.value){
                 is Screen.SignUpScreen -> {
-                    SignUpScreen()
+                    //SignUpScreen()
+                    MainScreen()
                 }
                 is Screen.LoginScreen -> {
                     LoginScreen()
@@ -102,23 +92,10 @@ fun SearchTopBar(){
 
     if (MainRouter.currentPage.value == Navigation.HomePage || MainRouter.currentPage.value == Navigation.SearchPage)
     {
-        //TODO barra di ricerca
+       TopBarSearch()
     }
-    /*
-    TopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name))},
-        navigationIcon = { IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.KeyboardArrowLeft, contentDescription = stringResource(id = R.string.back))
-        } },
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Settings,contentDescription = stringResource(id = R.string.settings))
 
-            }
-        }
 
-        )
-     */
 }
 
 @Composable

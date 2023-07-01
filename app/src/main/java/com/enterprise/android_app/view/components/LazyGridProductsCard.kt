@@ -9,10 +9,11 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.swagger.client.models.PageProductBasicDTO
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
-fun LazyGridProductsCard(products: List<ProductBasicDTO>, onLoadMore: () -> Unit) {
+fun LazyGridProductsCard(products: PageProductBasicDTO, onLoadMore: () -> Unit) {
     val lazyGridState = rememberLazyGridState()
 
     LazyVerticalGrid(
@@ -22,12 +23,14 @@ fun LazyGridProductsCard(products: List<ProductBasicDTO>, onLoadMore: () -> Unit
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-        items(products.size) { product ->
-            ProductCard(product = product)
-            
-        }
+        products.content?.size?.let {
+            items(it) { product ->
+                ProductCard(product = product)
 
-        if (lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= products.size) {
+            }
+        }
+        val contentSize = products.content?.size ?: 0
+        if (lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {
             onLoadMore()
         }
     }

@@ -2,6 +2,7 @@ package com.enterprise.android_app.model.components
 
 import android.graphics.drawable.Drawable
 import android.icu.lang.UCharacter.VerticalOrientation
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFrom
@@ -32,39 +34,46 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.view.ClickableBox
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun SellerRow(username: String, rating: Float, pic: Int) {
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(pic),
-            contentDescription = "avatar",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(16.dp)
-                .size(50.dp)
-                .clip(CircleShape)
-        )
-        Column(modifier = Modifier.padding(15.dp)) {
-            Text(text = username)
-            RatingBar(
-                modifier = Modifier.padding(0.dp, 5.dp),
-                value = rating,
-                style = RatingBarStyle.Fill(),
-                numOfStars = 5,
-                size = 13.dp,
-                spaceBetween = 3.dp,
-                onRatingChanged = { },
-                onValueChange = { })
-        }
+    ClickableBox(onClick = { /*TODO go to seller page*/ }, Modifier.height(85.dp)) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(pic),
+                contentDescription = "avatar",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(50.dp)
+                    .clip(CircleShape)
+            )
+            Column(modifier = Modifier.padding(15.dp)) {
+                Text(text = username)
+                RatingBar(
+                    modifier = Modifier.padding(0.dp, 5.dp),
+                    value = rating,
+                    style = RatingBarStyle.Fill(),
+                    numOfStars = 5,
+                    size = 13.dp,
+                    spaceBetween = 3.dp,
+                    onRatingChanged = { },
+                    onValueChange = { })
+            }
 
-        Button(onClick = { /*TODO go to seller page*/ }, modifier = Modifier.padding(end = 20.dp)) {
-            Text(text = stringResource(id = R.string.ask_seller))
+            Button(onClick = { /*TODO go to seller chat*/ },
+                modifier = Modifier
+                    .padding(end = 30.dp, start = 71.dp)
+                    .weight(1f)) {
+                Text(text = stringResource(id = R.string.ask_seller))
+            }
         }
     }
+
 
 }
 

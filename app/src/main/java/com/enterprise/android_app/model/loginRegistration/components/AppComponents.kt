@@ -1,4 +1,4 @@
-package com.enterprise.android_app.model.components
+package com.enterprise.android_app.model.loginRegistration.components
 
 import android.util.Log
 import androidx.compose.foundation.background

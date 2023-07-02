@@ -40,18 +40,17 @@ import com.gowtham.ratingbar.RatingBarStyle
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun SellerRow(username: String, rating: Float, pic: Int) {
+fun SellerRow(username: String, totalRatingSum: Int, reviewsNumber: Int,  picUrl: String) {
+
+    val rating: Float = if (reviewsNumber != 0) totalRatingSum.toFloat() / reviewsNumber.toFloat() else 0f
     ClickableBox(onClick = { /*TODO go to seller page*/ }, Modifier.height(85.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(pic),
-                contentDescription = "avatar",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(50.dp)
-                    .clip(CircleShape)
-            )
+
+            LoadImageFromUrl(url = picUrl, modifier = Modifier
+                .padding(16.dp)
+                .size(50.dp)
+                .clip(CircleShape))
+
             Column(modifier = Modifier.padding(15.dp)) {
                 Text(text = username)
                 RatingBar(
@@ -67,7 +66,7 @@ fun SellerRow(username: String, rating: Float, pic: Int) {
 
             Button(onClick = { /*TODO go to seller chat*/ },
                 modifier = Modifier
-                    .padding(end = 30.dp, start = 71.dp)
+                    .padding(end = 25.dp, start = 55.dp)
                     .weight(1f)) {
                 Text(text = stringResource(id = R.string.ask_seller))
             }

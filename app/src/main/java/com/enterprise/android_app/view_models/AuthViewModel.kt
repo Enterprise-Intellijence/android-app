@@ -13,13 +13,14 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
 
 
     fun authenticate(username: String, password: String) {
+        /*
         CoroutineScope(Dispatchers.IO).launch {
             val tokenMap = userController.authenticate(username, password)
             CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
             CurrentDataUtils.refreshToken = tokenMap["refreshToken"].toString()
 
             //CurrentDataUtils.currentUser = userController.me()
-        }
+        }*/
     }
 
 

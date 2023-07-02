@@ -47,7 +47,7 @@ fun PageApp(){
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
                     //StartScreen()
-                    ProductScreen()
+                    ProductScreen("7a14fbfd-a4e3-4d86-9ba6-454960dbff6f")
                 }
                 is Screen.SignUpScreen -> {
                     SignUpPage()
@@ -105,7 +105,7 @@ fun MainScreen(){
                     AboutScreen()
                 }
                 is Navigation.ProductScreen ->{
-                    ProductScreen()
+                    //ProductScreen()
                 }
 
             }

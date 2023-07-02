@@ -17,8 +17,6 @@ sealed class Navigation() {
 
     object SearchPage : Navigation()
 
-    object SellProductPage : Navigation()
-
     object MessagesPage : Navigation()
 
     object ProfileMenuPage : Navigation()
@@ -27,6 +25,8 @@ sealed class Navigation() {
     object SettingsPage : Navigation ()
     object OrdersPage : Navigation()
     object AboutScreen : Navigation()
+    object ProductScreen : Navigation()
+    object NewProductPage: Navigation()
 
 
 }

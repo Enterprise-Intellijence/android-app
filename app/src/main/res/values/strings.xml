@@ -37,4 +37,5 @@
     <string name="share">Share</string>
     <string name="sign_up">Sign up</string>
     <string name="search_hint">Search</string>
+    <string name="item_description">Item description</string>
 </resources>

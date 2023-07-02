@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view
 
+import NewProductPage
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,7 @@ import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
-import com.enterprise.android_app.view.screen.StartScreen
+import com.enterprise.android_app.view.screen.ProductScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
 
@@ -47,7 +48,7 @@ fun PageApp(){
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
                     //StartScreen()
-                    MainScreen()
+                    ProductScreen()
                 }
                 is Screen.SignUpScreen -> {
                     SignUpPage()
@@ -80,9 +81,6 @@ fun MainScreen(){
                 is Navigation.SearchPage ->{
                     SearchPage()
                 }
-                is Navigation.SellProductPage ->{
-                    SellProductPage()
-                }
                 is Navigation.MessagesPage ->{
                     MessagesPage()
                 }
@@ -103,6 +101,12 @@ fun MainScreen(){
                 }
                 is Navigation.AboutScreen ->{
                     AboutScreen()
+                }
+                is Navigation.ProductScreen ->{
+                    ProductScreen()
+                }
+                is Navigation.NewProductPage ->{
+                    NewProductPage()
                 }
 
             }
@@ -143,8 +147,8 @@ fun MainBottomBar(){
                 icon = {Icon(Icons.Filled.Search, contentDescription = stringResource(id = R.string.search))}
             )
             NavigationBarItem(
-                selected = MainRouter.currentPage.value == Navigation.SellProductPage,
-                onClick = { MainRouter.changePage(Navigation.SellProductPage) },
+                selected = MainRouter.currentPage.value == Navigation.NewProductPage,
+                onClick = { MainRouter.changePage(Navigation.NewProductPage) },
                 icon = {Icon(Icons.Filled.AddCircle, contentDescription = stringResource(id = R.string.sell))}
             )
             NavigationBarItem(

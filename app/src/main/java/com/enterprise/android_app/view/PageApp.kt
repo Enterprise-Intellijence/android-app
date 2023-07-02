@@ -104,6 +104,9 @@ fun MainScreen(){
                 is Navigation.AboutScreen ->{
                     AboutScreen()
                 }
+                is Navigation.ProductScreen ->{
+                    ProductScreen()
+                }
 
             }
 

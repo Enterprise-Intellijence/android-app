@@ -5,6 +5,8 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
+import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.LazyGridProductsCard
 import com.enterprise.android_app.view_models.HomePageViewModel
 
@@ -31,5 +33,13 @@ fun HomePage(){
         homePageViewModel.loadNextPage()
         val contentSize = productList.size
         Log.d("HomePage", "Content size: $contentSize")
+    }
+}
+
+@Preview
+@Composable
+fun HomePagePreview() {
+    AndroidappTheme {
+        HomePage()
     }
 }

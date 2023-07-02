@@ -37,6 +37,7 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.view.components.ImageCarousell
 import com.enterprise.android_app.view.components.ProductHeader
 import com.enterprise.android_app.view.components.SellerRow
+import io.swagger.client.models.ProductDTO
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

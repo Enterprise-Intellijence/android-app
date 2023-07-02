@@ -28,6 +28,8 @@ sealed class Navigation() {
     object OrdersPage : Navigation()
     object AboutScreen : Navigation()
 
+    object ProductScreen : Navigation()
+
 
 }
 

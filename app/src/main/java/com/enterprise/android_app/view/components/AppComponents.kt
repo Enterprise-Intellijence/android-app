@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -208,11 +209,11 @@ fun ButtonComponent(value: String, onClickAction: () -> Unit){
 }
 
 @Composable
-fun VerticalDivider(color: Color = Color.LightGray, paddingValues: PaddingValues = PaddingValues(vertical = 8.dp)){
+fun VerticalDivider(color: Color = Color.LightGray, paddingValues: PaddingValues = PaddingValues(vertical = 8.dp), modifier: Modifier = Modifier){
     Divider(
         color = color,
-        modifier = Modifier
-            .fillMaxHeight()
+        modifier = modifier
+            .height(55.dp)
             .width(1.dp)
             .padding(paddingValues)
     )

@@ -10,7 +10,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 
 @Composable
-fun LoadImageFromUrl(url: String) {
+fun LoadImageFromUrl(url: String, modifier: Modifier) {
     val painter = rememberImagePainter(
         data = url,
         builder = {
@@ -21,7 +21,7 @@ fun LoadImageFromUrl(url: String) {
     Image(
         painter = painter,
         contentDescription = "Image from URL",
-        modifier = Modifier.size(200.dp),
+        modifier = modifier,
         contentScale = ContentScale.Crop
     )
 }

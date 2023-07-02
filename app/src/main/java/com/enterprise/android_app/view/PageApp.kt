@@ -104,7 +104,7 @@ fun MainScreen(){
                     AboutScreen()
                 }
                 is Navigation.ProductScreen ->{
-                    ProductScreen()
+                    //ProductScreen()
                 }
                 is Navigation.NewProductPage ->{
                     NewProductPage()

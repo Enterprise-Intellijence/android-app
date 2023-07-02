@@ -30,7 +30,7 @@ import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
-import com.enterprise.android_app.view.screen.StartScreen
+import com.enterprise.android_app.view.screen.ProductScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
 
@@ -47,7 +47,7 @@ fun PageApp(){
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
                     //StartScreen()
-                    MainScreen()
+                    ProductScreen()
                 }
                 is Screen.SignUpScreen -> {
                     SignUpPage()

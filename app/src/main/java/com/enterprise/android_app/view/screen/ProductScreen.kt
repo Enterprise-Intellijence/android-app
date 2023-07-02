@@ -1,16 +1,19 @@
-package com.enterprise.android_app.view
+package com.enterprise.android_app.view.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,7 +40,7 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.view.components.ImageCarousell
 import com.enterprise.android_app.view.components.ProductHeader
 import com.enterprise.android_app.view.components.SellerRow
-import io.swagger.client.models.ProductDTO
+import com.enterprise.android_app.view.components.VerticalDivider
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -120,9 +123,20 @@ fun ProductScreen(){
                         Button(onClick = { /*TODO*/ }) {
                             Text(text = stringResource(id = R.string.favourite))
                         }
+                        VerticalDivider()
                         Button(onClick = { /*TODO*/ }) {
                             Text(text = stringResource(R.string.share))
                         }
+                    }
+                }
+                item {
+                    Box(modifier = Modifier
+                        .fillMaxWidth() ){
+                        Text(text = stringResource(R.string.item_description), modifier = Modifier.padding(16.dp))
+                        Column(modifier = Modifier.height(IntrinsicSize.Min)) {
+                            Text(text = " Nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nisl vitae nisl. ", modifier = Modifier.padding(16.dp))
+                        }
+
                     }
                 }
                                   }

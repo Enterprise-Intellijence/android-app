@@ -1,18 +1,16 @@
 package com.enterprise.android_app.view_models
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import io.swagger.client.apis.ProductControllerApi
-import io.swagger.client.models.PageProductBasicDTO
+import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.ProductBasicDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomePageViewModel : ViewModel() {
-    private val productControllerApi: ProductControllerApi = ProductControllerApi()
+class FavouriteViewModel : ViewModel(){
+    private var userControllerApi: UserControllerApi = UserControllerApi()
     val productList = mutableStateListOf<ProductBasicDTO>()
     var currentPage: Int = 0
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -20,11 +18,12 @@ class HomePageViewModel : ViewModel() {
     val _productList: List<ProductBasicDTO>
         get() = productList
 
-    fun loadNextPage() {
+
+    fun loadNextPage(){
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
-                    productControllerApi.getFilteredProducts(page = currentPage)
+                    userControllerApi.getLikedProducts(page = currentPage, size = 10)
                 }
                 val productsToAdd = newProducts.content?.toList() ?: emptyList()
                 productList.addAll(productsToAdd)
@@ -33,7 +32,6 @@ class HomePageViewModel : ViewModel() {
                 e.printStackTrace()
             }
         }
+
     }
-
-
 }

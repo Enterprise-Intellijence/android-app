@@ -15,13 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.loginRegistration.components.ButtonComponent
-import com.enterprise.android_app.model.loginRegistration.components.ClickableLoginTextComponent
-import com.enterprise.android_app.model.loginRegistration.components.DividerTextComponent
-import com.enterprise.android_app.model.loginRegistration.components.HeadingTextComponent
-import com.enterprise.android_app.model.loginRegistration.components.NormalTextComponent
-import com.enterprise.android_app.model.loginRegistration.components.PasswordTextFieldComponent
-import com.enterprise.android_app.model.loginRegistration.components.TextFieldComponent
+import com.enterprise.android_app.model.components.ButtonComponent
+import com.enterprise.android_app.model.components.ClickableLoginTextComponent
+import com.enterprise.android_app.model.components.DividerTextComponent
+import com.enterprise.android_app.model.components.HeadingTextComponent
+import com.enterprise.android_app.model.components.NormalTextComponent
+import com.enterprise.android_app.model.components.PasswordTextFieldComponent
+import com.enterprise.android_app.model.components.TextFieldComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 

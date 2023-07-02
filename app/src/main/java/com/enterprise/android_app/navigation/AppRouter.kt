@@ -8,6 +8,8 @@ sealed class Screen() {
     object LoginScreen : Screen()
     object MainScreen: Screen()
 
+    object StartScreen: Screen()
+
 }
 
 sealed class Navigation() {
@@ -32,7 +34,7 @@ sealed class Navigation() {
 
 
 object AppRouter{
-    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.SignUpScreen)
+    val currentScreen: MutableState<Screen> = mutableStateOf(Screen.StartScreen)
 
     fun navigateTo(destination: Screen){
         currentScreen.value = destination

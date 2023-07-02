@@ -15,13 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.components.ButtonComponent
-import com.enterprise.android_app.model.components.ClickableLoginTextComponent
-import com.enterprise.android_app.model.components.DividerTextComponent
-import com.enterprise.android_app.model.components.HeadingTextComponent
-import com.enterprise.android_app.model.components.NormalTextComponent
-import com.enterprise.android_app.model.components.PasswordTextFieldComponent
-import com.enterprise.android_app.model.components.TextFieldComponent
+import com.enterprise.android_app.view.components.ButtonComponent
+import com.enterprise.android_app.view.components.ClickableLoginTextComponent
+import com.enterprise.android_app.view.components.DividerTextComponent
+import com.enterprise.android_app.view.components.HeadingTextComponent
+import com.enterprise.android_app.view.components.NormalTextComponent
+import com.enterprise.android_app.view.components.PasswordTextFieldComponent
+import com.enterprise.android_app.view.components.TextFieldComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 
@@ -38,6 +38,7 @@ fun SignUpPage(){
             NormalTextComponent(value = stringResource(id = R.string.hello))
             HeadingTextComponent(value = stringResource(id = R.string.create_an_account))
             Spacer(modifier = Modifier.height(20.dp))
+            /*
             TextFieldComponent(
                 labelValue = stringResource(id = R.string.first_name),
                 painterResource(id = R.drawable.profileicon)
@@ -56,6 +57,7 @@ fun SignUpPage(){
                 labelValue = stringResource(id = R.string.password),
                 painterResource = painterResource(id = R.drawable.password)
             )
+            */
             
             Spacer(modifier = Modifier.height(40.dp))
             ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {})

@@ -1,4 +1,4 @@
-package com.enterprise.android_app.model.components
+package com.enterprise.android_app.view.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

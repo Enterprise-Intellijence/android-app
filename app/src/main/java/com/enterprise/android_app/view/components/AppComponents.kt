@@ -1,4 +1,4 @@
-package com.enterprise.android_app.model.components
+package com.enterprise.android_app.view.components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -89,8 +90,8 @@ fun HeadingTextComponent(value:String){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFieldComponent(labelValue: String, painterResource: Painter){
-    val textValue = remember { mutableStateOf("")}
+fun TextFieldComponent(labelValue: String, painterResource: Painter, textValue: TextFieldValue){
+    val textValue = remember { mutableStateOf(textValue)}
 
 
     OutlinedTextField(

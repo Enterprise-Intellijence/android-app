@@ -30,6 +30,7 @@ import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
+import com.enterprise.android_app.view.screen.StartScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
 
@@ -42,10 +43,15 @@ fun PageApp(){
     ) {
         Crossfade(targetState = AppRouter.currentScreen) { currentState ->
             when(currentState.value){
+
+                //TODO Implementare il tasto indietro che ritorna alla pagina precedente
+                is Screen.StartScreen -> {
+                    StartScreen()
+                }
                 is Screen.SignUpScreen -> {
-                    //SignUpScreen()
+                    SignUpPage()
                     //ProductScreen()
-                    MainScreen()
+                    //MainScreen()
                 }
                 is Screen.LoginScreen -> {
                     LoginPage()

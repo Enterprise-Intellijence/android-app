@@ -1,4 +1,4 @@
-package com.enterprise.android_app.model.components
+package com.enterprise.android_app.view.components
 
 import androidx.annotation.Size
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.enterprise.android_app.model.components
+package com.enterprise.android_app.view.components
 
 import android.graphics.drawable.Drawable
 import android.icu.lang.UCharacter.VerticalOrientation

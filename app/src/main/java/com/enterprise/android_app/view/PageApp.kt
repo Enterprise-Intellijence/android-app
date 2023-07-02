@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view
 
+import NewProductPage
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -80,9 +81,6 @@ fun MainScreen(){
                 is Navigation.SearchPage ->{
                     SearchPage()
                 }
-                is Navigation.SellProductPage ->{
-                    SellProductPage()
-                }
                 is Navigation.MessagesPage ->{
                     MessagesPage()
                 }
@@ -106,6 +104,9 @@ fun MainScreen(){
                 }
                 is Navigation.ProductScreen ->{
                     ProductScreen()
+                }
+                is Navigation.NewProductPage ->{
+                    NewProductPage()
                 }
 
             }
@@ -146,8 +147,8 @@ fun MainBottomBar(){
                 icon = {Icon(Icons.Filled.Search, contentDescription = stringResource(id = R.string.search))}
             )
             NavigationBarItem(
-                selected = MainRouter.currentPage.value == Navigation.SellProductPage,
-                onClick = { MainRouter.changePage(Navigation.SellProductPage) },
+                selected = MainRouter.currentPage.value == Navigation.NewProductPage,
+                onClick = { MainRouter.changePage(Navigation.NewProductPage) },
                 icon = {Icon(Icons.Filled.AddCircle, contentDescription = stringResource(id = R.string.sell))}
             )
             NavigationBarItem(

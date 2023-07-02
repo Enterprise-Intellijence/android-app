@@ -1,32 +1,37 @@
 package com.enterprise.android_app.view_models
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.models.PageProductBasicDTO
 import io.swagger.client.models.ProductBasicDTO
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import java.util.Collections.addAll
 
-
-class HomePageViewModel: ViewModel() {
+class HomePageViewModel : ViewModel() {
     private val productControllerApi: ProductControllerApi = ProductControllerApi()
-    private val productList: MutableState<PageProductBasicDTO> = mutableStateOf(PageProductBasicDTO())
+    val productList = mutableStateListOf<ProductBasicDTO>()
     var currentPage: Int = 0
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    val _productList : PageProductBasicDTO
-        get() = productList.value
+    val _productList: List<ProductBasicDTO>
+        get() = productList
 
-    suspend fun loadNextPage() {
-        val newProducts = withContext(Dispatchers.IO) {
-            productControllerApi.getFilteredProducts(page = currentPage)
+    fun loadNextPage() {
+        coroutineScope.launch {
+            try {
+                val newProducts = withContext(Dispatchers.IO) {
+                    productControllerApi.getFilteredProducts(page = currentPage)
+                }
+                val productsToAdd = newProducts.content?.toList() ?: emptyList()
+                productList.addAll(productsToAdd)
+                currentPage++
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-        productList.value = newProducts
-        currentPage++
     }
 }

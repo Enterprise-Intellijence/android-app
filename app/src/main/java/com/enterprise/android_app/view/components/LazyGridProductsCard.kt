@@ -4,18 +4,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.swagger.client.models.PageProductBasicDTO
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
-fun LazyGridProductsCard(products: PageProductBasicDTO, onLoadMore: () -> Unit) {
-    val lazyGridState = rememberLazyGridState()
-
+fun LazyGridProductsCard(
+    products: SnapshotStateList<ProductBasicDTO>,
+    lazyGridState: LazyGridState,
+    onLoadMore: () -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         state = lazyGridState,
@@ -23,15 +26,13 @@ fun LazyGridProductsCard(products: PageProductBasicDTO, onLoadMore: () -> Unit) 
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-        products.content?.size?.let {
-            items(it) { product ->
-                ProductCard(product = product)
+        itemsIndexed(products) { index, product ->
+            ProductCard(product = product)
 
+            val contentSize = products.size
+            if (index == contentSize - 1 && lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {
+                onLoadMore()
             }
-        }
-        val contentSize = products.content?.size ?: 0
-        if (lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {
-            onLoadMore()
         }
     }
 }

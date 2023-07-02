@@ -103,6 +103,7 @@ fun MainScreen(){
                 is Navigation.AboutScreen ->{
                     AboutScreen()
                 }
+
             }
 
         }

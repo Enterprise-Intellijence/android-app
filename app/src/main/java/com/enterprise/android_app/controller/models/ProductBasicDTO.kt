@@ -11,10 +11,8 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.ProductCategoryDTO
-import io.swagger.client.models.ProductImageDTO
 import io.swagger.client.models.UserBasicDTO
+import java.time.LocalDateTime
 
 /**
  * 
@@ -31,19 +29,19 @@ import io.swagger.client.models.UserBasicDTO
  * @param productImages 
  * @param productCategory 
  */
-data class ProductBasicDTO (
+data class ProductBasicDTO(
 
-    val id: kotlin.String? = null,
-    val title: kotlin.String? = null,
-    val description: kotlin.String? = null,
-    val uploadDate: java.time.LocalDateTime? = null,
+    val id: String? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val uploadDate: LocalDateTime? = null,
     val productCost: CustomMoneyDTO,
     val deliveryCost: CustomMoneyDTO,
-    val brand: kotlin.String? = null,
+    val brand: String? = null,
     val condition: Condition? = null,
-    val likesNumber: kotlin.Int? = null,
+    val likesNumber: Int? = null,
     val seller: UserBasicDTO? = null,
-    val productImages: ProductImageDTO? = null,
+    val productImages: List<ProductImageDTO>? = null,
     val productCategory: ProductCategoryDTO? = null
 ) {
     /**
@@ -51,9 +49,9 @@ data class ProductBasicDTO (
     * Values: NEWWITHTAG,NEWWITHOUTTAG,VERYGOOD,GOOD,ACCEPTABLE
     */
     enum class Condition(val value: kotlin.String){
-        NEWWITHTAG("NEW_WITH_TAG"),
-        NEWWITHOUTTAG("NEW_WITHOUT_TAG"),
-        VERYGOOD("VERY_GOOD"),
+        NEW_WITH_TAG("NEW_WITH_TAG"),
+        NEW_WITHOUT_TAG("NEW_WITHOUT_TAG"),
+        VERY_GOOD("VERY_GOOD"),
         GOOD("GOOD"),
         ACCEPTABLE("ACCEPTABLE");
     }

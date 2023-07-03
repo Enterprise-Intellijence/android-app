@@ -62,17 +62,11 @@ fun ProductScreen(productId: String) {
 
     val productPageViewModel: ProductPageViewModel = viewModel()
 
-    var images = listOf(
-        R.drawable.kisspng_krypton_flashlight_student_learning_flashlight_png_file_5a7536aa11c1a7_7832310715176311460727,
-        R.drawable._0200525_180340,
-        R.drawable._0200525_181714,
-
-    )
     Surface(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){
 
-        if (productPageViewModel.product == null) {
+        if (productPageViewModel.product == null || productPageViewModel.product?.id != productId) {
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 CircularProgressIndicator(modifier = Modifier.size(40.dp))
             }

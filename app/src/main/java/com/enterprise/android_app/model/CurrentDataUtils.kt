@@ -51,4 +51,8 @@ object CurrentDataUtils {
         }
     }
 
+    var currentProductId: String
+        get() = _currentProductId.value
+        set(newValue) { _currentProductId.value = newValue }
+
 }

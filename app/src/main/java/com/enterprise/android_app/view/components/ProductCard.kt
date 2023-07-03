@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.navigation.AppRouter
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import io.swagger.client.models.ProductBasicDTO
 
@@ -36,7 +40,7 @@ import io.swagger.client.models.ProductBasicDTO
 fun ProductCard(product: ProductBasicDTO){
     Card(modifier = Modifier
         .size(width = 100.dp, height = 250.dp)
-        .clickable { }, // AppRouter.navigateTo(Screen.ProductScreen())
+        .clickable { CurrentDataUtils.currentProductId = product.id!!; MainRouter.changePage(Navigation.ProductScreen) },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
         ),

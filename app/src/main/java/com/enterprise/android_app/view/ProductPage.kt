@@ -150,7 +150,6 @@ fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_s
                             Color.Transparent
                         )
                 ) {
-                    //TODO change icon on favourite
                     Icon(
                         if(UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                         contentDescription = "Favourite",

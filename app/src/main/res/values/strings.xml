@@ -36,6 +36,12 @@
     <string name="make_an_offer">Make an offer</string>
     <string name="share">Share</string>
     <string name="sign_up">Sign up</string>
+    <string name="search_hint">Search</string>
     <string name="item_description">Item description</string>
+    <string name="accountSettings">Account Settings</string>
+    <string name="shipping">Shipping</string>
+    <string name="payments">Payments</string>
+    <string name="changePhoto">Change Photo</string>
+    <string name="apply">Apply change</string>
     <string name="edit">Edit</string>
 </resources>

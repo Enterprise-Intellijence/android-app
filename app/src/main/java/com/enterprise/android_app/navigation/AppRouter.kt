@@ -2,6 +2,7 @@ package com.enterprise.android_app.navigation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 sealed class Screen() {
     object SignUpScreen : Screen()
@@ -27,6 +28,21 @@ sealed class Navigation() {
     object AboutScreen : Navigation()
     object ProductScreen : Navigation()
     object NewProductPage: Navigation()
+    object ProfileDetailsScreen : Navigation() {
+
+    }
+
+    object AccountSettingsPage : Navigation() {
+
+    }
+
+    object ShippingScreen : Navigation() {
+
+    }
+
+    object PaymentsScreen : Navigation() {
+
+    }
 
 
 }

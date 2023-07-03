@@ -29,10 +29,14 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
+import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
+import com.enterprise.android_app.view.screen.PaymentsScreen
 import com.enterprise.android_app.view.screen.ProductScreen
+import com.enterprise.android_app.view.screen.ProfileDetailsScreen
+import com.enterprise.android_app.view.screen.ShippingScreen
 import com.enterprise.android_app.view.screen.StartScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
@@ -49,6 +53,7 @@ fun PageApp(){
 
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
+
                     StartScreen()
                     //ProductScreen()
                 }
@@ -64,6 +69,7 @@ fun PageApp(){
                     MainScreen()
                 }
 
+                else -> {}
             }
 
         }
@@ -87,7 +93,7 @@ fun MainScreen(){
                     MessagesPage()
                 }
                 is Navigation.ProfileMenuPage ->{
-                    //ProfileMenuPage(UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
+                    ProfileMenuPage()
                 }
                 is Navigation.ProfilePage ->{
                     ProfilePage()
@@ -110,7 +116,20 @@ fun MainScreen(){
                 is Navigation.NewProductPage ->{
                     NewProductPage()
                 }
+                is Navigation.ProfileDetailsScreen ->{
+                    ProfileDetailsScreen()
+                }
+                is Navigation.AccountSettingsPage ->{
+                    AccountSettingsPage()
+                }
+                is Navigation.ShippingScreen ->{
+                    ShippingScreen()
+                }
+                is Navigation.PaymentsScreen ->{
+                    PaymentsScreen()
+                }
 
+                else -> {}
             }
 
         }
@@ -129,6 +148,8 @@ fun SearchTopBar(){
     {
        TopBarSearch()
     }
+    else
+        TopBarGeneric()
 
 
 }

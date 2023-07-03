@@ -24,6 +24,7 @@ class FavouriteViewModel : ViewModel(){
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
+                    CurrentDataUtils.setAccessTokenForRequest()
 
                     userControllerApi.getLikedProducts(page = currentPage, size = 10)
                 }

@@ -1,5 +1,7 @@
 package com.enterprise.android_app.view
 
+import android.database.Observable
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -25,6 +27,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,10 +51,12 @@ import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import io.swagger.client.models.UserDTO
 
+
 @Composable
 fun ProfileMenuPage(){
     var modifier = Modifier.fillMaxWidth()
-    var user : UserDTO? = CurrentDataUtils.currentUser
+    val user: MutableState<UserDTO?> = remember { mutableStateOf(CurrentDataUtils.currentUser) }
+    Log.d("Username",user.value?.username ?:"username not found")
 
     Column(modifier = modifier ) {
         ClickableBox(
@@ -59,7 +66,7 @@ fun ProfileMenuPage(){
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
                 Image(painter = rememberImagePainter(
-                    data = user?.photoProfile?.urlPhoto,
+                    data = user.value?.photoProfile?.urlPhoto,
                     builder = {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
                     }
@@ -76,7 +83,7 @@ fun ProfileMenuPage(){
                         .align(Alignment.CenterVertically)
                         .padding(start = 10.dp))
                     {
-                        Text(text = user?.username ?:"no username", style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold))
+                        Text(text = user.value?.username ?:"no username", style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold))
                         Text(text = stringResource(id = R.string.viewMyProfile), Modifier.padding(top = 20.dp))
                     }
                     Icon(Icons.Filled.KeyboardArrowRight,contentDescription = stringResource (R.string.viewMyProfile))

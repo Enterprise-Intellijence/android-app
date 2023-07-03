@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.navigation.MainRouter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,24 +53,13 @@ fun TopBarSearch() = TopAppBar(
 @Composable
 fun TopBarGeneric() = TopAppBar(
     title = {
-        TextField(
-            value = "",
-            onValueChange = { /*TODO: Gestisci il valore del TextField*/ },
-            placeholder = { Text(text = stringResource(id = R.string.search_hint)) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = stringResource(id = R.string.search)) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
+        /*Text(text =  MainRouter.currentPage,style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold))*/
     },
     navigationIcon = {
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.KeyboardArrowLeft, contentDescription = stringResource(id = R.string.back))
         }
-    },
-    actions = {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.Settings, contentDescription = stringResource(id = R.string.settings))
-        }
     }
+
 
 )

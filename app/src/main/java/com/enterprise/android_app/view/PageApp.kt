@@ -28,10 +28,14 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
+import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
+import com.enterprise.android_app.view.screen.PaymentsScreen
 import com.enterprise.android_app.view.screen.ProductScreen
+import com.enterprise.android_app.view.screen.ProfileDetailsScreen
+import com.enterprise.android_app.view.screen.ShippingScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
 
@@ -48,7 +52,8 @@ fun PageApp(){
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
                     //StartScreen()
-                    ProductScreen()
+                    //ProductScreen()
+                    MainScreen()
                 }
                 is Screen.SignUpScreen -> {
                     SignUpPage()
@@ -62,6 +67,7 @@ fun PageApp(){
                     MainScreen()
                 }
 
+                else -> {}
             }
 
         }
@@ -94,7 +100,7 @@ fun MainScreen(){
                     FavouriteProductScreen()
                 }
                 is Navigation.SettingsPage ->{
-                    SettingsPage()
+                    SettingsPage(user = UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
                 }
                 is Navigation.OrdersPage ->{
                     OrdersPage()
@@ -108,7 +114,20 @@ fun MainScreen(){
                 is Navigation.NewProductPage ->{
                     NewProductPage()
                 }
+                is Navigation.ProductScreen ->{
+                    ProfileDetailsScreen(user = UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5))
+                }
+                is Navigation.AccountSettingsPage ->{
+                    AccountSettingsPage()
+                }
+                is Navigation.ShippingScreen ->{
+                    ShippingScreen()
+                }
+                is Navigation.PaymentsScreen ->{
+                    PaymentsScreen()
+                }
 
+                else -> {}
             }
 
         }
@@ -127,6 +146,8 @@ fun SearchTopBar(){
     {
        TopBarSearch()
     }
+    else
+        TopBarGeneric()
 
 
 }

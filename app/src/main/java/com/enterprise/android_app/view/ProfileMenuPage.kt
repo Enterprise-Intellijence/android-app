@@ -56,7 +56,6 @@ import io.swagger.client.models.UserDTO
 fun ProfileMenuPage(){
     var modifier = Modifier.fillMaxWidth()
     val user: MutableState<UserDTO?> = remember { mutableStateOf(CurrentDataUtils.currentUser) }
-    Log.d("Username",user.value?.username ?:"username not found")
 
     Column(modifier = modifier ) {
         ClickableBox(

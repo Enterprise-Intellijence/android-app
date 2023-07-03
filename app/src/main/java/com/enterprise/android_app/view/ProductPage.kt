@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
@@ -34,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.UserServices
 import com.enterprise.android_app.view.components.ImageCarousell
 import com.enterprise.android_app.view.components.ProductHeader
 import com.enterprise.android_app.view.components.SellerRow
@@ -64,42 +67,72 @@ fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_s
         item {
             ProductHeader(name = product.title!!, condition = product.condition.toString(), price = product.productCost.price!!)
         }
-        item {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-                    .fillMaxWidth()
-                    .height(110.dp)
-            ) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .height(45.dp)
+        if(product.seller?.id!! == CurrentDataUtils.currentUser?.id) {
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp),
-                    shape = RoundedCornerShape(7.dp)
+                        .height(110.dp)
                 ) {
-                    Text(text = stringResource(R.string.buy_now))
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.outlinedButtonColors(),
-                    modifier = Modifier
-                        .height(45.dp)
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp)
-                        .border(
-                            1.dp,
-                            MaterialTheme.colorScheme.primary,
-                            RoundedCornerShape(7.dp)
-                        ),
-                    shape = RoundedCornerShape(7.dp)
-                ) {
-                    Text(text = stringResource(R.string.make_an_offer))
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.outlinedButtonColors(),
+                        modifier = Modifier
+                            .height(45.dp)
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp)
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.primary,
+                                RoundedCornerShape(7.dp)
+                            ),
+                        shape = RoundedCornerShape(7.dp)
+                    ) {
+                        Text(text = stringResource(R.string.edit))
+                    }
                 }
             }
         }
+        else
+        {
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+                        .fillMaxWidth()
+                        .height(110.dp)
+                ) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .height(45.dp)
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
+                        shape = RoundedCornerShape(7.dp)
+                    ) {
+                        Text(text = stringResource(R.string.buy_now))
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.outlinedButtonColors(),
+                        modifier = Modifier
+                            .height(45.dp)
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp)
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.primary,
+                                RoundedCornerShape(7.dp)
+                            ),
+                        shape = RoundedCornerShape(7.dp)
+                    ) {
+                        Text(text = stringResource(R.string.make_an_offer))
+                    }
+                }
+            }
+        }
+
         item {
             Divider(Modifier.fillMaxWidth(), color = Color.Gray)
         }
@@ -119,8 +152,8 @@ fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_s
                 ) {
                     //TODO change icon on favourite
                     Icon(
-                        Icons.Filled.FavoriteBorder,
-                        contentDescription = "Share",
+                        if(UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = "Favourite",
                         modifier = Modifier.padding(end = 5.dp)
                     )
                     Text(text = stringResource(id = R.string.favourite))

@@ -2,6 +2,7 @@ package com.enterprise.android_app.view_models
 
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.UserServices
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
@@ -24,6 +25,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                     CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
                     CurrentDataUtils.refreshToken = tokenMap["refreshToken"].toString()
                     CurrentDataUtils.retrieveCurrentUser()
+                    UserServices.retriveLikedProducts()
                     AppRouter.navigateTo(Screen.MainScreen)
                 } else {
                     onError()

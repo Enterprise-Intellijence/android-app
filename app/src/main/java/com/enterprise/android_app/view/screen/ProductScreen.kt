@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view.ProductPage
 import com.enterprise.android_app.view.components.ImageCarousell
 import com.enterprise.android_app.view.components.ProductHeader
@@ -61,7 +62,7 @@ import io.swagger.client.models.ProductDTO
 fun ProductScreen(productId: String) {
 
     val productPageViewModel: ProductPageViewModel = viewModel()
-
+    println(CurrentDataUtils.currentUser)
     Surface(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){

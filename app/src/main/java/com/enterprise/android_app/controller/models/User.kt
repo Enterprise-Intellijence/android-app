@@ -57,8 +57,8 @@ import io.swagger.client.models.UserImage
  * @param adminFollowedMyReport 
  * @param notifications 
  * @param enabled 
- * @param administrator 
  * @param authorities 
+ * @param administrator 
  * @param credentialsNonExpired 
  * @param accountNonExpired 
  * @param accountNonLocked 
@@ -96,8 +96,8 @@ data class User (
     val adminFollowedMyReport: kotlin.Array<Report>? = null,
     val notifications: kotlin.Array<Notification>? = null,
     val enabled: kotlin.Boolean? = null,
-    val administrator: kotlin.Boolean? = null,
     val authorities: kotlin.Array<GrantedAuthority>? = null,
+    val administrator: kotlin.Boolean? = null,
     val credentialsNonExpired: kotlin.Boolean? = null,
     val accountNonExpired: kotlin.Boolean? = null,
     val accountNonLocked: kotlin.Boolean? = null

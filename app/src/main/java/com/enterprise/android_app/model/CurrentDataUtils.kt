@@ -15,6 +15,7 @@ object CurrentDataUtils {
     private var _accessToken: MutableState<String> = mutableStateOf("")
     private var _refreshToken: MutableState<String> = mutableStateOf("")
     private var _currentUser: MutableState<UserDTO?> = mutableStateOf(null)
+    private var _currentProductId: MutableState<String> = mutableStateOf("")
     private val userControllerApi = UserControllerApi()
 
     var tokenForRequest: String = ""

@@ -46,7 +46,7 @@ class MessagePageViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val pageResponse = withContext(coroutineScope.coroutineContext) {
-                    messageControllerApi.getConversation(conversationId, 0, 1000)
+                    messageControllerApi.getConversationMessages(conversationId, 0, 1000)
                 }
                 messages = pageResponse.content!!.toMutableList()
             } catch (e: Exception) {

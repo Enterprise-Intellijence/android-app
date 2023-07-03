@@ -19,8 +19,8 @@ package io.swagger.client.models
  * @param decimalPlaces 
  * @param symbol 
  * @param numeric3Code 
- * @param pseudoCurrency 
  * @param countryCodes 
+ * @param pseudoCurrency 
  */
 data class CurrencyUnit (
 
@@ -29,7 +29,7 @@ data class CurrencyUnit (
     val decimalPlaces: kotlin.Int? = null,
     val symbol: kotlin.String? = null,
     val numeric3Code: kotlin.String? = null,
-    val pseudoCurrency: kotlin.Boolean? = null,
-    val countryCodes: kotlin.Array<kotlin.String>? = null
+    val countryCodes: kotlin.Array<kotlin.String>? = null,
+    val pseudoCurrency: kotlin.Boolean? = null
 ) {
 }

@@ -13,7 +13,7 @@ package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.AdminProductsBody
-import io.swagger.client.models.InlineResponse200
+import io.swagger.client.models.CapabilityDTO
 import io.swagger.client.models.OrderBasicDTO
 import io.swagger.client.models.PageMessageDTO
 import io.swagger.client.models.PageOfferBasicDTO
@@ -29,6 +29,30 @@ import io.swagger.client.models.ProductDTO
 
 class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
+    /**
+     * 
+     * 
+     * @param productId  
+     * @return CapabilityDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun createCapability(productId: kotlin.String): CapabilityDTO {
+        val localVariableConfig = RequestConfig(
+                RequestMethod.POST,
+                "/api/v1/products/capability/{productId}".replace("{" + "productId" + "}", "$productId")
+        )
+        val response = request<CapabilityDTO>(
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as CapabilityDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
     /**
      * 
      * 
@@ -71,54 +95,6 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
 
         return when (response.responseType) {
             ResponseType.Success -> Unit
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param token  
-     * @return AdminProductsBody
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun getCapability(token: kotlin.String): AdminProductsBody {
-        val localVariableConfig = RequestConfig(
-                RequestMethod.GET,
-                "/api/v1/products/capability/{token}".replace("{" + "token" + "}", "$token")
-        )
-        val response = request<AdminProductsBody>(
-                localVariableConfig
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as AdminProductsBody
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param id  
-     * @return kotlin.String
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun getCapabilityUrl(id: kotlin.String): kotlin.String {
-        val localVariableConfig = RequestConfig(
-                RequestMethod.GET,
-                "/api/v1/products/capability/url/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<kotlin.String>(
-                localVariableConfig
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.String
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -305,20 +281,21 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
     /**
      * 
      * 
-     * @return kotlin.Any
+     * @param token  
+     * @return AdminProductsBody
      */
     @Suppress("UNCHECKED_CAST")
-    fun getProductGender(): kotlin.Any {
+    fun getProductFromCapability(token: kotlin.String): AdminProductsBody {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
-                "/api/v1/products/categories/clothing/gender"
+                "/api/v1/products/capability/{token}".replace("{" + "token" + "}", "$token")
         )
-        val response = request<kotlin.Any>(
+        val response = request<AdminProductsBody>(
                 localVariableConfig
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Success -> (response as Success<*>).data as AdminProductsBody
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -328,20 +305,13 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
     /**
      * 
      * 
-     * @param id  
-     * @param page  
-     * @param size  
      * @return kotlin.Any
      */
     @Suppress("UNCHECKED_CAST")
-    fun getProductLikedByUser(id: kotlin.String, page: kotlin.Int, size: kotlin.Int): kotlin.Any {
-        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
-            put("page", listOf(page.toString()))
-            put("size", listOf(size.toString()))
-        }
+    fun getProductGender(): kotlin.Any {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
-                "/api/v1/products/likes/users/{id}".replace("{" + "id" + "}", "$id"), query = localVariableQuery
+                "/api/v1/products/categories/clothing/gender"
         )
         val response = request<kotlin.Any>(
                 localVariableConfig
@@ -449,6 +419,36 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
                 "/api/v1/products/sizes"
+        )
+        val response = request<kotlin.Any>(
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
+     * @param productId  
+     * @param page  
+     * @param size  
+     * @return kotlin.Any
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getUsersThatLikedProduct(productId: kotlin.String, page: kotlin.Int, size: kotlin.Int): kotlin.Any {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            put("page", listOf(page.toString()))
+            put("size", listOf(size.toString()))
+        }
+        val localVariableConfig = RequestConfig(
+                RequestMethod.GET,
+                "/api/v1/products/likes/users/{productId}".replace("{" + "productId" + "}", "$productId"), query = localVariableQuery
         )
         val response = request<kotlin.Any>(
                 localVariableConfig

@@ -26,9 +26,8 @@ object CurrentDataUtils {
         get() = _refreshToken.value
         set(newValue) { _refreshToken.value = newValue }
 
-    var currentUser: UserDTO?
+    var currentUser: UserDTO? = null
         get() = _currentUser.value
-        set(newValue) { _currentUser.value = newValue }
 
     fun retrieveCurrentUser() {
         CoroutineScope(Dispatchers.IO).launch {

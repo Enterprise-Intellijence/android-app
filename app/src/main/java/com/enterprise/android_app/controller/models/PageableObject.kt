@@ -17,18 +17,18 @@ import io.swagger.client.models.SortObject
  * 
  * @param offset 
  * @param sort 
- * @param pageNumber 
  * @param pageSize 
- * @param unpaged 
+ * @param pageNumber 
  * @param paged 
+ * @param unpaged 
  */
 data class PageableObject (
 
     val offset: kotlin.Long? = null,
     val sort: SortObject? = null,
-    val pageNumber: kotlin.Int? = null,
     val pageSize: kotlin.Int? = null,
-    val unpaged: kotlin.Boolean? = null,
-    val paged: kotlin.Boolean? = null
+    val pageNumber: kotlin.Int? = null,
+    val paged: kotlin.Boolean? = null,
+    val unpaged: kotlin.Boolean? = null
 ) {
 }

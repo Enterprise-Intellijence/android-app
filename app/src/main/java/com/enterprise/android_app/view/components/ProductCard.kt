@@ -47,7 +47,7 @@ fun ProductCard(product: ProductBasicDTO){
     ) {
         Column {
             Image(painter = rememberImagePainter(
-                data = product.productImages?.get(0)?.urlPhoto,
+                data = product.productImages?.urlPhoto,
                 builder = {
                     transformations(RoundedCornersTransformation(/*radius*/ 8f))
                 }

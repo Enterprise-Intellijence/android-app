@@ -11,12 +11,11 @@
  */
 package io.swagger.client.models
 
-import java.util.Objects
-
 
 /**
  * 
  */
 class InlineResponse200 (
+
 ) {
 }

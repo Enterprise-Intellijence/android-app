@@ -18,7 +18,7 @@ import io.swagger.client.models.ReviewDTO
 
 import io.swagger.client.infrastructure.*
 
-class ReviewControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class ReviewControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

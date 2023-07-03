@@ -21,15 +21,15 @@ import io.swagger.client.models.CurrencyUnit
  * @param amount 
  * @param scale 
  * @param currencyUnit 
- * @param amountMajorInt 
- * @param amountMinorLong 
+ * @param positiveOrZero 
+ * @param negativeOrZero 
  * @param amountMajorLong 
  * @param amountMinor 
- * @param minorPart 
- * @param positiveOrZero 
+ * @param amountMajorInt 
+ * @param amountMinorLong 
  * @param amountMinorInt 
  * @param amountMajor 
- * @param negativeOrZero 
+ * @param minorPart 
  */
 data class Money (
 
@@ -39,14 +39,14 @@ data class Money (
     val amount: java.math.BigDecimal? = null,
     val scale: kotlin.Int? = null,
     val currencyUnit: CurrencyUnit? = null,
-    val amountMajorInt: kotlin.Int? = null,
-    val amountMinorLong: kotlin.Long? = null,
+    val positiveOrZero: kotlin.Boolean? = null,
+    val negativeOrZero: kotlin.Boolean? = null,
     val amountMajorLong: kotlin.Long? = null,
     val amountMinor: java.math.BigDecimal? = null,
-    val minorPart: kotlin.Int? = null,
-    val positiveOrZero: kotlin.Boolean? = null,
+    val amountMajorInt: kotlin.Int? = null,
+    val amountMinorLong: kotlin.Long? = null,
     val amountMinorInt: kotlin.Int? = null,
     val amountMajor: java.math.BigDecimal? = null,
-    val negativeOrZero: kotlin.Boolean? = null
+    val minorPart: kotlin.Int? = null
 ) {
 }

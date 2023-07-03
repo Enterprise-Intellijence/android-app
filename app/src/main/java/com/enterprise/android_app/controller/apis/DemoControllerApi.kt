@@ -15,7 +15,7 @@ package io.swagger.client.apis
 import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.infrastructure.*
 
-class DemoControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class DemoControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

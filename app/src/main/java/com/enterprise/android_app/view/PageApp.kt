@@ -92,7 +92,7 @@ fun MainScreen(){
                     MessagesPage()
                 }
                 is Navigation.ProfileMenuPage ->{
-                    ProfileMenuPage(UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
+                    //ProfileMenuPage(UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
                 }
                 is Navigation.ProfilePage ->{
                     ProfilePage()

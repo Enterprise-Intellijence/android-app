@@ -18,7 +18,7 @@ import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
 
-class SuperAdminControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class SuperAdminControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

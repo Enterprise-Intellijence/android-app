@@ -1,5 +1,6 @@
 package io.swagger.client.infrastructure
 
+import com.enterprise.android_app.model.CurrentDataUtils
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -8,6 +9,7 @@ import java.io.File
 open class ApiClient(val baseUrl: String) {
     companion object {
         protected const val ContentType = "Content-Type"
+        protected const val Authorization = "Authorization"
         protected const val Accept = "Accept"
         protected const val JsonMediaType = "application/json"
         protected const val FormDataMediaType = "multipart/form-data"
@@ -17,7 +19,8 @@ open class ApiClient(val baseUrl: String) {
         val client: OkHttpClient = OkHttpClient()
 
         @JvmStatic
-        var defaultHeaders: Map<String, String> by ApplicationDelegates.setOnce(mapOf(ContentType to JsonMediaType, Accept to JsonMediaType))
+        var defaultHeaders: Map<String, String> by ApplicationDelegates.setOnce(
+                mapOf(ContentType to JsonMediaType, Accept to JsonMediaType))
 
         @JvmStatic
         val jsonHeaders: Map<String, String> = mapOf(ContentType to JsonMediaType, Accept to JsonMediaType)
@@ -66,7 +69,7 @@ open class ApiClient(val baseUrl: String) {
         }
 
         val url = urlBuilder.build()
-        val headers = requestConfig.headers + defaultHeaders
+        val headers = requestConfig.headers + defaultHeaders + mapOf(Authorization to CurrentDataUtils.tokenForRequest)
 
         if (headers[ContentType] ?: "" == "") {
             throw kotlin.IllegalStateException("Missing Content-Type header. This is required.")

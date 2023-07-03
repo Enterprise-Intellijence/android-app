@@ -6,13 +6,15 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class LocalDateAdapter {
+
+    private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     @ToJson
     fun toJson(value: LocalDate): String {
-        return DateTimeFormatter.ISO_LOCAL_DATE.format(value)
+        return value.format(formatter)
     }
 
     @FromJson
     fun fromJson(value: String): LocalDate {
-        return LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        return LocalDate.parse(value, formatter)
     }
 }

@@ -19,7 +19,7 @@ import io.swagger.client.models.PageMessageDTO
 
 import io.swagger.client.infrastructure.*
 
-class MessageControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

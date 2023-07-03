@@ -19,7 +19,7 @@ import io.swagger.client.models.DeliveryDTO
 
 import io.swagger.client.infrastructure.*
 
-class DeliveryControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class DeliveryControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

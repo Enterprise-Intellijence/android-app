@@ -32,9 +32,8 @@ fun SignUpPage(){
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(28.dp)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(28.dp)) {
             NormalTextComponent(value = stringResource(id = R.string.hello))
             HeadingTextComponent(value = stringResource(id = R.string.create_an_account))
             Spacer(modifier = Modifier.height(20.dp))

@@ -65,11 +65,11 @@ data class ProductDTO (
     * Values: NEWWITHTAG,NEWWITHOUTTAG,VERYGOOD,GOOD,ACCEPTABLE
     */
     enum class Condition(val value: kotlin.String){
-        NEW_WITH_TAG("NEW_WITH_TAG"),
-        NEW_WITHOUT_TAG("NEW_WITHOUT_TAG"),
-        VERY_GOOD("VERY_GOOD"),
-        GOOD("GOOD"),
-        ACCEPTABLE("ACCEPTABLE");
+        NEW_WITH_TAG("New with tag"),
+        NEW_WITHOUT_TAG("New without tag"),
+        VERY_GOOD("Very good"),
+        GOOD("Good"),
+        ACCEPTABLE("Acceptable");
     }
     /**
     * 

@@ -64,9 +64,8 @@ fun LoginPage(){
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(28.dp)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(28.dp)) {
             NormalTextComponent(value = stringResource(id = R.string.hello))
 
             HeadingTextComponent(value = stringResource(id = R.string.welcome_back))
@@ -84,7 +83,8 @@ fun LoginPage(){
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
                     focusedLabelColor =  colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary)
+                    cursorColor = colorResource(id = R.color.colorPrimary),
+                    textColor = Color.Black
 
                 ),
 
@@ -109,7 +109,8 @@ fun LoginPage(){
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
                     focusedLabelColor =  colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary)
+                    cursorColor = colorResource(id = R.color.colorPrimary),
+                    textColor = Color.Black
 
                 ),
 

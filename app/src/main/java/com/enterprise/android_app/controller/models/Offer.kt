@@ -41,11 +41,12 @@ data class Offer (
 ) {
     /**
     * 
-    * Values: PENDING,ACCEPTED,REJECTED
+    * Values: PENDING,ACCEPTED,REJECTED,CANCELLED
     */
     enum class State(val value: kotlin.String){
         PENDING("PENDING"),
         ACCEPTED("ACCEPTED"),
-        REJECTED("REJECTED");
+        REJECTED("REJECTED"),
+        CANCELLED("CANCELLED");
     }
 }

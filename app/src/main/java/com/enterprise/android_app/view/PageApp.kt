@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
@@ -110,7 +111,7 @@ fun MainScreen(){
                     AboutScreen()
                 }
                 is Navigation.ProductScreen ->{
-                    //ProductScreen(productId = )
+                    ProductScreen( CurrentDataUtils.currentProductId )
                 }
                 is Navigation.NewProductPage ->{
                     NewProductPage()

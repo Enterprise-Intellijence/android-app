@@ -96,12 +96,36 @@ class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * 
      * 
      * @param conversationId  
+     * @return ConversationDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getConversationById(conversationId: kotlin.String): ConversationDTO {
+        val localVariableConfig = RequestConfig(
+                RequestMethod.GET,
+                "/api/v1/messages/conversations/{conversationId}".replace("{" + "conversationId" + "}", "$conversationId")
+        )
+        val response = request<ConversationDTO>(
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as ConversationDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
+     * @param conversationId  
      * @param page  (optional, default to 0)
      * @param sizePage  (optional, default to 10)
      * @return PageMessageDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun getConversation(conversationId: kotlin.String, page: kotlin.Int? = null, sizePage: kotlin.Int? = null): PageMessageDTO {
+    fun getConversationMessages(conversationId: kotlin.String, page: kotlin.Int? = null, sizePage: kotlin.Int? = null): PageMessageDTO {
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             if (page != null) {
                 put("page", listOf(page.toString()))
@@ -112,7 +136,7 @@ class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         }
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
-                "/api/v1/messages/conversations/{conversationId}".replace("{" + "conversationId" + "}", "$conversationId"), query = localVariableQuery
+                "/api/v1/messages/conversations/{conversationId}/messages".replace("{" + "conversationId" + "}", "$conversationId"), query = localVariableQuery
         )
         val response = request<PageMessageDTO>(
                 localVariableConfig
@@ -120,6 +144,36 @@ class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
 
         return when (response.responseType) {
             ResponseType.Success -> (response as Success<*>).data as PageMessageDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
+     * @param userId  
+     * @param productId  (optional)
+     * @return ConversationDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getConversationWithUser(userId: kotlin.String, productId: kotlin.String? = null): ConversationDTO {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            if (productId != null) {
+                put("productId", listOf(productId.toString()))
+            }
+        }
+        val localVariableConfig = RequestConfig(
+                RequestMethod.GET,
+                "/api/v1/messages/conversations/with/{userId}".replace("{" + "userId" + "}", "$userId"), query = localVariableQuery
+        )
+        val response = request<ConversationDTO>(
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as ConversationDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

@@ -43,7 +43,7 @@ data class ProductBasicDTO (
     val condition: Condition? = null,
     val likesNumber: kotlin.Int? = null,
     val seller: UserBasicDTO? = null,
-    val productImages: ProductImageDTO? = null,
+    val productImages: kotlin.Array<ProductImageDTO>? = null,
     val productCategory: ProductCategoryDTO? = null
 ) {
     /**
@@ -51,10 +51,10 @@ data class ProductBasicDTO (
     * Values: NEWWITHTAG,NEWWITHOUTTAG,VERYGOOD,GOOD,ACCEPTABLE
     */
     enum class Condition(val value: kotlin.String){
-        NEW_WITH_TAG("NEW_WITH_TAG"),
-        NEW_WITHOUT_TAG("NEW_WITHOUT_TAG"),
-        VERY_GOOD("VERY_GOOD"),
-        GOOD("GOOD"),
-        ACCEPTABLE("ACCEPTABLE");
+        NEW_WITH_TAG("New with tag"),
+        NEW_WITHOUT_TAG("New without tag"),
+        VERY_GOOD("Very good"),
+        GOOD("Good"),
+        ACCEPTABLE("Acceptable");
     }
 }

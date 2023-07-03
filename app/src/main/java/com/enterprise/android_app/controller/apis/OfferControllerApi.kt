@@ -22,23 +22,41 @@ class OfferControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
     /**
      * 
      * 
-     * @param body  
-     * @param accepted  
      * @param id  
      * @return OfferDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun acceptOffer(body: OfferDTO, accepted: kotlin.Boolean, id: kotlin.String): OfferDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
-            put("accepted", listOf(accepted.toString()))
-        }
+    fun acceptOffer(id: kotlin.String): OfferDTO {
         val localVariableConfig = RequestConfig(
                 RequestMethod.PATCH,
-                "/api/v1/offers/accept/{id}".replace("{" + "id" + "}", "$id"), query = localVariableQuery
+                "/api/v1/offers/{id}/accept".replace("{" + "id" + "}", "$id")
         )
         val response = request<OfferDTO>(
-                localVariableConfig, localVariableBody
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as OfferDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
+     * @param id  
+     * @return OfferDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun cancelOffer(id: kotlin.String): OfferDTO {
+        val localVariableConfig = RequestConfig(
+                RequestMethod.PATCH,
+                "/api/v1/offers/{id}/cancel".replace("{" + "id" + "}", "$id")
+        )
+        val response = request<OfferDTO>(
+                localVariableConfig
         )
 
         return when (response.responseType) {
@@ -124,6 +142,30 @@ class OfferControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
     /**
      * 
      * 
+     * @param id  
+     * @return OfferDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun rejectOffer(id: kotlin.String): OfferDTO {
+        val localVariableConfig = RequestConfig(
+                RequestMethod.PATCH,
+                "/api/v1/offers/{id}/reject".replace("{" + "id" + "}", "$id")
+        )
+        val response = request<OfferDTO>(
+                localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as OfferDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
      * @param body  
      * @param id  
      * @return OfferDTO
@@ -134,6 +176,32 @@ class OfferControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
         val localVariableConfig = RequestConfig(
                 RequestMethod.PUT,
                 "/api/v1/offers/{id}".replace("{" + "id" + "}", "$id")
+        )
+        val response = request<OfferDTO>(
+                localVariableConfig, localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as OfferDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     * 
+     * 
+     * @param body  
+     * @param id  
+     * @return OfferDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun setOfferState(body: kotlin.String, id: kotlin.String): OfferDTO {
+        val localVariableBody: kotlin.Any? = body
+        val localVariableConfig = RequestConfig(
+                RequestMethod.PATCH,
+                "/api/v1/offers/{id}/state".replace("{" + "id" + "}", "$id")
         )
         val response = request<OfferDTO>(
                 localVariableConfig, localVariableBody

@@ -1,30 +1,32 @@
 package com.enterprise.android_app.view_models
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
+import io.swagger.client.apis.ImageControllerApi
 import io.swagger.client.apis.UserControllerApi
-import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserDTO
+import io.swagger.client.models.UsersPhotoprofileBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 
-class UserViewModel(): ViewModel() {
-    private var userControllerApi: UserControllerApi = UserControllerApi()
+class ImageViewModel {
+    private var imageControllerApi: ImageControllerApi = ImageControllerApi()
 
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
 
 
-    fun saveChange(userDTO: UserDTO){
+    fun saveChange(image: UsersPhotoprofileBody){
+
         coroutineScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    if(userDTO.id!=null){
-                        userControllerApi.updateUser(userDTO,userDTO.id)
+                    if(CurrentDataUtils.currentUser?.id != null){
+
+                        imageControllerApi.savePhotoUser(image,"")
                     }
                 }
 
@@ -35,8 +37,4 @@ class UserViewModel(): ViewModel() {
         }
 
     }
-
-
-
-
 }

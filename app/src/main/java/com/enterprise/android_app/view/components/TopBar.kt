@@ -25,7 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.view.HomePage
+import com.enterprise.android_app.view.SearchPage
+import com.enterprise.android_app.view_models.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,15 +73,4 @@ fun TopBarGeneric() = TopAppBar(
             Icon(Icons.Filled.KeyboardArrowLeft, contentDescription = stringResource(id = R.string.back))
         }
     },
-    actions = {
-        Row {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
-            }
-        }
-    }
-
-
-
-
 )

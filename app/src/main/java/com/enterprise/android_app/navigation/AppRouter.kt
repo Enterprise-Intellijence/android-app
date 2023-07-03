@@ -43,6 +43,7 @@ sealed class Navigation() {
     object PaymentsScreen : Navigation() {
 
     }
+    object ImageSelectorComponent: Navigation()
 
 
 }

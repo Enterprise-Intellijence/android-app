@@ -18,6 +18,6 @@ package io.swagger.client.models
  */
 data class UsersPhotoprofileBody (
 
-    val multipartFile: kotlin.Array<kotlin.Byte>? = null
+    val multipartFile: ByteArray? = null
 ) {
 }

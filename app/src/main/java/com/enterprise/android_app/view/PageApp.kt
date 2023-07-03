@@ -20,6 +20,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,7 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
+import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
@@ -40,6 +43,7 @@ import com.enterprise.android_app.view.screen.ShippingScreen
 import com.enterprise.android_app.view.screen.StartScreen
 import io.swagger.client.models.User
 import io.swagger.client.models.UserDTO
+import java.io.File
 
 
 @Composable
@@ -79,6 +83,8 @@ fun PageApp(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(){
+    val fileState = remember { mutableStateOf<File?>(null) }
+
 
     Scaffold(topBar = { SearchTopBar()}, bottomBar = { MainBottomBar()}, floatingActionButton = {}, floatingActionButtonPosition = FabPosition.End) {
         Box(modifier = Modifier.padding(it)){
@@ -127,6 +133,13 @@ fun MainScreen(){
                 }
                 is Navigation.PaymentsScreen ->{
                     PaymentsScreen()
+                }
+                is Navigation.ImageSelectorComponent ->{
+                    ImageSelectorComponent(
+                        fileState = fileState,
+                        onFileUploaded = {
+                            MainRouter.changePage(Navigation.ProfileDetailsScreen)
+                        })
                 }
 
                 else -> {}

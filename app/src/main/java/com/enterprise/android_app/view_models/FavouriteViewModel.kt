@@ -2,6 +2,7 @@ package com.enterprise.android_app.view_models
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.ProductBasicDTO
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +24,7 @@ class FavouriteViewModel : ViewModel(){
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
+
                     userControllerApi.getLikedProducts(page = currentPage, size = 10)
                 }
                 val productsToAdd = newProducts.content?.toList() ?: emptyList()

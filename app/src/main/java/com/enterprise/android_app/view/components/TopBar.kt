@@ -1,9 +1,12 @@
 package com.enterprise.android_app.view.components
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -42,10 +45,15 @@ fun TopBarSearch() = TopAppBar(
                 Icon(Icons.Default.Search, contentDescription = stringResource(id = R.string.search))
             },
             singleLine = true,
-            modifier = Modifier.fillMaxWidth().height(50.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
         )
     },
-    modifier = Modifier.fillMaxWidth().height(60.dp).padding(start = 0.dp, end = 10.dp, top = 10.dp),
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(60.dp)
+        .padding(start = 0.dp, end = 10.dp, top = 10.dp),
 
 )
 
@@ -59,7 +67,16 @@ fun TopBarGeneric() = TopAppBar(
         IconButton(onClick = { /*TODO*/ }) {
             Icon(Icons.Filled.KeyboardArrowLeft, contentDescription = stringResource(id = R.string.back))
         }
+    },
+    actions = {
+        Row {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
+            }
+        }
     }
+
+
 
 
 )

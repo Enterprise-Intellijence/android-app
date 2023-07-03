@@ -110,12 +110,12 @@ fun MainScreen(){
                     AboutScreen()
                 }
                 is Navigation.ProductScreen ->{
-                    //ProductScreen()
+                    //ProductScreen(productId = )
                 }
                 is Navigation.NewProductPage ->{
                     NewProductPage()
                 }
-                is Navigation.ProductScreen ->{
+                is Navigation.ProfileDetailsScreen ->{
                     ProfileDetailsScreen(user = UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5))
                 }
                 is Navigation.AccountSettingsPage ->{

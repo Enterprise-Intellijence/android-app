@@ -42,4 +42,5 @@
     <string name="shipping">Shipping</string>
     <string name="payments">Payments</string>
     <string name="changePhoto">Change Photo</string>
+    <string name="apply">Apply change</string>
 </resources>

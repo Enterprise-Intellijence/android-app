@@ -11,8 +11,10 @@
  */
 package io.swagger.client.models
 
+import io.swagger.client.models.CustomMoneyDTO
+import io.swagger.client.models.ProductCategoryDTO
+import io.swagger.client.models.ProductImageDTO
 import io.swagger.client.models.UserBasicDTO
-import java.time.LocalDateTime
 
 /**
  * 
@@ -29,19 +31,19 @@ import java.time.LocalDateTime
  * @param productImages 
  * @param productCategory 
  */
-data class ProductBasicDTO(
+data class ProductBasicDTO (
 
-    val id: String? = null,
-    val title: String? = null,
-    val description: String? = null,
-    val uploadDate: LocalDateTime? = null,
+    val id: kotlin.String? = null,
+    val title: kotlin.String? = null,
+    val description: kotlin.String? = null,
+    val uploadDate: java.time.LocalDateTime? = null,
     val productCost: CustomMoneyDTO,
     val deliveryCost: CustomMoneyDTO,
-    val brand: String? = null,
+    val brand: kotlin.String? = null,
     val condition: Condition? = null,
-    val likesNumber: Int? = null,
+    val likesNumber: kotlin.Int? = null,
     val seller: UserBasicDTO? = null,
-    val productImages: List<ProductImageDTO>? = null,
+    val productImages: ProductImageDTO? = null,
     val productCategory: ProductCategoryDTO? = null
 ) {
     /**

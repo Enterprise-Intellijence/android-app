@@ -17,7 +17,7 @@ import io.swagger.client.models.ReportDTO
 
 import io.swagger.client.infrastructure.*
 
-class ReportControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class ReportControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

@@ -3,7 +3,9 @@ package com.enterprise.android_app.view_models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.apis.ProductControllerApi
+import io.swagger.client.infrastructure.ApiClient
 import io.swagger.client.models.ProductDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

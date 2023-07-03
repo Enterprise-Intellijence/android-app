@@ -18,7 +18,7 @@ import io.swagger.client.models.PaymentMethodDTO
 
 import io.swagger.client.infrastructure.*
 
-class PaymentMethodControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class PaymentMethodControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

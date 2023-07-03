@@ -17,7 +17,7 @@ import io.swagger.client.models.PageFollowingFollowersDTO
 
 import io.swagger.client.infrastructure.*
 
-class FollowingControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class FollowingControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

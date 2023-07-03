@@ -11,6 +11,8 @@
  */
 package io.swagger.client.models
 
+import io.swagger.client.models.AddressDTO
+import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.UserImageDTO
 
 /**
@@ -30,22 +32,22 @@ import io.swagger.client.models.UserImageDTO
  * @param followersNumber 
  * @param followingNumber 
  */
-data class UserDTO(
+data class UserDTO (
 
-    val id: String? = null,
-    val username: String,
-    val email: String? = null,
-    val bio: String? = null,
+    val id: kotlin.String? = null,
+    val username: kotlin.String,
+    val email: kotlin.String? = null,
+    val bio: kotlin.String? = null,
     val photoProfile: UserImageDTO? = null,
-    val provider: User.Provider,
+    val provider: Provider,
     val status: Status? = null,
-    val addresses: Array<AddressDTO>? = null,
-    val paymentMethods: Array<PaymentMethodDTO>? = null,
+    val addresses: kotlin.Array<AddressDTO>? = null,
+    val paymentMethods: kotlin.Array<PaymentMethodDTO>? = null,
     val role: Role,
-    val reviewsTotalSum: Int? = null,
-    val reviewsNumber: Int? = null,
-    val followersNumber: Int? = null,
-    val followingNumber: Int? = null
+    val reviewsTotalSum: kotlin.Int? = null,
+    val reviewsNumber: kotlin.Int? = null,
+    val followersNumber: kotlin.Int? = null,
+    val followingNumber: kotlin.Int? = null
 ) {
     /**
     * 

@@ -23,7 +23,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                 if (tokenMap.isNotEmpty()) {
                     CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
                     CurrentDataUtils.refreshToken = tokenMap["refreshToken"].toString()
-                    //CurrentDataUtils.currentUser = userController.me()
+                    CurrentDataUtils.retrieveCurrentUser()
                     AppRouter.navigateTo(Screen.MainScreen)
                 } else {
                     onError()
@@ -35,6 +35,5 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
 
         }
     }
-
 
 }

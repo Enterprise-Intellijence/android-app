@@ -21,7 +21,7 @@ import io.swagger.client.models.UsersPhotoprofileBody
 
 import io.swagger.client.infrastructure.*
 
-class ImageControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class ImageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

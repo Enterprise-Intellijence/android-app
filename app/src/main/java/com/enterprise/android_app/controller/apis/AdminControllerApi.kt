@@ -11,13 +11,14 @@
  */
 package io.swagger.client.apis
 
+import com.enterprise.android_app.controller.BasePath
 import io.swagger.client.models.AdminProductsBody
 import io.swagger.client.models.PageUserDTO
 import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
 
-class AdminControllerApi(basePath: kotlin.String = "https://localhost:8443") : ApiClient(basePath) {
+class AdminControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

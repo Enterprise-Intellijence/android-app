@@ -18,7 +18,7 @@ import io.swagger.client.models.PageOrderDTO
 
 import io.swagger.client.infrastructure.*
 
-class OrderControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

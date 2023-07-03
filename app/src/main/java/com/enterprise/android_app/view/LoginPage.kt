@@ -136,8 +136,6 @@ fun LoginPage(){
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
                     )
 
-
-
                 })
 
             if (errorMessage.value.isNotEmpty()) {

@@ -21,10 +21,8 @@ import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
-import okhttp3.Headers
-import okhttp3.internal.http2.Header
 
-class UserControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
+class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
     /**
      * 

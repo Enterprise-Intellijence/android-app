@@ -9,6 +9,7 @@ object CurrentDataUtils {
     private var _refreshToken: MutableState<String> = mutableStateOf("")
     private lateinit var _currentUser: MutableState<UserDTO>
 
+
     var accessToken: String
         get() = _accessToken.value
         set(newValue) { _accessToken.value = newValue }
@@ -20,5 +21,7 @@ object CurrentDataUtils {
     var currentUser: UserDTO
         get() = _currentUser.value
         set(newValue) { _currentUser.value = newValue }
+
+
 
 }

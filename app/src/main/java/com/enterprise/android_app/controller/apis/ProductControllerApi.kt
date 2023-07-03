@@ -25,6 +25,7 @@ import io.swagger.client.models.ProductsIdBody1
 import io.swagger.client.models.V1ProductsBody
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.ProductDTO
 import java.time.LocalDateTime.parse
 
 class ProductControllerApi(basePath: kotlin.String = com.enterprise.android_app.controller.BasePath.BASE_PATH) : ApiClient(basePath) {
@@ -492,20 +493,20 @@ class ProductControllerApi(basePath: kotlin.String = com.enterprise.android_app.
      * 
      * 
      * @param id  
-     * @return InlineResponse200
+     * @return ProductDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun productById(id: kotlin.String): InlineResponse200 {
+    fun productById(id: kotlin.String): ProductDTO {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
                 "/api/v1/products/{id}".replace("{" + "id" + "}", "$id")
         )
-        val response = request<InlineResponse200>(
+        val response = request<ProductDTO>(
                 localVariableConfig
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as InlineResponse200
+            ResponseType.Success -> (response as Success<*>).data as ProductDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

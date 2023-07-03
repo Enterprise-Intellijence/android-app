@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view
 
+import android.widget.Space
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view.components.ButtonComponent
 import com.enterprise.android_app.view.components.ClickableLoginTextComponent
 import com.enterprise.android_app.view.components.DividerTextComponent
@@ -43,6 +45,10 @@ import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import io.swagger.client.apis.UserControllerApi
 import com.enterprise.android_app.view_models.AuthViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +57,8 @@ fun LoginPage(){
     val authViewModel: AuthViewModel = viewModel()
     var textValueUsername by remember { mutableStateOf(TextFieldValue()) }
     var textValuePassword by remember { mutableStateOf(TextFieldValue()) }
+
+    val errorMessage = remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier
@@ -122,8 +130,20 @@ fun LoginPage(){
 
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
-                    authViewModel.authenticate(textValueUsername.text, textValuePassword.text)
+                    authViewModel.authenticate(
+                        textValueUsername.text,
+                        textValuePassword.text,
+                        onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
+                    )
+
+
+
                 })
+
+            if (errorMessage.value.isNotEmpty()) {
+                Text(text = errorMessage.value, color = Color.Red)
+            }
+
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
 

@@ -38,14 +38,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import io.swagger.client.models.UserDTO
 
 @Composable
-fun ProfileMenuPage(user: UserDTO, pic : Int){
+fun ProfileMenuPage(){
     var modifier = Modifier.fillMaxWidth()
+    var user : UserDTO? = CurrentDataUtils.currentUser
+
     Column(modifier = modifier ) {
         ClickableBox(
             onClick = { MainRouter.changePage(Navigation.ProfilePage) },
@@ -53,8 +58,12 @@ fun ProfileMenuPage(user: UserDTO, pic : Int){
             contentAlignment = Alignment.CenterStart
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
-                Image(
-                    painter = painterResource(pic),
+                Image(painter = rememberImagePainter(
+                    data = user?.photoProfile?.urlPhoto,
+                    builder = {
+                        transformations(RoundedCornersTransformation(/*radius*/ 8f))
+                    }
+                ),
                     contentDescription = "avatar",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -67,7 +76,7 @@ fun ProfileMenuPage(user: UserDTO, pic : Int){
                         .align(Alignment.CenterVertically)
                         .padding(start = 10.dp))
                     {
-                        Text(text = user.username, style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold))
+                        Text(text = user?.username ?:"no username", style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold))
                         Text(text = stringResource(id = R.string.viewMyProfile), Modifier.padding(top = 20.dp))
                     }
                     Icon(Icons.Filled.KeyboardArrowRight,contentDescription = stringResource (R.string.viewMyProfile))

@@ -49,11 +49,14 @@ import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import coil.annotation.ExperimentalCoilApi
+import com.enterprise.android_app.model.CurrentDataUtils
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
-fun ProfileDetailsScreen(user: UserDTO){
+fun ProfileDetailsScreen(){
     var modifier = Modifier.fillMaxWidth()
+    var user : UserDTO? = CurrentDataUtils.currentUser
+
 
     Column(modifier = modifier ) {
         ClickableBox(
@@ -63,7 +66,7 @@ fun ProfileDetailsScreen(user: UserDTO){
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
                 Image(painter = rememberImagePainter(
-                    data = user.photoProfile?.urlPhoto,
+                    data = user?.photoProfile?.urlPhoto,
                     builder = {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
                     }
@@ -87,7 +90,7 @@ fun ProfileDetailsScreen(user: UserDTO){
                 }
             }
         }
-        val textState = remember { mutableStateOf(TextFieldValue(user.bio ?:"")) }
+        val textState = remember { mutableStateOf(TextFieldValue(user?.bio ?:"")) }
         Column(
             modifier = Modifier
                 .padding(16.dp)

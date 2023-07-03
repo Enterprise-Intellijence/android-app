@@ -101,7 +101,7 @@ fun MainScreen(){
                     FavouriteProductScreen()
                 }
                 is Navigation.SettingsPage ->{
-                    SettingsPage(user = UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5),R.drawable.foto_profilo4)
+                    SettingsPage()
                 }
                 is Navigation.OrdersPage ->{
                     OrdersPage()
@@ -116,7 +116,7 @@ fun MainScreen(){
                     NewProductPage()
                 }
                 is Navigation.ProfileDetailsScreen ->{
-                    ProfileDetailsScreen(user = UserDTO(null,"Lastfury","email@gmail.com","Bio empty",null ,User.Provider.LOCAL,UserDTO.Status.ACTIVE,null,null,UserDTO.Role.USER,42,23,3,5))
+                    ProfileDetailsScreen()
                 }
                 is Navigation.AccountSettingsPage ->{
                     AccountSettingsPage()

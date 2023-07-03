@@ -43,13 +43,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import io.swagger.client.models.UserDTO
 
 @Composable
-fun SettingsPage(user: UserDTO, pic : Int){
+fun SettingsPage(){
     var modifier = Modifier.fillMaxWidth()
+    var user : UserDTO? = CurrentDataUtils.currentUser
+
     Column(modifier = modifier ) {
         SingleRowTemplate(
             name = "Profile Details",

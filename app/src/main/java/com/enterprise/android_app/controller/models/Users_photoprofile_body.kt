@@ -11,13 +11,16 @@
  */
 package io.swagger.client.models
 
+import okhttp3.MultipartBody
+import java.io.File
+
 
 /**
  * 
  * @param multipartFile 
  */
-data class UsersPhotoprofileBody (
+data class UsersPhotoprofileBody(
 
-    val multipartFile: ByteArray? = null
+    val multipartFile: File
 ) {
 }

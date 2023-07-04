@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
 import com.enterprise.android_app.view.components.ButtonComponent
 import com.enterprise.android_app.view.components.ClickableLoginTextComponent
@@ -41,6 +42,7 @@ import com.enterprise.android_app.view.components.NormalTextComponent
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
+import com.enterprise.android_app.view_models.RegistrationViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +57,8 @@ fun SignUpPage(){
     var textValueUsername by remember { mutableStateOf(TextFieldValue())}
     var textValueEmail by remember { mutableStateOf(TextFieldValue())}
     var textValuePassword by remember { mutableStateOf(TextFieldValue())}
+
+    val registerViewModel : RegistrationViewModel = viewModel()
 
 
     Surface(
@@ -176,7 +180,13 @@ fun SignUpPage(){
 
             
             Spacer(modifier = Modifier.height(40.dp))
-            ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {})
+            ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {
+                registerViewModel.registerUser(
+                    textValueUsername.text,
+                    textValueEmail.text,
+                    textValuePassword.text
+                )
+            })
 
             Spacer(modifier = Modifier.height(15.dp))
             DividerTextComponent()

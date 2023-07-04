@@ -52,7 +52,6 @@ import com.enterprise.android_app.view_models.AuthViewModel
 fun LoginPage(){
 
     //only for password
-    var password by remember { mutableStateOf("")}
     var passwordVisible by remember { mutableStateOf(false)}
 
     val authViewModel: AuthViewModel = viewModel()
@@ -117,9 +116,9 @@ fun LoginPage(){
                 ),
 
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                value = password,
+                value = textValuePassword,
                 onValueChange = {
-                    password = it
+                    textValuePassword = it
                 },
 
                 leadingIcon = {

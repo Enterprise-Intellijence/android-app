@@ -93,7 +93,7 @@ fun LoginPage(){
                 keyboardOptions = KeyboardOptions.Default,
                 value = textValueUsername,
                 onValueChange = {
-                    textValueUsername = it //aggiornamento della textValue con il valore corrente
+                    textValueUsername = it
                 },
                 leadingIcon = {
                     Icon(painterResource(id = R.drawable.message), contentDescription = "")

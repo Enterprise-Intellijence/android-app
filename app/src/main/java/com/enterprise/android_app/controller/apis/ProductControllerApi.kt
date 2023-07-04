@@ -13,6 +13,8 @@ package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
 import com.enterprise.android_app.controller.infrastructure.ProductCategoryDeserializer
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.swagger.client.models.AdminProductsBody
@@ -122,12 +124,12 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
 
         return when (response.responseType) {
             ResponseType.Success -> {
-                val gson = GsonBuilder()
-                    .registerTypeAdapter(ProductCategoryDTO::class.java, ProductCategoryDeserializer())
-                    .create()
-
-                return gson.fromJson((response as Success<*>).data.toString(), object : TypeToken<List<ProductCategoryDTO>>() {}.type)
+                val objectMapper = ObjectMapper()
+                val typeReference = object : TypeReference<List<ProductCategoryDTO>>() {}
+                val myClassList: List<ProductCategoryDTO> = objectMapper.readValue((response as Success<*>).data.toString(), typeReference)
+                myClassList
             }
+
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

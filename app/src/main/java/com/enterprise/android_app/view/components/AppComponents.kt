@@ -114,7 +114,7 @@ fun TextFieldComponent(labelValue: String, painterResource: Painter, textValue: 
         keyboardOptions = KeyboardOptions.Default,
         value = textValue.value,
         onValueChange = {
-            textValue.value = it //aggiornamento della textValue con il valore corrente
+            textValue.value = it
         },
         
         leadingIcon = {
@@ -124,63 +124,7 @@ fun TextFieldComponent(labelValue: String, painterResource: Painter, textValue: 
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PasswordTextFieldComponent(labelValue: String, painterResource: Painter){
-    val password = remember { mutableStateOf("")}
 
-    val passwordVisible = remember { mutableStateOf(false)}
-
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(componentShapes.small),
-        label = {Text(text = labelValue)},
-
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-            containerColor = colorResource(id = R.color.colorBackground),
-            cursorColor = colorResource(id = R.color.colorPrimary)
-
-        ),
-
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        value = password.value,
-        onValueChange = {
-            password.value = it //aggiornamento della textValue con il valore corrente
-        },
-
-        leadingIcon = {
-            Icon(painterResource, contentDescription = "")
-        },
-
-
-        trailingIcon = {
-            val iconImage = if (passwordVisible.value) {
-                painterResource(id = R.drawable.filled_visibility)
-                //TODO: da trovare un icona migliore
-            } else {
-                painterResource(id = R.drawable.filled_visibility_off)
-                //TODO: da trovare un icona migliore
-            }
-
-            var description = if (passwordVisible.value) {
-                stringResource(id = R.string.hide_password)
-            } else {
-                stringResource(id = R.string.show_password)
-            }
-
-            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                Icon(painter = iconImage, contentDescription = description)
-            }
-        },
-
-        visualTransformation = if(passwordVisible.value) VisualTransformation.None else
-            PasswordVisualTransformation()
-    )
-}
 
 @Composable
 fun ButtonComponent(value: String, onClickAction: () -> Unit){

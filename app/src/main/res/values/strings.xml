@@ -44,4 +44,7 @@
     <string name="changePhoto">Change Photo</string>
     <string name="apply">Apply change</string>
     <string name="edit">Edit</string>
+    <string name="seller_s_items">Seller\'s items</string>
+    <string name="similar_items">Similar items</string>
+    <string name="username">Username</string>
 </resources>

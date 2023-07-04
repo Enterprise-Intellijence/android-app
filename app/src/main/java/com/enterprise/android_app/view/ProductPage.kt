@@ -204,7 +204,7 @@ fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_s
             }
         }
         item {
-            TabProductComponent()
+            TabProductComponent(productPageViewModel = productPageViewModel, product = product)
         }
     }, modifier = Modifier.padding(padding))
 }

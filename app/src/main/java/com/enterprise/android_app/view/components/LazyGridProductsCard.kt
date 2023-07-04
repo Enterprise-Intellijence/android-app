@@ -25,7 +25,6 @@ fun LazyGridProductsCard(
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
-        //modifier = Modifier.fillMaxSize()
     ) {
         itemsIndexed(products) { index, product ->
             ProductCard(product = product)

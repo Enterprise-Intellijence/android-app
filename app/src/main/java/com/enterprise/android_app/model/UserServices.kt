@@ -17,12 +17,40 @@ object UserServices {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 _likedProducts =
-                    userControllerApi.getLikedProducts(0, 100)!!.content!!.map { it.id!! }
+                    userControllerApi.getLikedProducts(0, 100).content!!.map { it.id!! }
                         .toMutableList()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
+        }
+    }
+
+    fun addLikedProduct(id: String) {
+        _likedProducts.add(id)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                userControllerApi.like(id)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("ciao")
+                //_likedProducts.remove(id)
+            }
+        }
+    }
+
+    fun removeLikedProduct(id: String) {
+        _likedProducts.remove(id)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                userControllerApi.unlike(id)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                println("ciao")
+                _likedProducts.add(id)
+            }
         }
     }
 

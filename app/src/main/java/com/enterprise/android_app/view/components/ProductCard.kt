@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -38,10 +39,13 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.AndroidappTheme
+import com.enterprise.android_app.view_models.ProductPageViewModel
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
 fun ProductCard(product: ProductBasicDTO){
+    val productPageViewModel: ProductPageViewModel = viewModel()
+
     Card(modifier = Modifier
         .size(width = 100.dp, height = 250.dp)
         .clickable { CurrentDataUtils.currentProductId = product.id!!; MainRouter.changePage(Navigation.ProductScreen) },
@@ -83,7 +87,12 @@ fun ProductCard(product: ProductBasicDTO){
                 contentDescription = null,
                 modifier = Modifier
                     .size(20.dp)
-                    .padding(end = 4.dp))
+                    .padding(end = 4.dp)
+                    .clickable {
+                        if(UserServices.isProductLiked(product.id!!))
+                            UserServices.removeLikedProduct(product.id)
+                        else UserServices.addLikedProduct(product.id)
+                        productPageViewModel.getProductById(product.id)})
 
             Text("${product.likesNumber}",
                 fontWeight = FontWeight.Light,

@@ -25,6 +25,7 @@ import io.swagger.client.models.ProductsIdBody1
 import io.swagger.client.models.V1ProductsBody
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.ProductCategoryDTO
 import io.swagger.client.models.ProductDTO
 
 class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
@@ -107,7 +108,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return kotlin.Any
      */
     @Suppress("UNCHECKED_CAST")
-    fun getCategoriesList(): kotlin.Any {
+    fun getCategoriesList(): List<ProductCategoryDTO> {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
                 "/api/v1/products/categories"
@@ -117,7 +118,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Success -> (response as Success<*>).data as List<ProductCategoryDTO>
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

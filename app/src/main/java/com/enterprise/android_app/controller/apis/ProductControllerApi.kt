@@ -12,6 +12,9 @@
 package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
+import com.enterprise.android_app.controller.infrastructure.ProductCategoryDeserializer
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import io.swagger.client.models.AdminProductsBody
 import io.swagger.client.models.CapabilityDTO
 import io.swagger.client.models.OrderBasicDTO
@@ -25,6 +28,7 @@ import io.swagger.client.models.ProductsIdBody1
 import io.swagger.client.models.V1ProductsBody
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.ProductCategoryDTO
 import io.swagger.client.models.ProductDTO
 
 class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
@@ -104,20 +108,26 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
     /**
      * 
      * 
-     * @return kotlin.Any
+     * @return List<ProductCategoryDTO>
      */
     @Suppress("UNCHECKED_CAST")
-    fun getCategoriesList(): kotlin.Any {
+    fun getCategoriesList(): List<ProductCategoryDTO> {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
                 "/api/v1/products/categories"
         )
-        val response = request<kotlin.Any>(
+        val response = request<List<ProductCategoryDTO>>(
                 localVariableConfig
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Success -> {
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(ProductCategoryDTO::class.java, ProductCategoryDeserializer())
+                    .create()
+
+                return gson.fromJson((response as Success<*>).data.toString(), object : TypeToken<List<ProductCategoryDTO>>() {}.type)
+            }
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

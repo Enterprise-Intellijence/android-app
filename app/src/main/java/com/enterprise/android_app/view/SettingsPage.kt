@@ -59,7 +59,7 @@ fun SettingsPage(){
             icona = Icons.Filled.Person,
             icon_label = stringResource(id = R.string.profile ),
             modifier= modifier,
-            onClick = { MainRouter.changePage(Navigation.ProfileDetailsScreen) }
+            onClick = { /*MainRouter.changePage(Navigation.ProfileDetailsScreen)*/ }
         )
         SingleRowTemplate(
             name = "Account Settings",

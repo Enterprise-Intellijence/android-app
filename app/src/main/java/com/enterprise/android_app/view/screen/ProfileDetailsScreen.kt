@@ -24,6 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -38,18 +40,23 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.view.ClickableBox
 import io.swagger.client.models.UserDTO
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import coil.annotation.ExperimentalCoilApi
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.view.AccountSettingsPage
+import com.enterprise.android_app.view.updateUser
 import com.enterprise.android_app.view_models.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
-fun ProfileDetailsScreen(){
+fun ProfileDetailsScreen(user: MutableState<UserDTO?>) {
     var modifier = Modifier.fillMaxWidth()
-    var user : UserDTO? = CurrentDataUtils.currentUser
+    val focusRequester = remember {FocusRequester()}
+    val focusManager = LocalFocusManager.current
+
 
 
     Column(modifier = modifier ) {
@@ -60,7 +67,7 @@ fun ProfileDetailsScreen(){
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
                 Image(painter = rememberImagePainter(
-                    data = user?.photoProfile?.urlPhoto,
+                    data = user.value?.photoProfile?.urlPhoto,
                     builder = {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
                     }
@@ -84,13 +91,14 @@ fun ProfileDetailsScreen(){
                 }
             }
         }
-        val currentTextState = remember { mutableStateOf(TextFieldValue(user?.bio ?: "")) }
+        val currentTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?: "")) }
 
-        val originalTextState = remember { mutableStateOf(TextFieldValue(user?.bio ?:"")) }
+        val originalTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?:"")) }
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
+                .focusRequester(focusRequester = focusRequester)
         ) {
             Text(
                 text = "Bio",
@@ -102,17 +110,18 @@ fun ProfileDetailsScreen(){
                 value = currentTextState.value,
                 onValueChange = { currentTextState.value = it },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
+                    .fillMaxWidth(),
                 textStyle = TextStyle(fontSize = 18.sp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             )
         }
         if(currentTextState.value.text != originalTextState.value.text){
             IconButton(
-                onClick = { user?.let { currentUser ->
-                    save(currentUser, originalTextState)
-                }},
+                onClick = {
+                    user.value?.copy(bio = currentTextState.value.text)?.let { updateUser(it) }
+                    focusManager.clearFocus()
+                    originalTextState.value = currentTextState.value
+                          },
                 modifier = Modifier.align(Alignment.End)
 
 
@@ -124,31 +133,6 @@ fun ProfileDetailsScreen(){
         }
 
     }
-}
-
-fun save(userDTO: UserDTO, bio: MutableState<TextFieldValue>){
-    val userViewModel = UserViewModel()
-    var user = UserDTO(
-        id = userDTO.id,
-        username = userDTO.username,
-        email = userDTO.email,
-        bio = bio.value.text,
-        photoProfile = userDTO.photoProfile,
-        provider = userDTO.provider,
-        status = userDTO.status,
-        addresses = userDTO.addresses,
-        paymentMethods = userDTO.paymentMethods,
-        role = userDTO.role,
-        reviewsTotalSum = userDTO.reviewsTotalSum,
-        reviewsNumber = userDTO.reviewsNumber,
-        followersNumber = userDTO.followersNumber,
-        followingNumber = userDTO.followingNumber
-
-
-    )
-    userViewModel.saveChange(user)
-    MainRouter.changePage(Navigation.SettingsPage)
-
 }
 
 

@@ -47,4 +47,10 @@
     <string name="seller_s_items">Seller\'s items</string>
     <string name="similar_items">Similar items</string>
     <string name="username">Username</string>
+    <string name="noEmail">Email not found</string>
+    <string name="change">Change</string>
+    <string name="noUsername">Username not found</string>
+    <string name="changePassword">Change password</string>
+    <string name="deleteAccount">Delete account</string>
+    <string name="current">"Current: "</string>
 </resources>

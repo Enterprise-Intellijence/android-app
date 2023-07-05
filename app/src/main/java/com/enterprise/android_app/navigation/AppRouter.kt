@@ -14,6 +14,7 @@ sealed class Screen() {
 }
 
 sealed class Navigation() {
+
     object HomePage : Navigation()
 
     object SearchPage : Navigation()
@@ -28,9 +29,6 @@ sealed class Navigation() {
     object AboutScreen : Navigation()
     object ProductScreen : Navigation()
     object NewProductPage: Navigation()
-    object ProfileDetailsScreen : Navigation() {
-
-    }
 
     object AccountSettingsPage : Navigation() {
 
@@ -44,6 +42,7 @@ sealed class Navigation() {
 
     }
     object ImageSelectorComponent: Navigation()
+
 
 
 }

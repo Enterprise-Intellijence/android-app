@@ -41,8 +41,6 @@ import com.enterprise.android_app.view.screen.ProductScreen
 import com.enterprise.android_app.view.screen.ProfileDetailsScreen
 import com.enterprise.android_app.view.screen.ShippingScreen
 import com.enterprise.android_app.view.screen.StartScreen
-import io.swagger.client.models.User
-import io.swagger.client.models.UserDTO
 import java.io.File
 
 
@@ -122,9 +120,6 @@ fun MainScreen(){
                 is Navigation.NewProductPage ->{
                     NewProductPage()
                 }
-                is Navigation.ProfileDetailsScreen ->{
-                    ProfileDetailsScreen()
-                }
                 is Navigation.AccountSettingsPage ->{
                     AccountSettingsPage()
                 }
@@ -138,7 +133,7 @@ fun MainScreen(){
                     ImageSelectorComponent(
                         fileState = fileState,
                         onFileUploaded = {
-                            MainRouter.changePage(Navigation.ProfileDetailsScreen)
+                            //MainRouter.changePage(Navigation.ProfileDetailsScreen)
                         })
                 }
 

@@ -27,7 +27,6 @@ fun HomePage(){
     LazyGridProductsCard(
         products = productList,
         lazyGridState = lazyGridState
-
     )
     {
         homePageViewModel.loadNextPage()

@@ -56,4 +56,6 @@
     <string name="invalidEmail">Invalid email</string>
     <string name="profileDetails">Profile details</string>
     <string name="accountDetails">Account Details</string>
+    <string name="oldPassword">Old Password</string>
+    <string name="newPassword">New Password</string>
 </resources>

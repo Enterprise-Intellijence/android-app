@@ -42,6 +42,7 @@ sealed class Navigation() {
 
     }
     object ImageSelectorComponent: Navigation()
+   object ProfileDetailsScreen : Navigation(){}
 
 
 

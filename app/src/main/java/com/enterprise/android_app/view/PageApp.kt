@@ -129,6 +129,9 @@ fun MainScreen(){
                 is Navigation.PaymentsScreen ->{
                     PaymentsScreen()
                 }
+                is Navigation.ProfileDetailsScreen ->{
+                    ProfileDetailsScreen()
+                }
                 is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(
                         fileState = fileState,

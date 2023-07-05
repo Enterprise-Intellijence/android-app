@@ -36,6 +36,20 @@ class UserViewModel(): ViewModel() {
 
     }
 
+    fun changePassword(oldPassword: String, newPassword: String){
+        coroutineScope.launch {
+            try{
+                withContext(Dispatchers.IO){
+                    if (oldPassword!="" && newPassword!="")
+                        userControllerApi.changePassword(oldPassword = oldPassword,newPassword = newPassword)
+                }
+            } catch (e: java.lang.Exception){
+                e.printStackTrace()
+            }
+
+        }
+    }
+
 
 
 

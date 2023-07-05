@@ -54,4 +54,6 @@
     <string name="deleteAccount">Delete account</string>
     <string name="current">"Current: "</string>
     <string name="invalidEmail">Invalid email</string>
+    <string name="profileDetails">Profile details</string>
+    <string name="accountDetails">Account Details</string>
 </resources>

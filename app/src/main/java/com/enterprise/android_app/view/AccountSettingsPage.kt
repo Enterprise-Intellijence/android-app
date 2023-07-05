@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.ui.theme.Primary
+import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.view.components.ChangePasswordComponent
 import com.enterprise.android_app.view.components.EmailComponent
 import com.enterprise.android_app.view.components.UsernameComponent
@@ -27,13 +30,13 @@ fun AccountSettingsPage(){
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
             ProfileDetailsScreen(user)
         }
-        Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            EmailComponent()
+        Row(modifier = Modifier.padding(bottom = 10.dp).background(Secondary)) {
+            EmailComponent(user)
         }
-        Row() {
+        Row(modifier = Modifier.padding(bottom = 10.dp)) {
             UsernameComponent()
         }
-        Row {
+        Row(modifier = Modifier.padding(bottom = 10.dp)) {
             ChangePasswordComponent()
         }
     }

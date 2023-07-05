@@ -1,7 +1,5 @@
 package com.enterprise.android_app.view
 
-import android.database.Observable
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,29 +35,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 
-
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ProfileMenuPage(){
-    var modifier = Modifier.fillMaxWidth()
+    val modifier = Modifier.fillMaxWidth()
     val user: MutableState<UserDTO?> = remember { mutableStateOf(CurrentDataUtils.currentUser) }
 
     Column(modifier = modifier ) {
         ClickableBox(
-            onClick = { MainRouter.changePage(Navigation.ProfilePage) },
+            onClick = {
+                visitedUser = CurrentDataUtils.toUserBasicDTO(CurrentDataUtils.currentUser!!)
+                MainRouter.changePage(Navigation.ProfilePage)},
             modifier = modifier,
             contentAlignment = Alignment.CenterStart
         ) {

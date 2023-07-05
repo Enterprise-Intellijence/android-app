@@ -283,6 +283,7 @@ fun DropDownCategory(selectedOptionText: String, onChange: (String) -> Unit, cat
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
+        modifier = Modifier.padding(start = 8.dp)
     ) {
         TextField(
             // The `menuAnchor` modifier must be passed to the text field for correctness.
@@ -323,20 +324,28 @@ fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductC
         DropDownCategory(selectedPrimaryCategory, {selectedPrimaryCategory = it}, categories = primaryCat)
     }
     if(selectedPrimaryCategory != "") {
+        Spacer(modifier = Modifier.height(16.dp))
+
         categoriesViewModel.getSecondaryCategories(selectedPrimaryCategory)
         var secondaryCategories = categoriesViewModel.secondaryCategories.collectAsState(initial = emptyList());
-
-        DropDownCategory(selectedSecondaryCategory, {selectedSecondaryCategory = it}, categories = secondaryCategories)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.weight(1f))
+            DropDownCategory(selectedSecondaryCategory, {selectedSecondaryCategory = it}, categories = secondaryCategories)
+        }
     }
+
     if(selectedSecondaryCategory != "") {
+        Spacer(modifier = Modifier.height(16.dp))
+
         categoriesViewModel.getTertiaryCategories(selectedSecondaryCategory)
         var tertiaryCategories = categoriesViewModel.tertiaryCategories.collectAsState(initial = emptyList());
-
-        DropDownCategory(selectedTertiaryCategory, {selectedTertiaryCategory = it}, categories = tertiaryCategories)
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
+            Spacer(modifier = Modifier.weight(1f))
+            DropDownCategory(selectedTertiaryCategory, { selectedTertiaryCategory = it }, categories = tertiaryCategories)
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
-
 
 @Preview
 @Composable

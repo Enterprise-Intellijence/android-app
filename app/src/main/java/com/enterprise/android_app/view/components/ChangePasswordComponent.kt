@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -96,14 +97,16 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                     )
                 }
                 IconButton(
-                    enabled = (/*newPassword.value != "" && newPassword.value != oldPassword.value*/ true),
+                    enabled = (newPassword.value != "" && newPassword.value != oldPassword.value),
                     onClick = {
                         userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
 
 
-                    }
+                    },
+                    modifier = Modifier.align(Alignment.End)
+
                 ) {
                     Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
                 }

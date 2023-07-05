@@ -52,7 +52,10 @@ import com.enterprise.android_app.view_models.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
-fun ProfileDetailsScreen(user: MutableState<UserDTO?>) {
+fun ProfileDetailsScreen() {
+    var user: MutableState<UserDTO?> = remember {
+        mutableStateOf(CurrentDataUtils.currentUser)
+    }
     var modifier = Modifier.fillMaxWidth()
     val focusRequester = remember {FocusRequester()}
     val focusManager = LocalFocusManager.current

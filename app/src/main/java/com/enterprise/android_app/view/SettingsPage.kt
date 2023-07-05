@@ -46,6 +46,7 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.view_models.UserViewModel
 import io.swagger.client.models.UserDTO
 
 @Composable
@@ -59,10 +60,10 @@ fun SettingsPage(){
             icona = Icons.Filled.Person,
             icon_label = stringResource(id = R.string.profile ),
             modifier= modifier,
-            onClick = { /*MainRouter.changePage(Navigation.ProfileDetailsScreen)*/ }
+            onClick = { MainRouter.changePage(Navigation.ProfileDetailsScreen) }
         )
         SingleRowTemplate(
-            name = "Account Settings",
+            name = "Account",
             icona = Icons.Filled.List,
             icon_label = stringResource( id = R.string.accountSettings),
             modifier = modifier,
@@ -81,3 +82,9 @@ fun SettingsPage(){
     }
 }
 
+fun updateUser(user: UserDTO){
+    val userViewModel : UserViewModel = UserViewModel()
+    userViewModel.saveChange(user)
+    MainRouter.changePage(Navigation.AccountSettingsPage)
+
+}

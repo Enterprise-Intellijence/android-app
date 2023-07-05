@@ -37,22 +37,22 @@ import io.swagger.client.models.UserDTO
 fun AccountSettingsPage(){
     var user: MutableState<UserDTO?> = remember {mutableStateOf(CurrentDataUtils.currentUser)}
     Column(modifier = Modifier.padding(bottom =  8.dp)) {
-        Text(text = stringResource(id = R.string.profileDetails), style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 20.sp) )
+        Text(text = stringResource(id = R.string.profileDetails), style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 20.sp), modifier = Modifier.padding(start = 8.dp) )
         Divider()
         Row(modifier = Modifier.padding(8.dp)) {
             ProfileDetailsScreen(user)
         }
-        Text(text = stringResource(id = R.string.accountDetails), style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 20.sp), modifier = Modifier.padding(top = 20.dp) )
+        Text(text = stringResource(id = R.string.accountDetails), style = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 20.sp), modifier = Modifier.padding(start = 8.dp, top = 20.dp) )
         Divider(modifier = Modifier.padding(bottom = 8.dp))
 
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
             EmailComponent(user)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            UsernameComponent()
+            UsernameComponent(user)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            ChangePasswordComponent()
+            ChangePasswordComponent(user)
         }
 
     }

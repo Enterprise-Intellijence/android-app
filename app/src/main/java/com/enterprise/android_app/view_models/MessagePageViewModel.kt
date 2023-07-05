@@ -1,6 +1,11 @@
 package com.enterprise.android_app.view_models
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.MessageControllerApi
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.apis.UserControllerApi
@@ -15,17 +20,22 @@ import kotlinx.coroutines.withContext
 
 class MessagePageViewModel : ViewModel() {
 
+    private val TAG = "MessagePageViewModel"
+
     private val messageControllerApi: MessageControllerApi = MessageControllerApi()
     private val userControllerApi: UserControllerApi = UserControllerApi()
     private val productControllerApi: ProductControllerApi = ProductControllerApi()
 
 
-    var conversationList = mutableListOf<ConversationDTO>()
-    var messages = mutableListOf<MessageDTO>()
-    var currentConversation: ConversationDTO? = null
+    var conversationList = mutableStateListOf<ConversationDTO>()
+    var messages = mutableStateListOf<MessageDTO>()
+    var currentConversation = mutableStateOf<ConversationDTO?>(null)
 
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+
+
 
 
     fun loadConversations() {
@@ -35,7 +45,10 @@ class MessagePageViewModel : ViewModel() {
                     messageControllerApi.getAllMyConversations().toList()
                 }
 
-                conversationList = updatedConversations as MutableList<ConversationDTO>
+                conversationList.clear()
+                conversationList.addAll(updatedConversations)
+                Log.d(TAG, "loadConversations: ${conversationList.size}")
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -48,7 +61,10 @@ class MessagePageViewModel : ViewModel() {
                 val pageResponse = withContext(coroutineScope.coroutineContext) {
                     messageControllerApi.getConversationMessages(conversationId, 0, 1000)
                 }
-                messages = pageResponse.content!!.toMutableList()
+
+                messages.clear()
+                messages.addAll(pageResponse.content!!)
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -93,7 +109,7 @@ class MessagePageViewModel : ViewModel() {
 
                 val product: ProductBasicDTO? = if (productID == null) null else
                     withContext(coroutineScope.coroutineContext) {
-                        productControllerApi.productById(productID) as ProductBasicDTO // TODO: Remove cast
+                        productControllerApi.productBasicById(productID)
                     }
 
 
@@ -109,7 +125,7 @@ class MessagePageViewModel : ViewModel() {
                 }
 
                 // add message at the start of the list
-                messages = mutableListOf(sentMessage)
+                messages.add(0, sentMessage)
                 loadConversations()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -134,6 +150,23 @@ class MessagePageViewModel : ViewModel() {
 
     fun existsConversationWith(otherUserID: String, productID: String?): Boolean {
         return findConversationWith(otherUserID, productID) != null
+    }
+
+
+    fun readMessages() {
+        coroutineScope.launch {
+            try {
+                val unreadMessagesIds = messages.filter {
+                    it.sendUser.id != CurrentDataUtils.currentUser?.id && it.messageStatus == MessageDTO.MessageStatus.UNREAD
+                }.map { it.id!! }.toTypedArray()
+
+                withContext(coroutineScope.coroutineContext) {
+                    messageControllerApi.setReadMessages(unreadMessagesIds)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }
 

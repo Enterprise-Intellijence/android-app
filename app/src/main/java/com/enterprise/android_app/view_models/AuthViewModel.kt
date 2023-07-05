@@ -31,6 +31,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                     onError()
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 onError()
             }
 

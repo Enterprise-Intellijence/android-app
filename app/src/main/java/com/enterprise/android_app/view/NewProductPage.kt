@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -22,6 +21,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +34,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.ui.theme.AndroidappTheme
-import com.enterprise.android_app.view_models.HomePageViewModel
 import com.enterprise.android_app.view_models.ProductCategoryViewModel
 import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.ProductDTO
@@ -58,7 +58,8 @@ fun NewProductPage() {
     var brandText by remember { mutableStateOf(TextFieldValue(product.brand ?: "")) }
 
     categoryViewModel.getCategories()
-    var primaryCat = categoryViewModel.primaryCategories
+    var primaryCategories = categoryViewModel.primaryCategories.collectAsState(initial = emptyList());
+
 
     Column(modifier = Modifier
         .padding(16.dp)
@@ -118,19 +119,21 @@ fun NewProductPage() {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Condition")
-            // Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             DropDownCondition()
-            Text(text = "Visibility")
-            DropDownVisibility()
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        if (primaryCat != null) {
-            CategoriesRow(primaryCat)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Visibility")
+            Spacer(modifier = Modifier.width(16.dp))
+            DropDownVisibility()
         }
+        Spacer(modifier = Modifier.height(16.dp))
 
+
+        CategoriesRow(primaryCategories, categoryViewModel)
 
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 16.dp)) {
@@ -250,7 +253,7 @@ fun DropDownCondition() {
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text("Visibility") },
+            label = { Text("Condition") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
@@ -274,9 +277,8 @@ fun DropDownCondition() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownCategory(categories: ArrayList<ProductCategoryNode>) {
+fun DropDownCategory(selectedOptionText: String, onChange: (String) -> Unit, categories: State<List<String>>) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") } // categories[0].name
     // We want to react on tap/press on TextField to show menu
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -288,7 +290,7 @@ fun DropDownCategory(categories: ArrayList<ProductCategoryNode>) {
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text("Visibility") },
+            label = { Text("Category") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
@@ -296,11 +298,11 @@ fun DropDownCategory(categories: ArrayList<ProductCategoryNode>) {
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            categories.forEach { selectionOption ->
+            categories.value.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { Text(selectionOption.name) },
+                    text = { Text(selectionOption) },
                     onClick = {
-                        selectedOptionText = selectionOption.name
+                        onChange(selectionOption)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -311,11 +313,26 @@ fun DropDownCategory(categories: ArrayList<ProductCategoryNode>) {
 }
 
 @Composable
-fun CategoriesRow(primaryCat: ArrayList<ProductCategoryNode>) {
+fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductCategoryViewModel) {
+    var selectedPrimaryCategory by remember { mutableStateOf("") }
+    var selectedSecondaryCategory by remember { mutableStateOf("") }
+    var selectedTertiaryCategory by remember { mutableStateOf("") }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = "Categories")
-        DropDownCategory(categories = primaryCat)
+        DropDownCategory(selectedPrimaryCategory, {selectedPrimaryCategory = it}, categories = primaryCat)
+    }
+    if(selectedPrimaryCategory != "") {
+        categoriesViewModel.getSecondaryCategories(selectedPrimaryCategory)
+        var secondaryCategories = categoriesViewModel.secondaryCategories.collectAsState(initial = emptyList());
+
+        DropDownCategory(selectedSecondaryCategory, {selectedSecondaryCategory = it}, categories = secondaryCategories)
+    }
+    if(selectedSecondaryCategory != "") {
+        categoriesViewModel.getTertiaryCategories(selectedSecondaryCategory)
+        var tertiaryCategories = categoriesViewModel.tertiaryCategories.collectAsState(initial = emptyList());
+
+        DropDownCategory(selectedTertiaryCategory, {selectedTertiaryCategory = it}, categories = tertiaryCategories)
     }
 }
 

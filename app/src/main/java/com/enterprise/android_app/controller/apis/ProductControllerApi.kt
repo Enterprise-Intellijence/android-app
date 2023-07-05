@@ -288,6 +288,77 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         }
     }
     /**
+     *
+     *
+     * @return kotlin.Any
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getPrimaryCategoriesList(): kotlin.Any {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/products/primaryCategories"
+        )
+        val response = request<kotlin.Any>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     *
+     *
+     * @param primary
+     * @return kotlin.Any
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getSecondaryCategoriesList(primary: kotlin.String): kotlin.Any {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/products/secondaryCategories/{primary}".replace("{" + "primary" + "}", "$primary")
+        )
+        val response = request<kotlin.Any>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     *
+     *
+     * @param secondary
+     * @return kotlin.Any
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getTertiaryCategoriesList(secondary: kotlin.String): kotlin.Any {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/products/tertiaryCategories/{secondary}".replace("{" + "secondary" + "}", "$secondary")
+        )
+        val response = request<kotlin.Any>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
      * 
      * 
      * @param token  

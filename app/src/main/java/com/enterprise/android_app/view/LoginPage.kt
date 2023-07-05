@@ -111,7 +111,8 @@ fun LoginPage(){
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
                     focusedLabelColor =  colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary)
+                    cursorColor = colorResource(id = R.color.colorPrimary),
+                    textColor = Color.Black
 
                 ),
 
@@ -158,8 +159,10 @@ fun LoginPage(){
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
                     authViewModel.authenticate(
-                        textValueUsername.text,
-                        textValuePassword.text,
+                        "username3",
+                        "password3",
+                        //textValueUsername.text,
+                        //textValuePassword.text,
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
                     )
 

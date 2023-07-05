@@ -131,8 +131,12 @@ class MessagePageViewModel : ViewModel() {
                 e.printStackTrace()
             }
         }
+    }
 
 
+    fun sendMessage(message: String) {
+        if(currentConversation.value == null) return
+        else sendMessage(message, currentConversation.value!!)
     }
 
     fun findConversationWith(otherUserID: String, productID: String?): ConversationDTO? {
@@ -167,6 +171,12 @@ class MessagePageViewModel : ViewModel() {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun selectConversation(conversationDTO: ConversationDTO?) {
+        currentConversation.value = conversationDTO
+        if (conversationDTO != null)
+            loadMessagesForConversation(conversationDTO.conversationId!!)
     }
 }
 

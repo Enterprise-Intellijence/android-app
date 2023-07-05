@@ -2,6 +2,7 @@ package com.enterprise.android_app.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -33,6 +36,7 @@ import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view_models.MessagePageViewModel
 import io.swagger.client.models.ConversationDTO
 import io.swagger.client.models.MessageDTO
+import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserImageDTO
 import java.time.LocalDateTime
@@ -43,37 +47,47 @@ fun MessagesPage() {
     val messagePageViewModel: MessagePageViewModel = viewModel()
 
     Column() {
-        Text(text = "Messages Page")
-        Spacer(modifier = Modifier.size(8.dp))
-
-        if (messagePageViewModel.conversationList.isEmpty()) {
-            messagePageViewModel.loadConversations()
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator(modifier = Modifier.size(40.dp))
+        if (messagePageViewModel.currentConversation.value == null) {
+            if (messagePageViewModel.conversationList.isEmpty()) {
+                messagePageViewModel.loadConversations()
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(modifier = Modifier.size(40.dp))
+                }
+            } else {
+                ConversationList(
+                    messagePageViewModel.conversationList,
+                    messagePageViewModel::selectConversation
+                )
             }
-        } else {
-            ConversationList(messagePageViewModel.conversationList)
+        } else if (messagePageViewModel.currentConversation.value != null) {
+            val conversation = messagePageViewModel.currentConversation.value
+            if (conversation != null)
+                ChatPage(
+                    conversation.otherUser,
+                    conversation.productBasicDTO,
+                    messagePageViewModel.messages,
+                    (messagePageViewModel::sendMessage)
+                )
         }
+
+
     }
-
-
 }
 
 @Composable
 private fun ConversationList(
-    conversationList: List<ConversationDTO>
+    conversationList: List<ConversationDTO>,
+    onClick: (ConversationDTO) -> Unit = {}
 ) {
     LazyColumn {
         items(conversationList) { conversation ->
-            key(conversationList.map { it.conversationId }) {
+            ConversationCard(conversation, Modifier, onClick)
+            Spacer(Modifier.size(8.dp))
 
-                ConversationCard(conversation)
-                Spacer(Modifier.size(8.dp))
-            }
         }
     }
 }
@@ -122,20 +136,20 @@ fun timeToString(messageDate: LocalDateTime): String {
 
 @OptIn(ExperimentalCoilApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ConversationCard(conversation: ConversationDTO) {
+fun ConversationCard(
+    conversation: ConversationDTO,
+    modifier: Modifier = Modifier,
+    onClick: (ConversationDTO) -> Unit = {}
+) {
     val isLastMessageFromOther = conversation.lastMessage.sendUser.id == conversation.otherUser.id
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(all = 8.dp),
+            .clickable { onClick(conversation) }
     )
     {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 6.dp)
-        ) {
+        Row(modifier = Modifier.padding(8.dp)) {
             Box(modifier = Modifier.size(50.dp)) {
                 if (conversation.productBasicDTO != null) {
                     Image(painter = rememberImagePainter(
@@ -191,8 +205,7 @@ fun ConversationCard(conversation: ConversationDTO) {
                         if (conversation.lastMessage.messageStatus == MessageDTO.MessageStatus.UNREAD)
                             "NEW" else ""
                     } else {
-                        if (conversation.lastMessage.messageStatus == MessageDTO.MessageStatus.UNREAD)
-                            "✓" else "✓✓"
+                        messageStatusToString(conversation.lastMessage.messageStatus!!)
                     }
 
                     if (messageStateText.isNotEmpty()) {
@@ -203,8 +216,8 @@ fun ConversationCard(conversation: ConversationDTO) {
                                     .background(
                                         color = Primary, shape = RoundedCornerShape(4.dp)
                                     )
-                                    .padding(4.dp)
-
+                                    .padding(4.dp),
+                                fontSize = 10.sp,
                             )
                         }
                     }
@@ -214,8 +227,14 @@ fun ConversationCard(conversation: ConversationDTO) {
     }
 }
 
+fun messageStatusToString(messageStatus: MessageDTO.MessageStatus): String {
+    return if (messageStatus == MessageDTO.MessageStatus.UNREAD)
+        "✓" else "✓✓"
+}
+
+
 @Composable
-fun UserPictureAndName(user: UserBasicDTO, modifier: Modifier) {
+fun UserPictureAndName(user: UserBasicDTO, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
 
         Image(painter = rememberImagePainter(

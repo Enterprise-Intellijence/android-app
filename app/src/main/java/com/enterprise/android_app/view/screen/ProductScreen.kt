@@ -57,7 +57,7 @@ import com.enterprise.android_app.view_models.ProductPageViewModel
 import io.swagger.client.models.ProductDTO
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(productId: String) {
 

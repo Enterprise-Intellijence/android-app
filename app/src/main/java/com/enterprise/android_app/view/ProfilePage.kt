@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view.components.Closet
 import com.enterprise.android_app.view.components.Reviews
 import compose.icons.FontAwesomeIcons
@@ -45,7 +46,7 @@ fun ProfilePage(visitedUser: UserBasicDTO?){
 
         TabRow(selectedTabIndex = tabIndex) {
             tabs.forEachIndexed { index, title ->
-                Tab(text = { Text(title) },
+                Tab(text = { Text(title)},
                     selected = tabIndex == index,
                     onClick = { tabIndex = index },
                     icon = {

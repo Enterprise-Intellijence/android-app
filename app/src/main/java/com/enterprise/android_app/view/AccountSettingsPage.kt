@@ -5,12 +5,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
@@ -39,6 +44,17 @@ fun AccountSettingsPage(){
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
             ChangePasswordComponent()
         }
+        SingleRowTemplate(
+            name = "Shipping",
+            icona = Icons.Filled.LocationOn,
+            icon_label = stringResource(id = R.string.shipping),
+            modifier = Modifier, onClick =  { MainRouter.changePage(Navigation.ShippingScreen)})
+        SingleRowTemplate(
+            name = "Payments",
+            icona = Icons.Filled.Notifications,
+            icon_label = stringResource(
+                id = R.string.payments
+            ), modifier = Modifier, onClick = { MainRouter.changePage(Navigation.PaymentsScreen)})
     }
 
 }

@@ -94,11 +94,11 @@ fun ProfileMenuPage(){
             onClick = { MainRouter.changePage(Navigation.FavouriteProductScreen) }
         )
         SingleRowTemplate(
-            name = "Settings",
+            name = "Account Settings",
             icona = Icons.Filled.Settings,
             icon_label = stringResource( id = R.string.settings),
             modifier = modifier,
-            onClick = {MainRouter.changePage(Navigation.SettingsPage)})
+            onClick = {MainRouter.changePage(Navigation.AccountSettingsPage)})
         SingleRowTemplate(name = "My orders", icona = Icons.Filled.Menu, icon_label = stringResource(
             id = R.string.watch_orders
         ), modifier = modifier, onClick =  {MainRouter.changePage(Navigation.OrdersPage)})

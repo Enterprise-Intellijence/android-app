@@ -8,8 +8,6 @@ import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
-import java.lang.Thread.sleep
 
 object CurrentDataUtils {
     private val userControllerApi = UserControllerApi()

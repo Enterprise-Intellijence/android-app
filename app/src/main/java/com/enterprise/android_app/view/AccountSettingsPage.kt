@@ -44,17 +44,7 @@ fun AccountSettingsPage(){
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
             ChangePasswordComponent()
         }
-        SingleRowTemplate(
-            name = "Shipping",
-            icona = Icons.Filled.LocationOn,
-            icon_label = stringResource(id = R.string.shipping),
-            modifier = Modifier, onClick =  { MainRouter.changePage(Navigation.ShippingScreen)})
-        SingleRowTemplate(
-            name = "Payments",
-            icona = Icons.Filled.Notifications,
-            icon_label = stringResource(
-                id = R.string.payments
-            ), modifier = Modifier, onClick = { MainRouter.changePage(Navigation.PaymentsScreen)})
+
     }
 
 }

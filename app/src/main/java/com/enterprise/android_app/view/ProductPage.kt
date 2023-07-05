@@ -43,6 +43,7 @@ import com.enterprise.android_app.view.components.SellerRow
 import com.enterprise.android_app.view.components.TabProductComponent
 import com.enterprise.android_app.view.components.VerticalDivider
 import io.swagger.client.models.ProductDTO
+import io.swagger.client.models.UserBasicDTO
 
 @Composable
 fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_state: LazyListState, padding: PaddingValues) {
@@ -54,12 +55,7 @@ fun ProductPage(productPageViewModel: ViewModel, product: ProductDTO, lazyList_s
             Divider(Modifier.fillMaxWidth(), color = Color.Gray)
         }
         item {
-            SellerRow(
-                username = product.seller?.username!!,
-                totalRatingSum = product.seller?.reviewsTotalSum!!,
-                reviewsNumber = product.seller?.reviewsNumber!!,
-                picUrl = product.seller?.photoProfile?.urlPhoto!!
-            )
+            SellerRow(product.seller as UserBasicDTO)
         }
         item {
             Divider(Modifier.fillMaxWidth(), color = Color.Gray)

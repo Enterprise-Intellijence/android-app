@@ -100,7 +100,7 @@ fun MainScreen(){
                     ProfileMenuPage()
                 }
                 is Navigation.ProfilePage ->{
-                    ProfilePage()
+                    ProfilePage(CurrentDataUtils.visitedUser)
                 }
                 is Navigation.FavouriteProductScreen ->{
                     FavouriteProductScreen()

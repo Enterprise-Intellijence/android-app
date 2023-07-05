@@ -33,6 +33,7 @@ fun StartScreen() {
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
             Text(text = "Svinted", fontSize = 30.sp)
+            
 
             Button( onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
                 modifier = Modifier

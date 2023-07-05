@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -50,7 +52,7 @@ import com.enterprise.android_app.view_models.RegistrationViewModel
 fun SignUpPage(){
 
     //only for password
-    var passwordVisible by remember { mutableStateOf(false)}
+    var passwordVisible by rememberSaveable { mutableStateOf(false)}
 
     //state check
     var textValueUsername by remember { mutableStateOf(TextFieldValue())}
@@ -58,6 +60,8 @@ fun SignUpPage(){
     var textValuePassword by remember { mutableStateOf(TextFieldValue())}
 
     val registerViewModel : RegistrationViewModel = viewModel()
+
+    val errorMessage = rememberSaveable { mutableStateOf("") }
 
 
     Surface(
@@ -178,14 +182,26 @@ fun SignUpPage(){
 
 
             
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp))
+            {
+                if (errorMessage.value.isNotEmpty()) {
+                    Text(text = errorMessage.value, color = Color.Red, modifier = Modifier.padding(10.dp))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
             ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {
                 registerViewModel.registerUser(
                     textValueUsername.text,
                     textValueEmail.text,
-                    textValuePassword.text
+                    textValuePassword.text,
+                    errorMessage
                 )
             })
+
 
             Spacer(modifier = Modifier.height(15.dp))
             DividerTextComponent()

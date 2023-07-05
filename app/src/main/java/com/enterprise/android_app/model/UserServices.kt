@@ -13,16 +13,16 @@ object UserServices {
     var likedProducts: MutableList<String> = mutableListOf()
         get() = _likedProducts
 
-    fun retriveLikedProducts() {
+    fun retriveLikedProducts(i:Int = 0) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                _likedProducts =
-                    userControllerApi.getLikedProducts(0, 100).content!!.map { it.id!! }
-                        .toMutableList()
+                var liked = userControllerApi.getLikedProducts(i, 100)
+                _likedProducts.addAll( liked.content!!.map { it.id!! })
+                if(liked.last == false)
+                    retriveLikedProducts(i+1)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 

@@ -20,10 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +48,11 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.AuthViewModel
+import compose.icons.AllIcons
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Eye
+import compose.icons.fontawesomeicons.solid.EyeSlash
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,10 +63,11 @@ fun LoginPage(){
     var passwordVisible by remember { mutableStateOf(false)}
 
     val authViewModel: AuthViewModel = viewModel()
+
     var textValueUsername by remember { mutableStateOf(TextFieldValue()) }
     var textValuePassword by remember { mutableStateOf(TextFieldValue()) }
 
-    val errorMessage = remember { mutableStateOf("") }
+    val errorMessage = rememberSaveable { mutableStateOf("") }
 
     Surface(
         modifier = Modifier
@@ -129,10 +138,10 @@ fun LoginPage(){
 
                 trailingIcon = {
                     val iconImage = if (passwordVisible) {
-                        painterResource(id = R.drawable.filled_visibility)
+                        FontAwesomeIcons.Solid.Eye
                         //TODO: da trovare un icona migliore
                     } else {
-                        painterResource(id = R.drawable.filled_visibility_off)
+                        FontAwesomeIcons.Solid.EyeSlash
                         //TODO: da trovare un icona migliore
                     }
 
@@ -143,7 +152,7 @@ fun LoginPage(){
                     }
 
                     IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon(painter = iconImage, contentDescription = description)
+                        Icon( iconImage, contentDescription = description)
                     }
                 },
 
@@ -189,8 +198,14 @@ fun LoginPage(){
     }
 }
 
+
 @Preview
 @Composable
 fun PreviewLoginScreen(){
     LoginPage()
 }
+
+fun TextFieldValueSaver(): Saver<TextFieldValue, *> = Saver(
+    save = { value -> value },
+    restore = { value -> value }
+)

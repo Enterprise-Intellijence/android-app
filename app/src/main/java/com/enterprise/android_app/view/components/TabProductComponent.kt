@@ -1,6 +1,9 @@
 package com.enterprise.android_app.view.components
 
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -29,16 +32,17 @@ import androidx.compose.foundation.layout.Column as Column
 fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    var productPageViewModel = productPageViewModel as ProductPageViewModel
+    var productPageViewModel = remember { productPageViewModel as ProductPageViewModel }
 
     val lazyGridSellerState = rememberLazyGridState()
     val lazyGridSimilarState = rememberLazyGridState()
 
-    var sellerProducts = productPageViewModel.sellerProducts
-    var similarProducts = productPageViewModel.relatedProducts
+    val sellerProducts = productPageViewModel.sellerProducts
+    val similarProducts = productPageViewModel.relatedProducts
 
     LaunchedEffect(key1 = productPageViewModel.currentSellerProductPage) {
         productPageViewModel.loadNextSellerProductPage()
+        productPageViewModel.loadNextRelatedProductPage()
 
     }
 
@@ -66,14 +70,26 @@ fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
         // Content based on selected tab
         when (selectedTabIndex) {
             0 -> {
-                LazyGridProductsCard(products = sellerProducts, lazyGridState = lazyGridSellerState) {
-                    productPageViewModel.loadNextSellerProductPage()
-                }
+                Column(
+                    Modifier.heightIn(max = 1300.dp)) {
+                        LazyGridProductsCard(
+                            products = sellerProducts,
+                            lazyGridState = lazyGridSimilarState
+                        ) {
+                            productPageViewModel.loadNextRelatedProductPage()
+                        }
+                    }
+
             }
             1 -> {
-
-                LazyGridProductsCard(products = similarProducts, lazyGridState = lazyGridSimilarState) {
-                    productPageViewModel.loadNextRelatedProductPage()
+                Column(
+                    Modifier.heightIn(max = 1300.dp)) {
+                    LazyGridProductsCard(
+                        products = similarProducts,
+                        lazyGridState = lazyGridSimilarState
+                    ) {
+                        productPageViewModel.loadNextRelatedProductPage()
+                    }
                 }
             }
 

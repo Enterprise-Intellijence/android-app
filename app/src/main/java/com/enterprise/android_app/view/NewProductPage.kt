@@ -4,40 +4,61 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.ui.theme.AndroidappTheme
+import com.enterprise.android_app.view_models.HomePageViewModel
+import com.enterprise.android_app.view_models.ProductCategoryViewModel
+import io.swagger.client.models.CustomMoneyDTO
+import io.swagger.client.models.ProductDTO
+import java.time.LocalDateTime
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProductPage() {
-    var titleText by mutableStateOf("")
-    var descriptionText by mutableStateOf("")
+
+    val categoryViewModel = remember { ProductCategoryViewModel() }
+
+    var productCost: CustomMoneyDTO = CustomMoneyDTO(0.0, null)
+    var deliveryCost: CustomMoneyDTO = CustomMoneyDTO(0.0, null)
+    var product: ProductDTO = ProductDTO("1", "", "", productCost, deliveryCost, "", null, 0, null, null, 0, LocalDateTime.now(), null, null, null, null, null, null, "")
+    var titleText by remember { mutableStateOf(TextFieldValue(product.title ?: "")) }
+    var descriptionText by remember { mutableStateOf(TextFieldValue(product.description ?: "")) }
+    var brandText by remember { mutableStateOf(TextFieldValue(product.brand ?: "")) }
+
+    categoryViewModel.getCategories()
+    var primaryCat = categoryViewModel.primaryCategories
 
     Column(modifier = Modifier
         .padding(16.dp)
@@ -53,6 +74,7 @@ fun NewProductPage() {
             }
         }
         ImagesContainer()
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Title")
@@ -78,12 +100,42 @@ fun NewProductPage() {
                 modifier = Modifier.weight(1f)
             )
         }
-        // TODO: aggiungere categorie, brand, condizioni e visibilità
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Brand")
+            Spacer(modifier = Modifier.width(16.dp))
+            OutlinedTextField(
+                value = brandText,
+                onValueChange = { brandText = it },
+                label = { Text(text = "Enter a brand") },
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Condition")
+            // Spacer(modifier = Modifier.width(16.dp))
+            DropDownCondition()
+            Text(text = "Visibility")
+            DropDownVisibility()
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        if (primaryCat != null) {
+            CategoriesRow(primaryCat)
+        }
+
 
         Row(horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(top = 16.dp)) {
+            modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = { /*TODO*/ }) {
-                Text("Load product")
+            Text("Load product")
             }
         }
     }
@@ -141,6 +193,132 @@ fun BoxImage() {
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropDownVisibility() {
+    val options = ProductDTO.Visibility.values().map { it.name }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf(options[0]) }
+// We want to react on tap/press on TextField to show menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedOptionText,
+            onValueChange = {},
+            label = { Text("Visibility") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropDownCondition() {
+    val options = ProductDTO.Condition.values().map { it.name }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf(options[0]) }
+// We want to react on tap/press on TextField to show menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedOptionText,
+            onValueChange = {},
+            label = { Text("Visibility") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropDownCategory(categories: ArrayList<ProductCategoryNode>) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf("") } // categories[0].name
+    // We want to react on tap/press on TextField to show menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = selectedOptionText,
+            onValueChange = {},
+            label = { Text("Visibility") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            categories.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption.name) },
+                    onClick = {
+                        selectedOptionText = selectionOption.name
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoriesRow(primaryCat: ArrayList<ProductCategoryNode>) {
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text = "Categories")
+        DropDownCategory(categories = primaryCat)
+    }
+}
+
 
 
 @Preview

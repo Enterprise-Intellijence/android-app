@@ -46,4 +46,5 @@
     <string name="edit">Edit</string>
     <string name="seller_s_items">Seller\'s items</string>
     <string name="similar_items">Similar items</string>
+    <string name="username">Username</string>
 </resources>

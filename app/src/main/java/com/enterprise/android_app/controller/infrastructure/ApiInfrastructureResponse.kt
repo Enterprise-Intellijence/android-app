@@ -12,7 +12,7 @@ abstract class ApiInfrastructureResponse<T>(val responseType: ResponseType) {
 class Success<T>(
         val data: T,
         override val statusCode: Int = -1,
-        override val headers: Map<String, List<String>> = mapOf()
+        override val headers: Map<String, List<String>> = mapOf(),
 ) : ApiInfrastructureResponse<T>(ResponseType.Success)
 
 class Informational<T>(

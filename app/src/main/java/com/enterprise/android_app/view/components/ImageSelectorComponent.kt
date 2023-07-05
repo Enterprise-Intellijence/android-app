@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.enterprise.android_app.view_models.ImageViewModel
 import io.swagger.client.models.UsersPhotoprofileBody
@@ -49,6 +50,7 @@ fun ImageSelectorComponent(
                 }
             } else {
                 // Invalid file type, handle accordingly
+                println("invalid file type")
             }
         }
     }

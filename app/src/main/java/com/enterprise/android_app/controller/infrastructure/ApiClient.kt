@@ -1,12 +1,17 @@
 package io.swagger.client.infrastructure
 
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import io.swagger.client.models.ProductCategoryDTO
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.File
 
 open class ApiClient(val baseUrl: String) {
+
     companion object {
         protected const val ContentType = "Content-Type"
         protected const val Authorization = "Authorization"
@@ -51,7 +56,9 @@ open class ApiClient(val baseUrl: String) {
     protected inline fun <reified T : Any?> responseBody(body: ResponseBody?, mediaType: String = JsonMediaType): T? {
         if (body == null) return null
         return when (mediaType) {
-            JsonMediaType -> Serializer.moshi.adapter(T::class.java).fromJson(body.source())
+            JsonMediaType -> {
+                Serializer.moshi.adapter(T::class.java).fromJson(body.source())
+            }
             else -> TODO()
         }
     }
@@ -103,7 +110,7 @@ open class ApiClient(val baseUrl: String) {
 
         val realRequest = request.build()
         val response = client.newCall(realRequest).execute()
-
+        val body = response.body
         // TODO: handle specific mapping types. e.g. Map<int, Class<?>>
         when {
             response.isRedirect -> return Redirection(
@@ -116,9 +123,9 @@ open class ApiClient(val baseUrl: String) {
                     response.headers.toMultimap()
             )
             response.isSuccessful -> return Success(
-                    responseBody(response.body, accept),
+                    responseBody(body, accept),
                     response.code,
-                    response.headers.toMultimap()
+                    response.headers.toMultimap(),
             )
             response.isClientError -> return ClientError(
                     response.body?.string(),

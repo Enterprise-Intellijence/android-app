@@ -1,8 +1,6 @@
 package com.enterprise.android_app.view_models
 
 import ProductCategoryNode
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
@@ -29,7 +27,7 @@ class ProductCategoryViewModel : ViewModel() {
                 var allCat = withContext(Dispatchers.IO) {
                     productControllerApi.getCategoriesList()
                 }
-                _allCategories = mutableStateOf<List<ProductCategoryDTO>?>(allCat)
+                _allCategories = mutableStateOf<List<ProductCategoryDTO>?>(allCat as List<ProductCategoryDTO>?)
 
                 println("cat: " + _allCategories)
                 _allCategories.value?.forEach { category ->

@@ -13,8 +13,7 @@ package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
 import com.enterprise.android_app.controller.infrastructure.ProductCategoryDeserializer
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.swagger.client.models.AdminProductsBody
@@ -113,21 +112,19 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return List<ProductCategoryDTO>
      */
     @Suppress("UNCHECKED_CAST")
-    fun getCategoriesList(): List<ProductCategoryDTO> {
+    fun getCategoriesList(): Any {
         val localVariableConfig = RequestConfig(
                 RequestMethod.GET,
                 "/api/v1/products/categories"
         )
-        val response = request<List<ProductCategoryDTO>>(
+        val response = request<Any>(
                 localVariableConfig
         )
 
         return when (response.responseType) {
             ResponseType.Success -> {
-                val objectMapper = ObjectMapper()
-                val typeReference = object : TypeReference<List<ProductCategoryDTO>>() {}
-                val myClassList: List<ProductCategoryDTO> = objectMapper.readValue((response as Success<*>).data.toString(), typeReference)
-                myClassList
+
+                (response as Success<*>).data as Any
             }
 
             ResponseType.Informational -> TODO()

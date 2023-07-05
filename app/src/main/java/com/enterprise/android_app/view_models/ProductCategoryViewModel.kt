@@ -1,13 +1,17 @@
 package com.enterprise.android_app.view_models
 
-import ProductCategoryNode
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import io.swagger.client.apis.ProductControllerApi
+import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.ProductCategoryDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -15,62 +19,64 @@ class ProductCategoryViewModel : ViewModel() {
 
     private val productControllerApi: ProductControllerApi = ProductControllerApi()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private var _primaryCategoryList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+    private var _secondaryCategoryList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+    private var _tertiaryCategoryList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
 
-    private var _allCategories = mutableStateOf<List<ProductCategoryDTO>?>(null)
-    private var _categoriesMap = HashMap<String, ProductCategoryNode>()
-    private var _primaryCategoryList = ArrayList<ProductCategoryNode>()
-
+    val primaryCategories: MutableStateFlow<List<String>>
+        get() = _primaryCategoryList
+    val secondaryCategories: MutableStateFlow<List<String>>
+        get() = _secondaryCategoryList
+    val tertiaryCategories: MutableStateFlow<List<String>>
+        get() = _tertiaryCategoryList
 
     fun getCategories() {
         try {
             coroutineScope.launch {
-                var allCat = withContext(Dispatchers.IO) {
-                    productControllerApi.getCategoriesList()
-                }
-                _allCategories = mutableStateOf<List<ProductCategoryDTO>?>(allCat as List<ProductCategoryDTO>?)
-
-                println("cat: " + _allCategories)
-                _allCategories.value?.forEach { category ->
-                    if (!_categoriesMap.containsKey(category.primaryCat)) {
-                        var cat = ProductCategoryNode(
-                            category.primaryCat,
-                            category.primaryCat.replace("#.*".toRegex(), ""),
-                            null,
-                            ArrayList<ProductCategoryNode>()
-                        )
-                        println("cateogry: " + cat)
-                        _categoriesMap.set(category.primaryCat, cat)
-                        _primaryCategoryList.add(cat)
+                try {
+                    val allCat = withContext(Dispatchers.IO) {
+                        productControllerApi.getPrimaryCategoriesList()
                     }
-                    if (!_categoriesMap.containsKey(category.secondaryCat)) {
-                        var cat = ProductCategoryNode(
-                            category.secondaryCat,
-                            category.secondaryCat.replace("#.*".toRegex(), ""),
-                            _categoriesMap[category.primaryCat],
-                            ArrayList<ProductCategoryNode>()
-                        )
-                        _categoriesMap[category.secondaryCat] = cat
-                        _categoriesMap[category.primaryCat]?.addChildCategory(cat)
-                    }
-                    if (!_categoriesMap.containsKey(category.tertiaryCat)) {
-                        var cat = ProductCategoryNode(
-                            category.tertiaryCat,
-                            category.tertiaryCat.replace("#.*".toRegex(), ""),
-                            _categoriesMap[category.secondaryCat],
-                            null
-                        )
-                        _categoriesMap[category.tertiaryCat] = cat
-                        _categoriesMap[category.secondaryCat]?.addChildCategory(cat)
-                    }
+                    _primaryCategoryList.emit(allCat as List<String>)
+                } catch (e: Exception) {
+                    println("error")
+                    e.printStackTrace()
                 }
             }
         }
+
         catch(e: Exception) {
             println("error")
             e.printStackTrace()
         }
     }
 
-    var primaryCategories: ArrayList<ProductCategoryNode>? = null
-        get() = _primaryCategoryList
+    fun getSecondaryCategories(primary: String) {
+
+            coroutineScope.launch {
+                try {
+                    val categories = withContext(Dispatchers.IO) {
+                        productControllerApi.getSecondaryCategoriesList(primary)
+                    }
+                    _secondaryCategoryList.emit(categories as List<String>)
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+    }
+
+    fun getTertiaryCategories(secondary: String) {
+        coroutineScope.launch {
+            try {
+                val categories = withContext(Dispatchers.IO) {
+                    productControllerApi.getTertiaryCategoriesList(secondary)
+                }
+                _tertiaryCategoryList.emit(categories as List<String>)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }

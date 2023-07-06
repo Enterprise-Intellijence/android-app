@@ -169,7 +169,7 @@ fun BoxImage() {
             .padding(16.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable._0200525_181714),
+            painter = painterResource(id = com.gowtham.ratingbar.R.drawable.abc_cab_background_top_mtrl_alpha),
             contentDescription = "Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier

@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -67,23 +68,13 @@ fun SearchPage(){
                     LazyGridProductsCard(products = products, lazyGridState = lazyGridState) {
                         searchPageViewModel.search()
                     }
-                    Row( verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.End) {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            colors = ButtonDefaults.outlinedButtonColors(),
-                            modifier = Modifier
-                                .size(40.dp)
-                                .padding()
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.primary
-                                ).clip(CircleShape),
-                        ) {
-                            Icon(
-                                FontAwesomeIcons.Solid.Filter,
-                                contentDescription = stringResource(id = R.string.filter)
-                            )
-                        }
+
+                    FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = CircleShape,onClick = { /*TODO*/ }) {
+                        Icon(
+                            FontAwesomeIcons.Solid.Filter,
+                            contentDescription = stringResource(id = R.string.filter)
+                        )
                     }
 
             }

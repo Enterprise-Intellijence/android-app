@@ -177,8 +177,8 @@ fun LoginPage(){
                         //textValuePassword.text,
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
                     )
-                    val user = User(1, CurrentDataUtils.refreshToken)
-                    AppDatabase.getInstance(context).userDao().insert(user)
+                    //val user = User(1, CurrentDataUtils.refreshToken)
+                    //AppDatabase.getInstance(context).userDao().insert(user)
 
                 })
 

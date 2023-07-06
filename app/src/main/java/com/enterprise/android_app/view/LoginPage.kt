@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -139,10 +140,8 @@ fun LoginPage(){
                 trailingIcon = {
                     val iconImage = if (passwordVisible) {
                         FontAwesomeIcons.Solid.Eye
-                        //TODO: da trovare un icona migliore
                     } else {
                         FontAwesomeIcons.Solid.EyeSlash
-                        //TODO: da trovare un icona migliore
                     }
 
                     var description = if (passwordVisible) {
@@ -152,7 +151,7 @@ fun LoginPage(){
                     }
 
                     IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon( iconImage, contentDescription = description)
+                        Icon( iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
                     }
                 },
 

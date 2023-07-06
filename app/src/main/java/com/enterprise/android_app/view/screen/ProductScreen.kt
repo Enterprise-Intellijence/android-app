@@ -1,6 +1,9 @@
 package com.enterprise.android_app.view.screen
 
 import android.annotation.SuppressLint
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,6 +40,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,6 +64,7 @@ import io.swagger.client.models.ProductDTO
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(productId: String) {
+
 
     val productPageViewModel: ProductPageViewModel = viewModel()
     println(CurrentDataUtils.currentUser)

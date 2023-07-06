@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,6 +46,10 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.RegistrationViewModel
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Eye
+import compose.icons.fontawesomeicons.solid.EyeSlash
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +63,7 @@ fun SignUpPage(){
     var textValueUsername by remember { mutableStateOf(TextFieldValue())}
     var textValueEmail by remember { mutableStateOf(TextFieldValue())}
     var textValuePassword by remember { mutableStateOf(TextFieldValue())}
+    var textValueConfirmPassword by remember { mutableStateOf(TextFieldValue())}
 
     val registerViewModel : RegistrationViewModel = viewModel()
 
@@ -141,7 +147,8 @@ fun SignUpPage(){
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
                     focusedLabelColor =  colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary)
+                    cursorColor = colorResource(id = R.color.colorPrimary),
+                    textColor = Color.Black
 
                 ),
 
@@ -158,11 +165,9 @@ fun SignUpPage(){
 
                 trailingIcon = {
                     val iconImage = if (passwordVisible) {
-                        painterResource(id = R.drawable.filled_visibility)
-                        //TODO: da trovare un icona migliore
+                        FontAwesomeIcons.Solid.Eye
                     } else {
-                        painterResource(id = R.drawable.filled_visibility_off)
-                        //TODO: da trovare un icona migliore
+                        FontAwesomeIcons.Solid.EyeSlash
                     }
 
                     var description = if (passwordVisible) {
@@ -172,7 +177,55 @@ fun SignUpPage(){
                     }
 
                     IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon(painter = iconImage, contentDescription = description)
+                        Icon(iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
+                    }
+                },
+
+                visualTransformation = if(passwordVisible) VisualTransformation.None else
+                    PasswordVisualTransformation()
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(componentShapes.small),
+                label = { Text(text = stringResource(id = R.string.confirm_password)) },
+
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = colorResource(id = R.color.colorPrimary),
+                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
+                    containerColor = colorResource(id = R.color.colorBackground),
+                    cursorColor = colorResource(id = R.color.colorPrimary),
+                    textColor = Color.Black
+
+                ),
+
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                value = textValueConfirmPassword,
+                onValueChange = {
+                    textValueConfirmPassword = it
+                },
+
+                leadingIcon = {
+                    Icon(painterResource(id = R.drawable.password), contentDescription = "")
+                },
+
+
+                trailingIcon = {
+                    val iconImage = if (passwordVisible) {
+                        FontAwesomeIcons.Solid.Eye
+                    } else {
+                        FontAwesomeIcons.Solid.EyeSlash
+                    }
+
+                    var description = if (passwordVisible) {
+                        stringResource(id = R.string.hide_password)
+                    } else {
+                        stringResource(id = R.string.show_password)
+                    }
+
+                    IconButton(onClick = { passwordVisible= !passwordVisible}) {
+                        Icon(iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
                     }
                 },
 
@@ -194,6 +247,10 @@ fun SignUpPage(){
 
             Spacer(modifier = Modifier.height(30.dp))
             ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {
+                if (textValuePassword.text != textValueConfirmPassword.text) {
+                    errorMessage.value = "Passwords don't match"
+                    return@ButtonComponent
+                }
                 registerViewModel.registerUser(
                     textValueUsername.text,
                     textValueEmail.text,

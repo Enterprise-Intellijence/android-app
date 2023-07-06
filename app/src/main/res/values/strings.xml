@@ -58,4 +58,5 @@
     <string name="accountDetails">Account Details</string>
     <string name="oldPassword">Old Password</string>
     <string name="newPassword">New Password</string>
+    <string name="deliveryTo">Delivery addresses</string>
 </resources>

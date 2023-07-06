@@ -17,6 +17,7 @@ import io.swagger.client.models.ProductBasicDTO
 fun LazyGridProductsCard(
     products: SnapshotStateList<ProductBasicDTO>,
     lazyGridState: LazyGridState,
+    modifier: Modifier = Modifier,
     onLoadMore: () -> Unit
 ) {
     LazyVerticalGrid(
@@ -24,7 +25,8 @@ fun LazyGridProductsCard(
         state = lazyGridState,
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
     ) {
         itemsIndexed(products) { index, product ->
             ProductCard(product = product)

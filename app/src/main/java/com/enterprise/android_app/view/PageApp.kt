@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
@@ -87,7 +88,7 @@ fun MainScreen(){
 
 
     Scaffold(topBar = { SearchTopBar()}, bottomBar = { MainBottomBar()}, floatingActionButton = {}, floatingActionButtonPosition = FabPosition.End) {
-        Box(modifier = Modifier.padding(it)){
+        Box(modifier = Modifier.padding(it)) {
             when(MainRouter.currentPage.value){
                 is Navigation.HomePage ->{
                     HomePage()

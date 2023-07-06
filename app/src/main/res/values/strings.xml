@@ -61,4 +61,5 @@
     <string name="deliveryTo">Delivery addresses</string>
     <string name="confirm_password">Confirm password</string>
     <string name="password_not_match">Passwords don\'t match</string>
+    <string name="filter">Filter</string>
 </resources>

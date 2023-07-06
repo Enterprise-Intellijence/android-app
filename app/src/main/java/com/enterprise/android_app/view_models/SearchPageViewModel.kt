@@ -1,22 +1,18 @@
 package com.enterprise.android_app.view_models
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.controller.models.FilterOptions
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.models.ProductBasicDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
 
 class SearchPageViewModel: ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -25,6 +21,7 @@ class SearchPageViewModel: ViewModel() {
     private val _search: MutableState<Boolean> = mutableStateOf(false)
     private val _searchResults = mutableStateListOf<ProductBasicDTO>()
     private var currentCategories: MutableList<String?> = mutableListOf(null, null, null)
+    val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0
 
     private lateinit var _categories: MutableState<MutableStateFlow<List<String>>>
@@ -87,9 +84,19 @@ class SearchPageViewModel: ViewModel() {
         try {
             coroutineScope.launch {
                 val searched = withContext(Dispatchers.IO) { productController.getFilteredProducts(
-                    primaryCat = currentCategories[0],
-                    secondaryCat = currentCategories[1],
-                    tertiaryCat = currentCategories[2], page = currentSearchPage) }
+                    title = filter.value.title, description = filter.value.description,
+                    minProductCost = filter.value.minProductCost as Double?,
+                    maxProductCost = filter.value.maxProductCost as Double?,
+                    brands = filter.value.brands, condition = filter.value.condition,
+                    views = filter.value.views as Int?, userId = filter.value.userId,
+                    uploadDate = filter.value.uploadDate, availability = filter.value.availability,
+                    productCategory = filter.value.productCategory, primaryCat = currentCategories[0],
+                    secondaryCat = currentCategories[1], tertiaryCat = currentCategories[2],
+                    likesNumber = filter.value.likesNumber as Int?, productGender = filter.value.productGender,
+                    sizes = filter.value.sizes, colour = filter.value.colour,
+                    entertainmentLanguage = filter.value.entertainmentLanguage,
+                    sortBy = filter.value.sortBy, sortDirection = filter.value.sortDirection,
+                    homeMaterial = filter.value.homeMaterial, page = currentSearchPage, sizePage = 20) }
                 _searchResults.addAll(searched.content?.toList() ?: emptyList())
                 currentSearchPage++
             }

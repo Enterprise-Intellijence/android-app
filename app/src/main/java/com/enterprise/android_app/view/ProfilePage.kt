@@ -64,7 +64,7 @@ fun ProfilePage(visitedUser: UserBasicDTO?){
         }
         when (tabIndex) {
             0 -> Closet(visitedUser?.id!!)
-            1 -> Reviews()
+            1 -> Reviews(visitedUser?.id!!)
         }
     }
 }

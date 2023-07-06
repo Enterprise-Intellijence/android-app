@@ -36,11 +36,13 @@ import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
-import com.enterprise.android_app.view.screen.PaymentsScreen
+import com.enterprise.android_app.view.settings.payments.PaymentsPage
 import com.enterprise.android_app.view.screen.ProductScreen
-import com.enterprise.android_app.view.screen.ProfileDetailsScreen
-import com.enterprise.android_app.view.screen.ShippingScreen
+import com.enterprise.android_app.view.settings.profiles.ProfileDetailsScreen
+import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
+import com.enterprise.android_app.view.settings.SettingsPage
+import com.enterprise.android_app.view.settings.account.AccountSettingsPage
 import java.io.File
 
 
@@ -124,10 +126,10 @@ fun MainScreen(){
                     AccountSettingsPage()
                 }
                 is Navigation.ShippingScreen ->{
-                    ShippingScreen()
+                    ShippingPage()
                 }
                 is Navigation.PaymentsScreen ->{
-                    PaymentsScreen()
+                    PaymentsPage()
                 }
                 is Navigation.ProfileDetailsScreen ->{
                     ProfileDetailsScreen()

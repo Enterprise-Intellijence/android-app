@@ -1,21 +1,14 @@
-package com.enterprise.android_app.view.components
+package com.enterprise.android_app.view.settings.account
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.materialIcon
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,26 +18,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.ui.theme.Primary
-import com.enterprise.android_app.ui.theme.Secondary
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
-import com.enterprise.android_app.view.updateUser
+import com.enterprise.android_app.view.settings.updateUser
 import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,6 +85,8 @@ fun EmailComponent(user: MutableState<UserDTO?>){
                         focusManager.clearFocus()
                         emailChangeShow.value = false
                         emailText.value = currentEmail.value
+                        MainRouter.changePage(Navigation.AccountSettingsPage)
+
 
                     }
                 ) {

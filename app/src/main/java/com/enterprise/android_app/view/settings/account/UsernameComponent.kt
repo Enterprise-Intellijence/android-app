@@ -1,6 +1,5 @@
-package com.enterprise.android_app.view.components
+package com.enterprise.android_app.view.settings.account
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,10 +28,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.ui.theme.Secondary
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
-import com.enterprise.android_app.view.updateUser
+import com.enterprise.android_app.view.settings.updateUser
 import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +77,7 @@ fun UsernameComponent(user: MutableState<UserDTO?>){
                         focusManager.clearFocus()
                         usernameChangeShow.value = false
                         usernameText.value = currentUsername.value
+                        MainRouter.changePage(Navigation.AccountSettingsPage)
 
                     }
                 ) {

@@ -1,6 +1,5 @@
-package com.enterprise.android_app.view.components
+package com.enterprise.android_app.view.settings.account
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -32,10 +30,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
-import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.ui.theme.Secondary
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
-import com.enterprise.android_app.view.updateUser
 import com.enterprise.android_app.view_models.UserViewModel
 import io.swagger.client.models.UserDTO
 
@@ -102,13 +99,15 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                         userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
+                        MainRouter.changePage(Navigation.AccountSettingsPage)
+
 
 
                     },
                     modifier = Modifier.align(Alignment.End)
 
                 ) {
-                    Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
+                    Icon( Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
                 }
 
 

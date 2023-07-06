@@ -1,10 +1,9 @@
-package com.enterprise.android_app.view.screen
+package com.enterprise.android_app.view.settings.profiles
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -46,9 +45,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
-import com.enterprise.android_app.view.AccountSettingsPage
-import com.enterprise.android_app.view.updateUser
-import com.enterprise.android_app.view_models.UserViewModel
+import com.enterprise.android_app.view.settings.updateUser
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
@@ -124,7 +121,9 @@ fun ProfileDetailsScreen() {
                     user.value?.copy(bio = currentTextState.value.text)?.let { updateUser(it) }
                     focusManager.clearFocus()
                     originalTextState.value = currentTextState.value
-                          },
+                    MainRouter.changePage(Navigation.ProfileDetailsScreen)
+
+                },
                 modifier = Modifier.align(Alignment.End)
 
 

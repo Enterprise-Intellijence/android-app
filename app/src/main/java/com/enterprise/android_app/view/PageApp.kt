@@ -117,7 +117,7 @@ fun MainScreen(){
                     AboutScreen()
                 }
                 is Navigation.ProductScreen ->{
-                    ProductScreen( CurrentDataUtils.currentProductId )
+                    ProductScreen( CurrentDataUtils.currentProductId)
                 }
                 is Navigation.NewProductPage ->{
                     NewProductPage()

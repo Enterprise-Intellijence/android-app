@@ -58,4 +58,7 @@
     <string name="accountDetails">Account Details</string>
     <string name="oldPassword">Old Password</string>
     <string name="newPassword">New Password</string>
+    <string name="deliveryTo">Delivery addresses</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_not_match">Passwords don\'t match</string>
 </resources>

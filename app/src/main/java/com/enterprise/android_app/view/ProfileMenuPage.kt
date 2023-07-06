@@ -113,8 +113,8 @@ fun ProfileMenuPage(){
 @Composable
 fun SingleRowTemplate(
     name: String,
-    icona: ImageVector,
-    icon_label: String,
+    icona: ImageVector?,
+    icon_label: String?,
     modifier: Modifier,
     onClick: ()->Unit
 ){
@@ -128,7 +128,8 @@ fun SingleRowTemplate(
             shape = RectangleShape,
             contentPadding = PaddingValues(start = 8.dp),
             content = {
-                Icon(icona, icon_label, modifier = Modifier.size(18.dp))
+                if (icona != null && icon_label != null)
+                    Icon(icona, icon_label, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(text = name,modifier = modifier.weight(1f), style = TextStyle(fontSize= 18.sp, fontWeight = FontWeight.Light))
                 Icon(Icons.Filled.KeyboardArrowRight, contentDescription = stringResource(id = R.string.enter))

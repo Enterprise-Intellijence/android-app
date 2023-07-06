@@ -11,11 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +35,7 @@ import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.ui.theme.Purple80
 import com.enterprise.android_app.ui.theme.PurpleGrey80
+import com.enterprise.android_app.ui.theme.Secondary
 import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.MessageDTO
 import io.swagger.client.models.ProductBasicDTO
@@ -48,7 +55,7 @@ fun ChatPage(
         modifier = Modifier.fillMaxSize()
     ) {
         ChatHeader(otherUser, productBasicDTO)
-        ChatMessageList(messages)
+        ChatMessageList(messages, modifier = Modifier.weight(1f))
         ChatInput(onSendMessage = onSendMessage)
     }
 }
@@ -61,15 +68,16 @@ fun ChatHeader(
 ) {
     Column(
         modifier = Modifier
-            .padding(8.dp)
             .fillMaxWidth()
+            .background(Purple80)
+            .padding(8.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            UserPictureAndName(user = otherUser)
+            UserPictureAndName(user = otherUser, modifier = Modifier.weight(1f))
         }
         if (productBasicDTO != null) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                ProductPictureAndTitle(productBasicDTO = productBasicDTO)
+                ProductPictureAndTitle(productBasicDTO = productBasicDTO, modifier = Modifier.weight(1f))
                 ProductPrice(price = productBasicDTO.productCost)
             }
         }
@@ -119,16 +127,20 @@ fun ProductPictureAndTitle(
 
 @Composable
 fun ChatMessageList(
-    messages: SnapshotStateList<MessageDTO>
+    messages: SnapshotStateList<MessageDTO>,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn(content = {
-        items(messages, key = { message -> message.id!! }) { message ->
-            ChatMessage(
-                message = message,
-                isMyMessage = message.sendUser.id == CurrentDataUtils.currentUser?.id
-            )
-        }
-    }, modifier = Modifier.fillMaxSize())
+    LazyColumn(
+        content = {
+            items(messages, key = { message -> message.id!! }) { message ->
+                ChatMessage(
+                    message = message,
+                    isMyMessage = message.sendUser.id == CurrentDataUtils.currentUser?.id
+                )
+            }
+        }, modifier = modifier.fillMaxWidth(),
+        reverseLayout = true
+    )
 }
 
 
@@ -241,11 +253,41 @@ fun ChatMessagePreview() {
     }
 }
 
-
+@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatInput(
     onSendMessage: (String) -> Unit = {}
 ) {
+    var message by remember { mutableStateOf("") }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Purple80)
+            .padding(8.dp)
+
+    ) {
+        TextField(
+            value = message,
+            onValueChange = { message = it },
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+                .align(Alignment.CenterVertically),
+            placeholder = {
+                Text(text = "Type a message")
+            }
+        )
+        Button(
+            onClick = {
+                onSendMessage(message)
+                message = ""
+            },
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            Text(text = "Send")
+        }
+    }
 
 }
 

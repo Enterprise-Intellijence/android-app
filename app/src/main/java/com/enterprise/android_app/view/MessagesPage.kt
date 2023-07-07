@@ -62,7 +62,7 @@ fun MessagesPage() {
             } else {
                 ConversationList(
                     messagePageViewModel.conversationList,
-                    messagePageViewModel::openConversation
+                    messagePageViewModel::openChat
                 )
             }
         } else if (messagePageViewModel.inChat.value) {

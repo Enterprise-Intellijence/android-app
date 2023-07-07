@@ -97,8 +97,9 @@ class MessagePageViewModel : ViewModel() {
         }
     }
 
-    fun sendMessage(message: String, otherUserID: String, productID: String?) {
-        val conversation = findConversationWith(otherUserID, productID)
+    fun sendMessage(message: String, otherUser: UserBasicDTO, product: ProductBasicDTO?) {
+
+        val conversation = findConversationWith(otherUser.id!!, product?.id)
         if (conversation != null) {
             sendMessage(message, conversation)
             return
@@ -106,21 +107,12 @@ class MessagePageViewModel : ViewModel() {
 
         coroutineScope.launch {
             try {
-                val receivedUser = withContext(coroutineScope.coroutineContext) {
-                    userControllerApi.userById(otherUserID)
-                }
-
-                val product: ProductBasicDTO? = if (productID == null) null else
-                    withContext(coroutineScope.coroutineContext) {
-                        productControllerApi.productBasicById(productID)
-                    }
-
 
                 val newMessage = MessageCreateDTO(
                     conversationId = null,
                     text = message,
                     product = product,
-                    receivedUser = receivedUser
+                    receivedUser = otherUser
                 )
 
                 val sentMessage = withContext(coroutineScope.coroutineContext) {
@@ -175,7 +167,7 @@ class MessagePageViewModel : ViewModel() {
         }
     }
 
-    fun openConversation(conversationDTO: ConversationDTO?) {
+    fun openChat(conversationDTO: ConversationDTO?) {
         chatConversation.value = conversationDTO
         if (conversationDTO != null) {
             loadMessagesForConversation(conversationDTO.conversationId!!)
@@ -185,6 +177,35 @@ class MessagePageViewModel : ViewModel() {
         inChat.value = true
         chatUser.value = conversationDTO?.otherUser
         chatProduct.value = conversationDTO?.productBasicDTO
+    }
+
+    fun openChat(otherUserID: String, productID: String?) {
+
+        val conversationDTO = findConversationWith(otherUserID, productID)
+        if (conversationDTO != null) {
+            openChat(conversationDTO)
+            return
+        }
+
+        val otherUser = userControllerApi.userById(otherUserID)
+        val product = if (productID == null) null else productControllerApi.productBasicById(productID)
+        chatConversation.value = null
+        inChat.value = true
+        chatUser.value = otherUser
+        chatProduct.value = product
+    }
+
+    fun openChat(otherUser: UserBasicDTO, product: ProductBasicDTO?) {
+
+        val conversationDTO = findConversationWith(otherUser.id!!, product?.id)
+        if (conversationDTO != null) {
+            openChat(conversationDTO)
+            return
+        }
+        chatConversation.value = null
+        inChat.value = true
+        chatUser.value = otherUser
+        chatProduct.value = product
     }
 
 

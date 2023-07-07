@@ -28,8 +28,9 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                 val tokenMap = userController.authenticate(username, password)
                 if (tokenMap.isNotEmpty()) {
                     CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
-                    CurrentDataUtils.refreshToken = tokenMap["refreshToken"].toString()
+                    CurrentDataUtils.setRefresh(tokenMap["refreshToken"].toString())
                     CurrentDataUtils.retrieveCurrentUser()
+
                     UserServices.retriveLikedProducts()
                     AppRouter.navigateTo(Screen.MainScreen)
                 } else {

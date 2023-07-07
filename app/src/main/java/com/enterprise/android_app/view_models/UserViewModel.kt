@@ -1,10 +1,15 @@
 package com.enterprise.android_app.view_models
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.platform.LocalContext
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.persistence.AppDatabase
+import com.enterprise.android_app.model.persistence.User
 import io.swagger.client.apis.UserControllerApi
-import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +18,11 @@ import kotlinx.coroutines.withContext
 
 class UserViewModel(): ViewModel() {
     private var userControllerApi: UserControllerApi = UserControllerApi()
-
-
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+
+    //val for the DB
+    //private val _application = application
 
 
 
@@ -25,6 +32,8 @@ class UserViewModel(): ViewModel() {
                 withContext(Dispatchers.IO) {
                     if(userDTO.id!=null){
                         userControllerApi.updateUser(userDTO,userDTO.id)
+
+
                     }
                 }
 
@@ -49,6 +58,10 @@ class UserViewModel(): ViewModel() {
 
         }
     }
+
+
+
+
 
 
 

@@ -135,13 +135,13 @@ fun MainScreen(){
                 is Navigation.ProfileDetailsScreen ->{
                     ProfileDetailsScreen()
                 }
-                is Navigation.ImageSelectorComponent ->{
+                /*is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(
                         fileState = fileState,
                         onFileUploaded = {
                             //MainRouter.changePage(Navigation.ProfileDetailsScreen)
                         })
-                }
+                }*/
 
                 else -> {}
             }

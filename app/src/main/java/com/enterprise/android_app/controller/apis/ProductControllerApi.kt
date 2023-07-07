@@ -359,6 +359,30 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         }
     }
     /**
+     *
+     *
+     * @param category
+     * @return kotlin.Any
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getSizesListByCategory(category: kotlin.String): kotlin.Any {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/products/sizes/{category}".replace("{" + "category" + "}", "$category")
+        )
+        val response = request<kotlin.Any>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
      * 
      * 
      * @param token  

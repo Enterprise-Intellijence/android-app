@@ -3,7 +3,6 @@ package com.enterprise.android_app.view_models
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.MessageControllerApi
@@ -13,6 +12,7 @@ import io.swagger.client.models.ConversationDTO
 import io.swagger.client.models.MessageCreateDTO
 import io.swagger.client.models.MessageDTO
 import io.swagger.client.models.ProductBasicDTO
+import io.swagger.client.models.UserBasicDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,14 +28,16 @@ class MessagePageViewModel : ViewModel() {
 
 
     var conversationList = mutableStateListOf<ConversationDTO>()
-    var messages = mutableStateListOf<MessageDTO>()
-    var currentConversation = mutableStateOf<ConversationDTO?>(null)
+    var chatMessages = mutableStateListOf<MessageDTO>()
 
+    var chatConversation = mutableStateOf<ConversationDTO?>(null)
+    val chatUser = mutableStateOf(null as UserBasicDTO?)
+    var chatProduct = mutableStateOf(null as ProductBasicDTO?)
+
+    val inChat = mutableStateOf(false)
+    val isMakingOffer = mutableStateOf(false)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-
-
 
 
     fun loadConversations() {
@@ -62,8 +64,9 @@ class MessagePageViewModel : ViewModel() {
                     messageControllerApi.getConversationMessages(conversationId, 0, 1000)
                 }
 
-                messages.clear()
-                messages.addAll(pageResponse.content!!)
+                chatMessages.clear()
+                chatMessages.addAll(pageResponse.content!!)
+                readMessages()
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -86,7 +89,7 @@ class MessagePageViewModel : ViewModel() {
                 }
 
                 // add message at the start of the list
-                messages.add(0, sentMessage)
+                chatMessages.add(0, sentMessage)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -125,7 +128,7 @@ class MessagePageViewModel : ViewModel() {
                 }
 
                 // add message at the start of the list
-                messages.add(0, sentMessage)
+                chatMessages.add(0, sentMessage)
                 loadConversations()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -133,10 +136,9 @@ class MessagePageViewModel : ViewModel() {
         }
     }
 
-
     fun sendMessage(message: String) {
-        if(currentConversation.value == null) return
-        else sendMessage(message, currentConversation.value!!)
+        if (chatConversation.value == null) return
+        else sendMessage(message, chatConversation.value!!)
     }
 
     fun findConversationWith(otherUserID: String, productID: String?): ConversationDTO? {
@@ -160,7 +162,7 @@ class MessagePageViewModel : ViewModel() {
     fun readMessages() {
         coroutineScope.launch {
             try {
-                val unreadMessagesIds = messages.filter {
+                val unreadMessagesIds = chatMessages.filter {
                     it.sendUser.id != CurrentDataUtils.currentUser?.id && it.messageStatus == MessageDTO.MessageStatus.UNREAD
                 }.map { it.id!! }.toTypedArray()
 
@@ -173,10 +175,49 @@ class MessagePageViewModel : ViewModel() {
         }
     }
 
-    fun selectConversation(conversationDTO: ConversationDTO?) {
-        currentConversation.value = conversationDTO
-        if (conversationDTO != null)
+    fun openConversation(conversationDTO: ConversationDTO?) {
+        chatConversation.value = conversationDTO
+        if (conversationDTO != null) {
             loadMessagesForConversation(conversationDTO.conversationId!!)
+        }
+
+
+        inChat.value = true
+        chatUser.value = conversationDTO?.otherUser
+        chatProduct.value = conversationDTO?.productBasicDTO
+    }
+
+
+    fun clearCurrentConversation() {
+        chatConversation.value = null
+        chatUser.value = null
+        chatProduct.value = null
+
+        inChat.value = false
+        isMakingOffer.value = false
+        chatMessages.clear()
+    }
+
+
+    fun toggleMakeOffer() {
+        isMakingOffer.value = !isMakingOffer.value
+    }
+
+    fun refreshMessage(id: String) {
+        coroutineScope.launch {
+            try {
+
+                val message = messageControllerApi.getMessage(id)
+
+                val index = chatMessages.indexOfFirst { it.id == id }
+                if (index != -1) {
+                    chatMessages[index] = message
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }
 

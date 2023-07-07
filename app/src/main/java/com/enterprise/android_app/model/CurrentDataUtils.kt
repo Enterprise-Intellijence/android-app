@@ -1,8 +1,13 @@
 package com.enterprise.android_app.model
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.MutableSnapshot
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.apis.UserControllerApi
+import io.swagger.client.models.AddressDTO
+import io.swagger.client.models.PaymentMethodBasicDTO
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +22,9 @@ object CurrentDataUtils {
     private var _currentUser: MutableState<UserDTO?> = mutableStateOf(null)
     private var _currentProductId: MutableState<String> = mutableStateOf("")
     private var _visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
+    private var _currentAddress: AddressDTO? = null
+    private var _currentAddresses = mutableStateListOf<AddressDTO>()
+    private var _currentPaymentMethod: MutableState<PaymentMethodBasicDTO>? = null
 
     var accessToken: String
         get() = _accessToken.value
@@ -33,6 +41,8 @@ object CurrentDataUtils {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 _currentUser.value = userControllerApi.me()
+                retrieveAddresses()
+
             } catch (e: Exception) {
                 println(e)
             }
@@ -60,4 +70,22 @@ object CurrentDataUtils {
         )
     }
 
+    var addressDTO: AddressDTO?
+        get() = _currentAddress
+        set(newValue){ _currentAddress = newValue}
+
+    var paymentMethodBasicDTO: MutableState<PaymentMethodBasicDTO>?
+        get() = _currentPaymentMethod
+        set(newValue){ _currentPaymentMethod = newValue}
+
+    val addresses: SnapshotStateList<AddressDTO>
+        get() = _currentAddresses
+
+
+
+    fun retrieveAddresses(){
+        _currentAddresses.clear()
+        _currentUser.value?.addresses?.let { _currentAddresses.addAll(it.toList()) }
+    }
 }
+

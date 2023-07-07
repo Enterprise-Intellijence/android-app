@@ -59,4 +59,8 @@
     <string name="oldPassword">Old Password</string>
     <string name="newPassword">New Password</string>
     <string name="deliveryTo">Delivery addresses</string>
+    <string name="defaultAddress">Default Address</string>
+    <string name="bioUpdated">Bio updated</string>
+    <string name="headerDelivery">Header:</string>
+    <string name="setAsDefault">Set as default</string>
 </resources>

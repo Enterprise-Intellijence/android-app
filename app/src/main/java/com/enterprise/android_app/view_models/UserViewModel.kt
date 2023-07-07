@@ -1,6 +1,9 @@
 package com.enterprise.android_app.view_models
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.UserControllerApi
@@ -25,6 +28,8 @@ class UserViewModel(): ViewModel() {
                 withContext(Dispatchers.IO) {
                     if(userDTO.id!=null){
                         userControllerApi.updateUser(userDTO,userDTO.id)
+
+
                     }
                 }
 

@@ -1,5 +1,7 @@
 package com.enterprise.android_app.view.settings.shippings
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -22,9 +25,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -32,16 +42,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.DarkGreen
+import com.enterprise.android_app.view_models.DeliveryViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Edit
 import compose.icons.fontawesomeicons.solid.Map
 import compose.icons.fontawesomeicons.solid.Phone
+import compose.icons.fontawesomeicons.solid.Trash
 import io.swagger.client.models.AddressDTO
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun ShippingCard(address: AddressDTO){
+    val deliveryViewModel = DeliveryViewModel()
+
+    val mContext = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -60,18 +80,41 @@ fun ShippingCard(address: AddressDTO){
                     )
                 }
                 Column() {
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        Modifier.border(BorderStroke(1.dp,Color.Green))
-                    ) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.Edit ,
-                            contentDescription = "Edit ",
-                            modifier = Modifier
-                                .height(16.dp),
+                    Row() {
+                        IconButton(
+                            onClick = {
+                                EditAddress(address = address)
+                                MainRouter.changePage(Navigation.AddEditShippingScreen)
+                            },
+                            /*                        modifier = Modifier
+                                                        .border(BorderStroke(1.dp,Color.Green))
+                                                        .clip(CircleShape)*/
+                        ) {
+                            Icon(
+                                imageVector = FontAwesomeIcons.Solid.Edit ,
+                                contentDescription = "Edit ",
+                                modifier = Modifier
+                                    .height(16.dp),
 
-                        )
+                                )
+                        }
+                        IconButton(
+                            onClick = {
+                                deliveryViewModel.deleteAddress(address.id)
+
+                            }
+
+                        ) {
+                            Icon(
+                                imageVector = FontAwesomeIcons.Solid.Trash,
+                                contentDescription = "Remove",
+                                modifier = Modifier
+                                    .height(16.dp)
+                            )
+
+                        }
                     }
+
                 }
             }
 
@@ -85,45 +128,69 @@ fun ShippingCard(address: AddressDTO){
                 Text(text = address.phoneNumber,modifier = Modifier.padding(start = 8.dp))
 
             }
-            Row( horizontalArrangement = Arrangement.End) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        //contentColor = DarkGreen
-                    ),
-
-                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp) ,
-                    shape = MaterialTheme.shapes.small.copy(
-                        topStart = CornerSize(8.dp),
-                        topEnd = CornerSize(8.dp),
-                        bottomStart = CornerSize(8.dp),
-                        bottomEnd = CornerSize(8.dp)
-                    ),
-                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                    border = BorderStroke(1.dp, DarkGreen),
-                    modifier = Modifier.height(33.dp)
-
-                )
-
-                {
-                    Text(
-                        text = if(address.default == true)"Default Address" else "Set as default",
-                        style = TextStyle(
-                            color = (if(address.default==true) DarkGreen else Color.Red),
-                            fontStyle = FontStyle.Italic
-                        )
-                    )
-                }
+            if(address.default==true){
+                Text(text = stringResource(id = R.string.defaultAddress), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
+            else{
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Spacer(modifier = Modifier.weight(1f,true))
+                    Button(
+                        onClick = {
+                            changeDefaultAddress(address = address.copy(default = true))
+                            mToast(context = mContext, "Address default changed")
+                            //refreshList(addressDTO = address.copy(default = true))
+                            //MainRouter.changePage(Navigation.ShippingPage)
 
 
 
+                                  },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            //contentColor = DarkGreen
+                        ),
+
+                        elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp) ,
+                        shape = MaterialTheme.shapes.small.copy(
+                            topStart = CornerSize(8.dp),
+                            topEnd = CornerSize(8.dp),
+                            bottomStart = CornerSize(8.dp),
+                            bottomEnd = CornerSize(8.dp)
+                        ),
+                        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                        border = BorderStroke(1.dp, Color.Red),
+                        modifier = Modifier.height(33.dp)
 
 
+                    )
 
+                    {
+                        Text(
+                            text = if(address.default == true)"Default Address" else "Set as default",
+                            style = TextStyle(
+                                color = (if(address.default==true) DarkGreen else Color.Red),
+                                fontStyle = FontStyle.Italic
+                            )
+                        )
+                    }
+                }
 
+            }
         }
     }
 
 }
+
+private fun changeDefaultAddress(address: AddressDTO){
+    val deliveryViewModel = DeliveryViewModel()
+    deliveryViewModel.updateAddress(address)
+}
+
+private fun mToast(context: Context, text: String){
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+}
+
+private fun EditAddress(address: AddressDTO?){
+    CurrentDataUtils.addressDTO = address
+}
+
+

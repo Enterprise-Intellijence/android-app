@@ -43,6 +43,7 @@ import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
+import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
 import java.io.File
 
 
@@ -125,7 +126,7 @@ fun MainScreen(){
                 is Navigation.AccountSettingsPage ->{
                     AccountSettingsPage()
                 }
-                is Navigation.ShippingScreen ->{
+                is Navigation.ShippingPage ->{
                     ShippingPage()
                 }
                 is Navigation.PaymentsScreen ->{
@@ -133,6 +134,10 @@ fun MainScreen(){
                 }
                 is Navigation.ProfileDetailsScreen ->{
                     ProfileDetailsScreen()
+                }
+                is Navigation.AddEditShippingScreen ->{
+                   AddEditShippingScreen()
+
                 }
                 is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(

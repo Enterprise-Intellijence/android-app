@@ -3,6 +3,7 @@ package com.enterprise.android_app.navigation
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import io.swagger.client.models.AddressDTO
 
 sealed class Screen() {
     object SignUpScreen : Screen()
@@ -14,6 +15,7 @@ sealed class Screen() {
 }
 
 sealed class Navigation() {
+
 
     object HomePage : Navigation()
 
@@ -34,7 +36,7 @@ sealed class Navigation() {
 
     }
 
-    object ShippingScreen : Navigation() {
+    object ShippingPage : Navigation() {
 
     }
 
@@ -42,7 +44,8 @@ sealed class Navigation() {
 
     }
     object ImageSelectorComponent: Navigation()
-   object ProfileDetailsScreen : Navigation(){}
+    object ProfileDetailsScreen : Navigation(){}
+    object AddEditShippingScreen : Navigation(){}
 
 
 

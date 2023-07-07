@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.log
 
 class MessagePageViewModel : ViewModel() {
 
@@ -186,13 +187,21 @@ class MessagePageViewModel : ViewModel() {
             openChat(conversationDTO)
             return
         }
+        coroutineScope.launch {
 
-        val otherUser = userControllerApi.userById(otherUserID)
-        val product = if (productID == null) null else productControllerApi.productBasicById(productID)
-        chatConversation.value = null
-        inChat.value = true
-        chatUser.value = otherUser
-        chatProduct.value = product
+            val otherUser: UserBasicDTO
+            val product: ProductBasicDTO?
+            withContext(Dispatchers.IO) {
+                otherUser = userControllerApi.userById(otherUserID)
+                product = if (productID != null)
+                    productControllerApi.productBasicById(productID)
+                else null
+            }
+            chatConversation.value = null
+            inChat.value = true
+            chatUser.value = otherUser
+            chatProduct.value = product
+        }
     }
 
     fun openChat(otherUser: UserBasicDTO, product: ProductBasicDTO?) {

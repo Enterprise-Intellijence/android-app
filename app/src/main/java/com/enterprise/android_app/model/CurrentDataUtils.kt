@@ -4,14 +4,11 @@ import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.MutableSnapshot
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
-import io.swagger.client.models.PaymentMethodBasicDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.PaymentMethodDTO
-import io.swagger.client.models.User
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 object CurrentDataUtils {
-    private val userControllerApi = UserControllerApi()
+            private val userControllerApi = UserControllerApi()
 
     private var _accessToken: MutableState<String> = mutableStateOf("")
     private var _refreshToken: MutableState<String> = mutableStateOf("")
@@ -30,6 +27,11 @@ object CurrentDataUtils {
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _currentPaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
     private var _currentPaymentMethod: MutableState<PaymentMethodDTO>? = null
+
+    val chatUserId = mutableStateOf(null as String?)
+    val chatProductId = mutableStateOf(null as String?)
+    val makeOffer = mutableStateOf(false)
+
 
     var _application: Application? = null
 

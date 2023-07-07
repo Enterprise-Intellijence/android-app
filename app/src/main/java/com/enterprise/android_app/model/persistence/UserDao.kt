@@ -1,0 +1,27 @@
+package com.enterprise.android_app.model.persistence
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+
+
+@Dao
+interface UserDao {
+    @Query("SELECT refresh_token FROM user where uid==7")
+    fun getRefreshToken(): String
+
+    @Insert
+    fun insert(vararg users: User)
+
+    @Update
+    fun update(vararg users: User)
+
+    @Delete
+    fun delete(user: User)
+
+
+    @Query("DELETE from user")
+    fun deleteAll()
+}

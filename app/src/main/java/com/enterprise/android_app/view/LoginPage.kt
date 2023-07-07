@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.persistence.AppDatabase
+import com.enterprise.android_app.model.persistence.User
 import com.enterprise.android_app.view.components.ButtonComponent
 import com.enterprise.android_app.view.components.ClickableLoginTextComponent
 import com.enterprise.android_app.view.components.DividerTextComponent
@@ -49,6 +53,7 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.AuthViewModel
+import com.enterprise.android_app.view_models.UserViewModel
 import compose.icons.AllIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -59,7 +64,7 @@ import compose.icons.fontawesomeicons.solid.EyeSlash
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(){
-
+    var context = LocalContext.current
     //only for password
     var passwordVisible by remember { mutableStateOf(false)}
 
@@ -174,6 +179,7 @@ fun LoginPage(){
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
                     )
 
+
                 })
 
             if (errorMessage.value.isNotEmpty()) {
@@ -198,11 +204,7 @@ fun LoginPage(){
 }
 
 
-@Preview
-@Composable
-fun PreviewLoginScreen(){
-    LoginPage()
-}
+
 
 fun TextFieldValueSaver(): Saver<TextFieldValue, *> = Saver(
     save = { value -> value },

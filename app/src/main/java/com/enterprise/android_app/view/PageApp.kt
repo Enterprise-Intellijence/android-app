@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import NewProductPage
+import android.app.Application
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
@@ -43,6 +45,8 @@ import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
+import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
+import com.enterprise.android_app.view_models.UserViewModel
 import java.io.File
 
 
@@ -87,7 +91,7 @@ fun MainScreen(){
 
 
     Scaffold(topBar = { SearchTopBar()}, bottomBar = { MainBottomBar()}, floatingActionButton = {}, floatingActionButtonPosition = FabPosition.End) {
-        Box(modifier = Modifier.padding(it)){
+        Box(modifier = Modifier.padding(it)) {
             when(MainRouter.currentPage.value){
                 is Navigation.HomePage ->{
                     HomePage()
@@ -125,7 +129,7 @@ fun MainScreen(){
                 is Navigation.AccountSettingsPage ->{
                     AccountSettingsPage()
                 }
-                is Navigation.ShippingScreen ->{
+                is Navigation.ShippingPage ->{
                     ShippingPage()
                 }
                 is Navigation.PaymentsScreen ->{
@@ -134,13 +138,18 @@ fun MainScreen(){
                 is Navigation.ProfileDetailsScreen ->{
                     ProfileDetailsScreen()
                 }
-                is Navigation.ImageSelectorComponent ->{
+                is Navigation.AddEditShippingScreen ->{
+                   AddEditShippingScreen()
+
+                }
+                //is Navigation.ImageSelectorComponent ->{
+                /*is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(
                         fileState = fileState,
                         onFileUploaded = {
                             //MainRouter.changePage(Navigation.ProfileDetailsScreen)
                         })
-                }
+                }*/
 
                 else -> {}
             }

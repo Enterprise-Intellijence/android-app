@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -41,7 +43,7 @@ fun SettingsPage(){
             name = "Shipping",
             icona = Icons.Filled.LocationOn,
             icon_label = stringResource(id = R.string.shipping),
-            modifier = modifier, onClick =  { MainRouter.changePage(Navigation.ShippingScreen)})
+            modifier = modifier, onClick =  { MainRouter.changePage(Navigation.ShippingPage)})
         SingleRowTemplate(
             name = "Payments",
             icona = Icons.Filled.Notifications,
@@ -54,6 +56,8 @@ fun SettingsPage(){
 fun updateUser(user: UserDTO){
     val userViewModel : UserViewModel = UserViewModel()
     userViewModel.saveChange(user)
-    //MainRouter.changePage(Navigation.AccountSettingsPage)
+
+
 
 }
+

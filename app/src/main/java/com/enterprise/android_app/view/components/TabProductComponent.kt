@@ -74,7 +74,7 @@ fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
                     Modifier.heightIn(max = 1300.dp)) {
                         LazyGridProductsCard(
                             products = sellerProducts,
-                            lazyGridState = lazyGridSimilarState
+                            lazyGridState = lazyGridSellerState
                         ) {
                             productPageViewModel.loadNextRelatedProductPage()
                         }

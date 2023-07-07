@@ -1,5 +1,7 @@
 package com.enterprise.android_app.view.settings.profiles
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +41,7 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.view.ClickableBox
 import io.swagger.client.models.UserDTO
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import coil.annotation.ExperimentalCoilApi
@@ -116,9 +119,13 @@ fun ProfileDetailsScreen() {
             )
         }
         if(currentTextState.value.text != originalTextState.value.text){
+            val mContext = LocalContext.current
+            val mText = stringResource(id = R.string.bioUpdated)
+
             IconButton(
                 onClick = {
                     user.value?.copy(bio = currentTextState.value.text)?.let { updateUser(it) }
+                    mToast(mContext, mText )
                     focusManager.clearFocus()
                     originalTextState.value = currentTextState.value
                     MainRouter.changePage(Navigation.ProfileDetailsScreen)
@@ -138,5 +145,7 @@ fun ProfileDetailsScreen() {
 }
 
 
-
+private fun mToast(context: Context, text: String){
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+}
 

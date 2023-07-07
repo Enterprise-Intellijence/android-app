@@ -1,17 +1,10 @@
 package com.enterprise.android_app.view_models
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import io.swagger.client.apis.ProductControllerApi
-import io.swagger.client.models.ProductBasicDTO
-import io.swagger.client.models.ProductCategoryDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,7 +24,6 @@ class ProductCategoryViewModel : ViewModel() {
         get() = _tertiaryCategoryList
 
     fun getCategories() {
-        try {
             coroutineScope.launch {
                 try {
                     val allCat = withContext(Dispatchers.IO) {
@@ -43,12 +35,6 @@ class ProductCategoryViewModel : ViewModel() {
                     e.printStackTrace()
                 }
             }
-        }
-
-        catch(e: Exception) {
-            println("error")
-            e.printStackTrace()
-        }
     }
 
     fun getSecondaryCategories(primary: String) {

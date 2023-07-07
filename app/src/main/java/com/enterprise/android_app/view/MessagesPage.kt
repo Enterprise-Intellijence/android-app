@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,8 +21,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,7 +33,9 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view_models.MessagePageViewModel
+import com.enterprise.android_app.view_models.OfferViewModel
 import io.swagger.client.models.ConversationDTO
+import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.MessageDTO
 import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserBasicDTO
@@ -45,9 +46,10 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MessagesPage() {
     val messagePageViewModel: MessagePageViewModel = viewModel()
+    val offerViewModel: OfferViewModel = viewModel()
 
     Column() {
-        if (messagePageViewModel.currentConversation.value == null) {
+        if (!messagePageViewModel.inChat.value) {
             if (messagePageViewModel.conversationList.isEmpty()) {
                 messagePageViewModel.loadConversations()
                 Column(
@@ -60,23 +62,48 @@ fun MessagesPage() {
             } else {
                 ConversationList(
                     messagePageViewModel.conversationList,
-                    messagePageViewModel::selectConversation
+                    messagePageViewModel::openChat
                 )
             }
-        } else if (messagePageViewModel.currentConversation.value != null) {
-            val conversation = messagePageViewModel.currentConversation.value
+        } else if (messagePageViewModel.inChat.value) {
+            val conversation = messagePageViewModel.chatConversation.value
             if (conversation != null)
                 ChatPage(
                     conversation.otherUser,
                     conversation.productBasicDTO,
-                    messagePageViewModel.messages,
-                    (messagePageViewModel::sendMessage)
+                    messagePageViewModel.chatMessages,
+                    isMakingOffer = messagePageViewModel.isMakingOffer.value,
+                    onSendMessage = { messagePageViewModel.sendMessage(it) },
+                    onBack = (messagePageViewModel::clearCurrentConversation),
+                    onMakeOffer = { text: String, product: ProductBasicDTO ->
+                        makeOffer(text, product, offerViewModel)
+                    },
+                    offerToggle = (messagePageViewModel::toggleMakeOffer),
                 )
         }
 
 
     }
 }
+
+fun makeOffer(text: String, product: ProductBasicDTO, offerViewModel: OfferViewModel) {
+    val amount = text.toDoubleOrNull()
+
+    if (amount != null) {
+
+        val money = CustomMoneyDTO(
+            price = amount,
+            currency = product.productCost.currency
+        )
+        offerViewModel.makeOffer(
+            product,
+            money
+        )
+    } else {
+        Log.e("MessagesPage", "MessagesPage: $text is not a valid number")
+    }
+}
+
 
 @Composable
 private fun ConversationList(
@@ -233,6 +260,7 @@ fun messageStatusToString(messageStatus: MessageDTO.MessageStatus): String {
 }
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun UserPictureAndName(user: UserBasicDTO, modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {

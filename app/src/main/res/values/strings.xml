@@ -63,4 +63,20 @@
     <string name="bioUpdated">Bio updated</string>
     <string name="headerDelivery">Header:</string>
     <string name="setAsDefault">Set as default</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_not_match">Passwords don\'t match</string>
+    <string name="filter">Filter</string>
+    <string name="sort_by">Sort by</string>
+    <string name="category">Category</string>
+    <string name="price">Price</string>
+    <string name="size">Size</string>
+    <string name="color">Color</string>
+    <string name="condition">Condition</string>
+    <string name="brand">Brand</string>
+    <string name="material">Material</string>
+    <string name="RELEVANCE">Relevance</string>
+    <string name="PRICE_HIGH_TO_LOW">Price high to low</string>
+    <string name="PRICE_LOW_TO_HIGH">Price low to high</string>
+    <string name="NEWEST_FIRST">Newest first</string>
+    <string name="show_results">Show results</string>
 </resources>

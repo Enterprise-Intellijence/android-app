@@ -1,110 +1,73 @@
 package com.enterprise.android_app.view.components
 
-import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
-import android.provider.OpenableColumns
-import android.util.Log
+import android.os.Build
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.enterprise.android_app.view_models.ImageViewModel
-import io.swagger.client.models.UsersPhotoprofileBody
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
-import java.io.IOException
+import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ImageSelectorComponent(
-    fileState: MutableState<File?>,
-    onFileUploaded: () -> Unit
-) {
-    val imageViewModel: ImageViewModel = ImageViewModel()
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { selectedUri ->
-            val mimeType = context.contentResolver.getType(selectedUri)
-            if (mimeType == "image/jpeg" || mimeType == "image/png") {
-                val contentResolver = context.contentResolver
-                val inputStream = contentResolver.openInputStream(selectedUri)
-                val fileName = getFileName(contentResolver, selectedUri)
-                if (inputStream != null && fileName != null) {
-                    val file = File(context.cacheDir, fileName)
-                    file.outputStream().use { outputStream ->
-                        inputStream.copyTo(outputStream)
-                    }
-                    fileState.value = file
-                }
-            } else {
-                // Invalid file type, handle accordingly
-                println("invalid file type")
-            }
-        }
-    }
+fun ImageSelectorComponent(imageUri: Uri?, onChange: (Uri?) -> Unit) {
 
-    Column {
-        Button(
-            onClick = {
-                launcher.launch("image/*")
-            }
-        ) {
-            Text("Select File")
+    val launcher = rememberLauncherForActivityResult(contract =
+    ActivityResultContracts.GetContent()) { uri: Uri? ->
+        onChange(uri)
+    }
+    Column() {
+        Button(onClick = {
+            launcher.launch("image/*")
+        }) {
+            Text(text = "Upload image")
         }
 
-        if (fileState.value != null) {
-            Button(
-                onClick = {
-                    fileState.value?.let { selectedFile ->
-                        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                            try {
-                                val requestBody = selectedFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                                val fileBytes = selectedFile.readBytes()
-                                val usersPhotoprofileBody = UsersPhotoprofileBody(selectedFile)
-                                Log.d("ciao", usersPhotoprofileBody.multipartFile.toString()) // Stampa i riferimenti del multipart
-                                imageViewModel.saveChange(usersPhotoprofileBody)
-                                onFileUploaded()
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                }
-            ) {
-                Text("Upload File")
-            }
-        }
+        Spacer(modifier = Modifier.height(12.dp))
     }
+    // ViewImage(imageUri)
 }
 
-private fun getFileName(contentResolver: ContentResolver, uri: Uri): String? {
-    var fileName: String? = null
-    val scheme = uri.scheme
-    if (scheme == "file") {
-        fileName = uri.lastPathSegment
-    } else if (scheme == "content") {
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (columnIndex != -1) {
-                    fileName = it.getString(columnIndex)
-                }
+@Composable
+fun ViewImage(imageUri: Uri?) {
+    val context = LocalContext.current
+    val bitmap =  remember {
+        mutableStateOf<Bitmap?>(null)
+    }
+
+    imageUri.let {
+        if (Build.VERSION.SDK_INT < 28) {
+            bitmap.value = MediaStore.Images
+                .Media.getBitmap(context.contentResolver,it)
+
+        } else {
+            val source = it?.let { it1 ->
+                ImageDecoder
+                    .createSource(context.contentResolver, it1)
             }
-            it.close()
+            bitmap.value = source?.let { it1 -> ImageDecoder.decodeBitmap(it1) }
+        }
+
+        bitmap.value?.let {  btm ->
+            Image(bitmap = btm.asImageBitmap(),
+                contentDescription =null,
+                modifier = Modifier.size(400.dp))
         }
     }
-    return fileName
 }

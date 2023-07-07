@@ -2,22 +2,21 @@ package com.enterprise.android_app.view.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.swagger.client.models.ProductBasicDTO
+import io.swagger.client.models.ReviewDTO
 
 @Composable
-fun LazyGridProductsCard(
-    products: SnapshotStateList<ProductBasicDTO>,
+fun LazyGridReviewsCard(
+    reviews: SnapshotStateList<ReviewDTO>,
     lazyGridState: LazyGridState,
-    modifier: Modifier = Modifier,
     onLoadMore: () -> Unit
 ) {
     LazyVerticalGrid(
@@ -25,13 +24,12 @@ fun LazyGridProductsCard(
         state = lazyGridState,
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        itemsIndexed(products) { index, product ->
-            ProductCard(product = product)
+        itemsIndexed(reviews) { index, review ->
+            ReviewCard(review = review)
 
-            val contentSize = products.size
+            val contentSize = reviews.size
             if (index == contentSize - 1 && lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {
                 onLoadMore()
             }

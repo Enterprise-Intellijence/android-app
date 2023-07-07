@@ -1,5 +1,6 @@
 package com.enterprise.android_app.model
 
+import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.PaymentMethodBasicDTO
+import com.enterprise.android_app.model.persistence.AppDatabase
+import io.swagger.client.apis.UserControllerApi
+import io.swagger.client.models.User
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +29,7 @@ object CurrentDataUtils {
     private var _currentAddress: AddressDTO? = null
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _currentPaymentMethod: MutableState<PaymentMethodBasicDTO>? = null
+    var _application: Application? = null
 
     var accessToken: String
         get() = _accessToken.value
@@ -87,5 +92,23 @@ object CurrentDataUtils {
         _currentAddresses.clear()
         _currentUser.value?.addresses?.let { _currentAddresses.addAll(it.toList()) }
     }
+    fun setRefresh(refresh_token: String){
+        _refreshToken.value = refresh_token
+        CoroutineScope(Dispatchers.IO).launch{
+            var user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
+            var refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            println(refresh_token2)
+            if( refresh_token2 == null){
+                AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
+                println("INSERT")
+            }
+            else{
+                AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(user)
+                println("UPDATE")
+            }
+
+        }
+    }
+
 }
 

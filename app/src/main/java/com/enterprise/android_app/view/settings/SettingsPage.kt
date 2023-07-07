@@ -57,7 +57,7 @@ fun updateUser(user: UserDTO){
     val userViewModel : UserViewModel = UserViewModel()
     userViewModel.saveChange(user)
 
-    //MainRouter.changePage(Navigation.AccountSettingsPage)
+
 
 }
 

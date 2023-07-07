@@ -46,7 +46,7 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
     val passChangeShow: MutableState<Boolean> = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val userViewModel = UserViewModel()
+    //val userViewModel = UserViewModel()
 
 
     Column(modifier = modifier) {
@@ -96,7 +96,7 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                 IconButton(
                     enabled = (newPassword.value != "" && newPassword.value != oldPassword.value),
                     onClick = {
-                        userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
+                        //userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
                         MainRouter.changePage(Navigation.AccountSettingsPage)

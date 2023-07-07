@@ -26,8 +26,8 @@ fun Closet(visitedUserId: String) {
     val productList = profileViewModel.productList
     val lazyGridState = rememberLazyGridState()
 
-    LaunchedEffect(key1 = profileViewModel.currentPage) {
-        profileViewModel.loadNextPage()
+    LaunchedEffect(key1 = profileViewModel.currentProductPage) {
+        profileViewModel.loadNextProductPage()
     }
 
     if (!productList.isEmpty()) {
@@ -35,8 +35,8 @@ fun Closet(visitedUserId: String) {
             products = productList,
             lazyGridState = lazyGridState
         ) {
-            profileViewModel.loadNextPage()
-            val contentSize = productList.size
+            profileViewModel.loadNextProductPage()
+            productList.size
         }
     } else {
         Column(

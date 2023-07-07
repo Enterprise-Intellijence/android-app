@@ -37,14 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import coil.compose.ImagePainter.State.Empty.painter
 import com.enterprise.android_app.view.screen.ImageFullScreen
 import io.swagger.client.models.ProductImageDTO
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -65,7 +61,9 @@ fun ImageCarousell(images: List<ProductImageDTO>, modifier: Modifier) {
                 index ->
                     LoadImageFromUrl(
                         url = images[index].urlPhoto!!,
-                        modifier = Modifier.fillMaxWidth().clickable { selectedImageUrl.value = images[index].urlPhoto!! }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { selectedImageUrl.value = images[index].urlPhoto!! }
                     )
         }
 
@@ -83,21 +81,18 @@ fun ImageCarousell(images: List<ProductImageDTO>, modifier: Modifier) {
         }
 
         if (selectedImageUrl.value.isNotEmpty()) {
-            Dialog(
-                onDismissRequest = {
+            Dialog(onDismissRequest = {
                     selectedImageUrl.value = ""
                 },
                 content = {
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+
                         ImageFullScreen(
                             imageUrl = selectedImageUrl.value,
                             onClose = {
                                 selectedImageUrl.value = ""
-                            }
+                            },
+                            modifier = Modifier.fillMaxSize()
                         )
-                    }
                 }
             )
         }

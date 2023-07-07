@@ -52,7 +52,7 @@ class ProductPageViewModel: ViewModel() {
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
-                    productControllerApi.getFilteredProducts(userId = _product.value?.seller?.id, page = currentSellerProductPage)
+                    productControllerApi.getFilteredProducts(userId = _product.value?.seller?.id, page = currentSellerProductPage, sizePage = 20)
                 }
                 val productsToAdd = newProducts.content?.toList() ?: emptyList()
                 sellerProducts.addAll(productsToAdd)

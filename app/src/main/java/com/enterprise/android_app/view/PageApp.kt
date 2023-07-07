@@ -142,7 +142,7 @@ fun MainScreen(){
                    AddEditShippingScreen()
 
                 }
-                is Navigation.ImageSelectorComponent ->{
+                //is Navigation.ImageSelectorComponent ->{
                 /*is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(
                         fileState = fileState,

@@ -32,38 +32,38 @@ import com.enterprise.android_app.ui.theme.TransparentGreenButton
 import com.enterprise.android_app.view.settings.shippings.ShippingCard
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.CreditCard
 import compose.icons.fontawesomeicons.solid.Map
 import io.swagger.client.models.AddressDTO
 
 @Composable
 fun PaymentsPage(){
-    /*val userAddresses: MutableList<AddressDTO> = remember { mutableStateListOf() }
-    val addressDTO = remember { mutableStateOf(CurrentDataUtils.addressDTO) }
+    val payments = CurrentDataUtils.currentPaymentsMethod
 
-    Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = FontAwesomeIcons.Solid.Map,
-                contentDescription = "Transport",
+                imageVector = FontAwesomeIcons.Solid.CreditCard,
+                contentDescription = "Payments Methods",
                 modifier = Modifier.height(18.dp)
             )
             Text(
-                text = stringResource(id = R.string.deliveryTo),
+                text = stringResource(id = R.string.payments),
                 style = TextStyle(fontSize = 20.sp),
-                modifier = Modifier.weight(1f).padding(8.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
             )
             TransparentGreenButton(
                 onClick = {
-                    CurrentDataUtils.addressDTO = null
+                    CurrentDataUtils.paymentMethodDTO = null
                     MainRouter.changePage(Navigation.AddEditShippingScreen)
                 },
                 modifier = Modifier.height(35.dp),
                 buttonName = "Add new"
             )
-        }
-        LaunchedEffect(addressDTO.value) {
-            userAddresses.clear()
-            userAddresses.addAll(CurrentDataUtils.currentUser?.addresses?.toList() ?: emptyList())
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
@@ -72,10 +72,10 @@ fun PaymentsPage(){
             verticalArrangement = Arrangement.spacedBy(30.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(userAddresses) { item ->
-                val myAddress = remember { mutableStateOf(item) }
-                ShippingCard(address = myAddress)
+            items(payments) { item ->
+                val payment = remember { mutableStateOf(item) }
+                PaymentsMethodCard(payment = payment.value)
             }
         }
-    }*/
+    }
 }

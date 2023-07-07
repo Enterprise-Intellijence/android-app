@@ -16,13 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserViewModel(application: Application): ViewModel() {
+class UserViewModel(): ViewModel() {
     private var userControllerApi: UserControllerApi = UserControllerApi()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
 
     //val for the DB
-    private val _application = application
+    //private val _application = application
 
 
 

@@ -6,11 +6,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.MutableSnapshot
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.PaymentMethodBasicDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
 import io.swagger.client.apis.UserControllerApi
+import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.User
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
@@ -28,7 +28,9 @@ object CurrentDataUtils {
     private var _visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     private var _currentAddress: AddressDTO? = null
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
-    private var _currentPaymentMethod: MutableState<PaymentMethodBasicDTO>? = null
+    private var _currentPaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
+    private var _currentPaymentMethod: MutableState<PaymentMethodDTO>? = null
+
     var _application: Application? = null
 
     var accessToken: String
@@ -47,6 +49,7 @@ object CurrentDataUtils {
             try {
                 _currentUser.value = userControllerApi.me()
                 retrieveAddresses()
+                retrievePaymentsMethod()
 
             } catch (e: Exception) {
                 println(e)
@@ -79,7 +82,7 @@ object CurrentDataUtils {
         get() = _currentAddress
         set(newValue){ _currentAddress = newValue}
 
-    var paymentMethodBasicDTO: MutableState<PaymentMethodBasicDTO>?
+    var paymentMethodDTO: MutableState<PaymentMethodDTO>?
         get() = _currentPaymentMethod
         set(newValue){ _currentPaymentMethod = newValue}
 
@@ -87,10 +90,17 @@ object CurrentDataUtils {
         get() = _currentAddresses
 
 
-
     fun retrieveAddresses(){
         _currentAddresses.clear()
         _currentUser.value?.addresses?.let { _currentAddresses.addAll(it.toList()) }
+    }
+
+    val currentPaymentsMethod: SnapshotStateList<PaymentMethodDTO>
+        get() = _currentPaymentsMethod
+
+    fun retrievePaymentsMethod(){
+        _currentPaymentsMethod.clear()
+        _currentUser.value?.paymentMethods?.let { _currentPaymentsMethod.addAll(it.toList()) }
     }
     fun setRefresh(refresh_token: String){
         _refreshToken.value = refresh_token

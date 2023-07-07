@@ -120,5 +120,19 @@ object CurrentDataUtils {
         }
     }
 
+    fun refreshToken(){
+        CoroutineScope(Dispatchers.IO).launch{
+            //TODO get refreshtoken from db
+            if( refreshToken != null){
+                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                if (tokenMap.isNotEmpty()) {
+                    _accessToken.value = tokenMap["accessToken"]!!
+                    _refreshToken.value = tokenMap["refreshToken"]!!
+                }
+                //TODO persist new refreshtoken
+            }
+        }
+    }
+
 }
 

@@ -20,8 +20,11 @@ class SearchPageViewModel: ViewModel() {
     private val categoryViewModel: ProductCategoryViewModel = ProductCategoryViewModel()
     private val _search: MutableState<Boolean> = mutableStateOf(false)
     private val _searchResults = mutableStateListOf<ProductBasicDTO> ()
-    private var currentCategories: MutableList<String?> = mutableListOf(null, null, null)
     var tempSelectedCategories: MutableList<String?> = mutableListOf(null, null, null)
+    val tempSelectedSize: SnapshotStateList<String?> = mutableStateListOf()
+    var currentCat: MutableState<String?> = mutableStateOf(null)
+    val selectedCondition: SnapshotStateList<String?> = mutableStateListOf()
+
     val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0
     var counter = 0
@@ -41,17 +44,16 @@ class SearchPageViewModel: ViewModel() {
         categoryViewModel.getCategories()
         _categories = mutableStateOf( categoryViewModel.primaryCategories )
     }
-
     fun selectCategory(category: String) {
         if(category == "All") {
-            currentCategories[0] = tempSelectedCategories[0]
-            currentCategories[1] = tempSelectedCategories[1]
-            currentCategories[2] = tempSelectedCategories[2]
+            filter.value.primaryCat = tempSelectedCategories[0]
+            filter.value.secondaryCat = tempSelectedCategories[1]
+            filter.value.tertiaryCat = tempSelectedCategories[2]
             clearTempCategories()
             _search.value = true
             return
         }
-        for(i in 0 until currentCategories.size) {
+        for(i in 0 until tempSelectedCategories.size) {
             if (tempSelectedCategories[i] == null) {
                 tempSelectedCategories[i] = category
                 when(i) {
@@ -64,11 +66,11 @@ class SearchPageViewModel: ViewModel() {
                         _categories.value = categoryViewModel.tertiaryCategories
                     }
                 }
-                if(i >= currentCategories.size - 1)
+                if(i >= tempSelectedCategories.size - 1)
                 {
-                    currentCategories[0] = tempSelectedCategories[0]
-                    currentCategories[1] = tempSelectedCategories[1]
-                    currentCategories[2] = tempSelectedCategories[2]
+                    filter.value.primaryCat = tempSelectedCategories[0]
+                    filter.value.secondaryCat = tempSelectedCategories[1]
+                    filter.value.tertiaryCat = tempSelectedCategories[2]
                     clearTempCategories()
                     _search.value = true
                 }else
@@ -78,14 +80,16 @@ class SearchPageViewModel: ViewModel() {
         }
     }
 
+
     fun clearTempCategories() {
         tempSelectedCategories[0] = null
         tempSelectedCategories[1] = null
         tempSelectedCategories[2] = null
     }
 
-    fun getSelectedCategories(): List<String?> {
-        return currentCategories
+    fun clearTempSize() {
+        tempSelectedSize[0] = null
+        tempSelectedSize[1] = null
     }
 
     fun getPrimaryCategories(): MutableStateFlow<List<String>> {
@@ -101,6 +105,9 @@ class SearchPageViewModel: ViewModel() {
     }
 
     fun search() {
+        currentCat.value = null
+        tempSelectedSize.clear()
+        selectedCondition.clear()
         _categories.value = categoryViewModel.primaryCategories
         try {
             coroutineScope.launch {
@@ -111,8 +118,8 @@ class SearchPageViewModel: ViewModel() {
                     brands = filter.value.brands, condition = filter.value.condition,
                     views = filter.value.views as Int?, userId = filter.value.userId,
                     uploadDate = filter.value.uploadDate, availability = filter.value.availability,
-                    productCategory = filter.value.productCategory, primaryCat = currentCategories[0],
-                    secondaryCat = currentCategories[1], tertiaryCat = currentCategories[2],
+                    productCategory = filter.value.productCategory, primaryCat = filter.value.primaryCat,
+                    secondaryCat = filter.value.secondaryCat, tertiaryCat = filter.value.tertiaryCat,
                     likesNumber = filter.value.likesNumber as Int?, productGender = filter.value.productGender,
                     sizes = filter.value.sizes, colour = filter.value.colour,
                     entertainmentLanguage = filter.value.entertainmentLanguage,
@@ -126,5 +133,12 @@ class SearchPageViewModel: ViewModel() {
         }
     }
 
-    //TODO handle back and reset search boolean and selected categories
+    fun clearFilter() {
+        filter.value = FilterOptions()
+        currentSearchPage = 0
+        _categories.value = categoryViewModel.primaryCategories
+        _searchResults.clear()
+        filter.value.sortBy = "views"
+        _search.value = true
+    }
 }

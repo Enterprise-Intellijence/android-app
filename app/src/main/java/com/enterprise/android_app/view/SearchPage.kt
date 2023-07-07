@@ -28,7 +28,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
 import com.enterprise.android_app.controller.models.FilterOptions
 import com.enterprise.android_app.view.components.LazyGridProductsCard
+import com.enterprise.android_app.view.screen.filter.FilterScreen
 import com.enterprise.android_app.view_models.SearchPageViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -53,6 +56,7 @@ fun SearchPage(){
     var categories = searchPageViewModel.categories.collectAsState()
 
     val search = remember { searchPageViewModel.search }
+    val filterPage: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
 
     val products = searchPageViewModel.searchResults
 
@@ -60,9 +64,15 @@ fun SearchPage(){
     val lazyGridState = rememberLazyGridState()
     val filter: MutableState<FilterOptions> = remember { searchPageViewModel.filter }
 
-    if (search.value) {
-        searchPageViewModel.search()
-        if (products != null) {
+    if (filterPage.value)
+        FilterScreen(viewModel = searchPageViewModel, onApply = {
+            searchPageViewModel.search()
+            filterPage.value = false
+        })
+    else {
+        if (search.value) {
+            searchPageViewModel.search()
+            if (products.isNotEmpty()) {
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     LazyGridProductsCard(products = products, lazyGridState = lazyGridState) {
@@ -70,31 +80,37 @@ fun SearchPage(){
                     }
 
                     FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        shape = CircleShape,onClick = { /*TODO*/ }) {
+                        shape = CircleShape,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .align(Alignment.BottomEnd)
+                            .padding(13.dp),
+                        onClick = { filterPage.value = true }) {
                         Icon(
                             FontAwesomeIcons.Solid.Filter,
-                            contentDescription = stringResource(id = R.string.filter)
+                            contentDescription = stringResource(id = R.string.filter),
+                            Modifier.size(20.dp)
                         )
                     }
 
-            }
-        }else
-            CircularProgressIndicator(Modifier.size(40.dp))
-    }else {
-        LazyColumn(state = lazyColumnState) {
-            item {
-                SingleRowTemplate(name = "All", icona = null, icon_label = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { searchPageViewModel.selectCategory("All") })
-            }
-            for (category in categories.value) {
+                }
+            } else
+                CircularProgressIndicator(Modifier.size(40.dp))
+        } else {
+            LazyColumn(state = lazyColumnState) {
                 item {
-                    SingleRowTemplate(name = category, icona = null, icon_label = null,
+                    SingleRowTemplate(name = "All", icona = null, icon_label = null,
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = { searchPageViewModel.selectCategory(category) })
+                        onClick = { searchPageViewModel.selectCategory("All") })
+                }
+                for (category in categories.value) {
+                    item {
+                        SingleRowTemplate(name = category, icona = null, icon_label = null,
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { searchPageViewModel.selectCategory(category) })
+                    }
                 }
             }
         }
     }
-
 }

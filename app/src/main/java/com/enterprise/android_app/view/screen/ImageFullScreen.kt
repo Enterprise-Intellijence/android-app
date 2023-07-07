@@ -1,12 +1,19 @@
 package com.enterprise.android_app.view.screen
 
+import android.provider.Settings
+import android.view.Display
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
@@ -28,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-
+import com.enterprise.android_app.view.components.LoadImageFromUrl
 
 
 @Composable
@@ -40,11 +47,11 @@ fun ImageFullScreen(imageUrl: String, modifier: Modifier = Modifier,  onClose: (
         },
     )
     val scale = remember { mutableStateOf(1f) }
-    val rotationState = remember { mutableStateOf(1f) }
+    val rotationState = remember { mutableStateOf(0f) }
     Box(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = Modifier
             .clip(RectangleShape)
+            .padding(top = 40.dp, bottom = 40.dp)
             .background(Color.Gray)
             .pointerInput(Unit) {
                 detectTransformGestures { centroid, pan, zoom, rotation ->
@@ -53,18 +60,22 @@ fun ImageFullScreen(imageUrl: String, modifier: Modifier = Modifier,  onClose: (
                 }
             }
     ) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .graphicsLayer(
-                    scaleX = maxOf(.5f, minOf(3f, scale.value)),
-                    scaleY = maxOf(.5f, minOf(3f, scale.value)),
-                    rotationZ = rotationState.value
-                ),
-            contentDescription = null,
-            painter = painter,
-            contentScale = ContentScale.Fit
-        )
+        Column(Modifier.fillMaxSize()) {
+            Image(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .graphicsLayer(
+                        scaleX = maxOf(.5f, minOf(3f, scale.value)),
+                        scaleY = maxOf(.5f, minOf(3f, scale.value)),
+                        rotationZ = rotationState.value
+                    ),
+                contentDescription = null,
+                painter = painter,
+                contentScale = ContentScale.Fit
+            )
+        }
+
+
         IconButton(
             onClick = onClose,
             modifier = Modifier

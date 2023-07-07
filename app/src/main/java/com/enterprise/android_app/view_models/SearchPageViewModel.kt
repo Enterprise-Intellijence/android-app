@@ -19,7 +19,7 @@ class SearchPageViewModel: ViewModel() {
     private val productController: ProductControllerApi = ProductControllerApi()
     private val categoryViewModel: ProductCategoryViewModel = ProductCategoryViewModel()
     private val _search: MutableState<Boolean> = mutableStateOf(false)
-    private val _searchResults = mutableStateListOf<ProductBasicDTO>()
+    private val _searchResults = mutableStateListOf<ProductBasicDTO> ()
     private var currentCategories: MutableList<String?> = mutableListOf(null, null, null)
     val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0

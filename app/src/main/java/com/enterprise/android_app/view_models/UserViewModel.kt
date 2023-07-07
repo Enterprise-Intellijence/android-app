@@ -1,21 +1,24 @@
 package com.enterprise.android_app.view_models
 
-import androidx.compose.runtime.mutableStateListOf
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.persistence.AppDatabase
+import com.enterprise.android_app.model.persistence.User
 import io.swagger.client.apis.UserControllerApi
-import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class UserViewModel(): ViewModel() {
+class UserViewModel(application: Application): ViewModel() {
     private var userControllerApi: UserControllerApi = UserControllerApi()
-
-
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+
+    //val for the DB
+    private val _application = application
 
 
 
@@ -49,6 +52,10 @@ class UserViewModel(): ViewModel() {
 
         }
     }
+
+
+
+
 
 
 

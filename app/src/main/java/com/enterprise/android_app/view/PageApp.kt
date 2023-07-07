@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import NewProductPage
+import android.app.Application
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +45,7 @@ import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
+import com.enterprise.android_app.view_models.UserViewModel
 import java.io.File
 
 

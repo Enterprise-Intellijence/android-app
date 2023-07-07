@@ -5,20 +5,28 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.room.Room
+import com.enterprise.android_app.model.CurrentDataUtils
 //import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.PageApp
 
 
 class MainActivity : ComponentActivity() {
-    //private lateinit var db: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
-        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+        CurrentDataUtils._application = this.application
 
-        /*
+        setContent {
+            AndroidappTheme {
+                PageApp()
+            }
+        }
+
+    }
+
+
+    /*
         if (false) {
             db = Room.databaseBuilder(
                 applicationContext,
@@ -35,14 +43,6 @@ class MainActivity : ComponentActivity() {
             Log.println(Log.ASSERT, "ciao", "dbGIAcreato")
         }
         */
-
-
-        setContent {
-            AndroidappTheme {
-                PageApp()
-            }
-        }
-    }
 }
 
 

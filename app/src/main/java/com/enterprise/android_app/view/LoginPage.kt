@@ -53,6 +53,7 @@ import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.AuthViewModel
+import com.enterprise.android_app.view_models.UserViewModel
 import compose.icons.AllIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -171,14 +172,13 @@ fun LoginPage(){
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
                     authViewModel.authenticate(
-                        "username3",
-                        "password3",
+                        "username1",
+                        "password1",
                         //textValueUsername.text,
                         //textValuePassword.text,
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
                     )
-                    //val user = User(1, CurrentDataUtils.refreshToken)
-                    //AppDatabase.getInstance(context).userDao().insert(user)
+
 
                 })
 
@@ -204,11 +204,7 @@ fun LoginPage(){
 }
 
 
-@Preview
-@Composable
-fun PreviewLoginScreen(){
-    LoginPage()
-}
+
 
 fun TextFieldValueSaver(): Saver<TextFieldValue, *> = Saver(
     save = { value -> value },

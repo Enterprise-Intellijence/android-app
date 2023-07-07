@@ -20,7 +20,7 @@ fun LazyGridReviewsCard(
     onLoadMore: () -> Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(1),
         state = lazyGridState,
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),

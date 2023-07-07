@@ -94,7 +94,7 @@ fun ProfilePage(visitedUser: UserBasicDTO?){
 @Composable
 fun ProfileInfo(profileViewModel: ProfileViewModel) {
     val visitedUser = profileViewModel.visitedUser
-    var isFollowing = profileViewModel.isFollowing
+    val isFollowing = remember { profileViewModel.isFollowing }
 
     LaunchedEffect(key1 = profileViewModel.visitedUser.value?.id) {
         profileViewModel.updateUser()

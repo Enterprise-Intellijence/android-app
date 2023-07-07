@@ -26,13 +26,13 @@ import io.swagger.client.models.UserImageDTO
  */
 data class UserBasicDTO (
 
-    val id: kotlin.String? = null,
+    var id: kotlin.String? = null,
     val username: kotlin.String,
     val bio: kotlin.String? = null,
     val photoProfile: UserImageDTO? = null,
     val reviewsTotalSum: kotlin.Int? = null,
     val reviewsNumber: kotlin.Int? = null,
-    val followersNumber: kotlin.Int? = null,
+    var followersNumber: kotlin.Int? = null,
     val followingNumber: kotlin.Int? = null
 ) {
 }

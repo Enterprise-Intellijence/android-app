@@ -12,10 +12,6 @@
 package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
-import com.enterprise.android_app.controller.infrastructure.ProductCategoryDeserializer
-import com.enterprise.android_app.model.CurrentDataUtils
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import io.swagger.client.models.AdminProductsBody
 import io.swagger.client.models.CapabilityDTO
 import io.swagger.client.models.OrderBasicDTO
@@ -26,11 +22,12 @@ import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.ProductCategory
 import io.swagger.client.models.ProductsIdBody
 import io.swagger.client.models.ProductsIdBody1
-import io.swagger.client.models.V1ProductsBody
 
 import io.swagger.client.infrastructure.*
-import io.swagger.client.models.ProductCategoryDTO
+import io.swagger.client.models.Product
+import io.swagger.client.models.ProductCreateDTO
 import io.swagger.client.models.ProductDTO
+import io.swagger.client.models.V1ProductsBody
 
 class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
@@ -65,18 +62,18 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return ProductsIdBody1
      */
     @Suppress("UNCHECKED_CAST")
-    fun createProduct(body: V1ProductsBody): ProductsIdBody1 {
+    fun createProduct(body: ProductCreateDTO): ProductDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
                 RequestMethod.POST,
                 "/api/v1/products"
         )
-        val response = request<ProductsIdBody1>(
+        val response = request<ProductDTO>(
                 localVariableConfig, localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ProductsIdBody1
+            ResponseType.Success -> (response as Success<*>).data as ProductDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -352,6 +349,30 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
 
         return when (response.responseType) {
             ResponseType.Success -> (response as Success<*>).data as kotlin.Any
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     *
+     *
+     * @param category
+     * @return kotlin.String
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getCategoryId(category: kotlin.String): kotlin.String {
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/products/category/{category}".replace("{" + "category" + "}", "$category")
+        )
+        val response = request<kotlin.String>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.String
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

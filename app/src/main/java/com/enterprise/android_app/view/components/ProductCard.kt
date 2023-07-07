@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,12 +49,21 @@ import com.enterprise.android_app.view_models.ProductPageViewModel
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
-fun ProductCard(product: ProductBasicDTO){
+fun ProductCard(product: ProductBasicDTO) {
     val productPageViewModel: ProductPageViewModel = viewModel()
 
-    Card(modifier = Modifier
-        .size(width = 100.dp, height = 250.dp)
-        .clickable { CurrentDataUtils.currentProductId = product.id!!; MainRouter.changePage(Navigation.ProductScreen) },
+    var likes by rememberSaveable { mutableStateOf(product.likesNumber) }
+    var liked by rememberSaveable { mutableStateOf(UserServices.isProductLiked(product.id!!))}
+
+
+    Card(
+        modifier = Modifier
+            .size(width = 100.dp, height = 250.dp)
+            .clickable {
+                CurrentDataUtils.currentProductId = product.id!!; MainRouter.changePage(
+                Navigation.ProductScreen
+            )
+            },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
         ),
@@ -76,42 +91,50 @@ fun ProductCard(product: ProductBasicDTO){
 
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
-        Row (verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
+        ) {
 
-            Text("${product.productCost.price} ${product.productCost.currency}",
+            Text(
+                "${product.productCost.price} ${product.productCost.currency}",
                 modifier = Modifier
-                    .weight(1f))
+                    .weight(1f)
+            )
             Icon(
-                imageVector = if(UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                // TODO: bug su icona
+                imageVector = if (liked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                 contentDescription = null,
                 modifier = Modifier
                     .size(20.dp)
                     .padding(end = 4.dp)
                     .clickable {
-                        if(UserServices.isProductLiked(product.id!!))
-                            UserServices.removeLikedProduct(product.id)
-                        else UserServices.addLikedProduct(product.id)
-                        productPageViewModel.getProductById(product.id)})
+                        liked = !liked
+                        if (liked) {
+                            product.id?.let { UserServices.addLikedProduct(it) }
+                            likes = likes!! + 1
+                        }
+                        else {
+                            product.id?.let { UserServices.removeLikedProduct(it) }
+                            likes = likes!! - 1
+                        }
+                    })
 
-            Text("${product.likesNumber}",
+            Text(
+                "$likes",
                 fontWeight = FontWeight.Light,
-                modifier = Modifier)
+                modifier = Modifier
+            )
         }
-        Text("${product.title}",
-            modifier = Modifier.padding(start = 2.dp))
+        Text(
+            "${product.title}",
+            modifier = Modifier.padding(start = 2.dp)
+        )
 
-        Text("${product.deliveryCost.price} ${product.deliveryCost.currency} incl.",
+        Text(
+            "${product.deliveryCost.price} ${product.deliveryCost.currency} incl.",
             fontSize = 12.sp,
             modifier = Modifier.padding(start = 2.dp, top = 2.dp)
         )
-    }
-}
-
-@Preview
-@Composable
-fun ProductCardPreview() {
-    AndroidappTheme() {
-        //ProductCard()
     }
 }

@@ -24,8 +24,9 @@ class SearchPageViewModel: ViewModel() {
     var tempSelectedCategories: MutableList<String?> = mutableListOf(null, null, null)
     val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0
+    var counter = 0
 
-    private lateinit var _categories: MutableState<MutableStateFlow<List<String>>>
+    private var _categories: MutableState<MutableStateFlow<List<String>>>
 
     val categories: MutableStateFlow<List<String>>
         get() = _categories.value
@@ -47,7 +48,6 @@ class SearchPageViewModel: ViewModel() {
             currentCategories[1] = tempSelectedCategories[1]
             currentCategories[2] = tempSelectedCategories[2]
             clearTempCategories()
-            _categories.value = categoryViewModel.primaryCategories
             _search.value = true
             return
         }
@@ -70,7 +70,6 @@ class SearchPageViewModel: ViewModel() {
                     currentCategories[1] = tempSelectedCategories[1]
                     currentCategories[2] = tempSelectedCategories[2]
                     clearTempCategories()
-                    _categories.value = categoryViewModel.primaryCategories
                     _search.value = true
                 }else
                     _search.value = false
@@ -102,6 +101,7 @@ class SearchPageViewModel: ViewModel() {
     }
 
     fun search() {
+        _categories.value = categoryViewModel.primaryCategories
         try {
             coroutineScope.launch {
                 val searched = withContext(Dispatchers.IO) { productController.getFilteredProducts(

@@ -1,21 +1,30 @@
 package com.enterprise.android_app.view.screen.filter
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,6 +33,9 @@ import com.enterprise.android_app.controller.models.FilterOptions
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.SingleRowTemplate
 import com.enterprise.android_app.view_models.SearchPageViewModel
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Check
 
 sealed class Options {
     object Root : Options()
@@ -38,7 +50,9 @@ sealed class Options {
 }
 @Composable
 fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: Modifier = Modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier
+            .padding(top = 10.dp)
+            .fillMaxSize()) {
                 when(Router.currentPage.value) {
                     Options.Root -> {
                         RootPage(onApply = onApply)
@@ -98,6 +112,7 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
         if (Router.currentPage.value == Options.Root) {
             onApply()
         }
+        viewModel.counter = 0
         Router.navigateTo(Options.Root)
     }
 }
@@ -105,9 +120,10 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
 @Composable
 fun RootPage(onApply: () -> Unit){
     val scrollState = rememberLazyListState()
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(state = scrollState, modifier = Modifier.fillMaxWidth()) {
-            item{
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        LazyColumn(state = scrollState, modifier = Modifier) {
+            item {
                 SingleRowTemplate(
                     name = stringResource(R.string.sort_by),
                     icona = null,
@@ -187,21 +203,21 @@ fun RootPage(onApply: () -> Unit){
                     Router.navigateTo(Options.Material)
                 }
             }
-
         }
-        
-        Button(
-            onClick = onApply,
+        FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            shape = CircleShape,
             modifier = Modifier
-                .height(45.dp)
-                .fillMaxWidth()
-                .padding(all = 20.dp).weight(1f),
-            shape = RoundedCornerShape(7.dp),
-        ) {
-            Text(text = stringResource(id = R.string.show_results))
+                .size(80.dp)
+                .align(Alignment.BottomEnd)
+                .padding(13.dp),
+            onClick = onApply) {
+            Icon(
+                FontAwesomeIcons.Solid.Check,
+                contentDescription = stringResource(id = R.string.apply),
+                Modifier.size(20.dp)
+            )
         }
     }
-    
 }
 
 object Router{

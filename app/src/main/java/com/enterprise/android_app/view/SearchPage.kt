@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,6 +46,7 @@ import com.enterprise.android_app.view.screen.filter.FilterScreen
 import com.enterprise.android_app.view_models.SearchPageViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Check
 import compose.icons.fontawesomeicons.solid.Filter
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -64,6 +66,8 @@ fun SearchPage(){
 
     if (filterPage.value)
         FilterScreen(viewModel = searchPageViewModel, onApply = {
+            searchPageViewModel.searchResults.clear()
+            searchPageViewModel.currentSearchPage = 0
             searchPageViewModel.search()
             searchPageViewModel.search.value = true
             filterPage.value = false
@@ -99,6 +103,7 @@ fun SearchPage(){
                 }
 
         } else {
+            searchPageViewModel.counter = 0
             CategorySelection(searchPageViewModel = searchPageViewModel){
                 searchPageViewModel.selectCategory("All")
             }
@@ -110,45 +115,54 @@ fun SearchPage(){
 fun CategorySelection(searchPageViewModel: SearchPageViewModel, onApply: () -> Unit = {}) {
     var categories = searchPageViewModel.categories.collectAsState()
     val lazyColumnState = rememberLazyListState()
-    val counter: MutableState<Int> = rememberSaveable { mutableStateOf(0) }
-    Column(Modifier.fillMaxSize()) {
-        LazyColumn(state = lazyColumnState) {
-            item {
-                SingleRowTemplate(name = "All", icona = null, icon_label = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        searchPageViewModel.selectCategory("All")
-                        onApply()
-                    })
-            }
-            for (category in categories.value) {
-                item {
-                    SingleRowTemplate(name = category, icona = null, icon_label = null,
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            counter.value += 1
-                            searchPageViewModel.selectCategory(category)
-                            if (counter.value >= 3)
-                            {
+    val counter: MutableState<Int> = rememberSaveable { mutableStateOf(searchPageViewModel.counter) }
+    Box(modifier = Modifier.fillMaxSize())
+    {
+        Column(Modifier) {
+            Column(Modifier.padding(top = 10.dp).fillMaxWidth()) {
+                LazyColumn(state = lazyColumnState) {
+                    item {
+                        SingleRowTemplate(name = "All", icona = null, icon_label = null,
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
                                 onApply()
-                                counter.value = 0
+                            })
+                    }
+                    if (categories.value.isNotEmpty()) {
+                        for (category in categories.value) {
+                            item {
+                                SingleRowTemplate(name = category, icona = null, icon_label = null,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onClick = {
+                                        counter.value += 1
+                                        searchPageViewModel.selectCategory(category)
+                                        if (counter.value >= 3) {
+                                            onApply()
+                                            counter.value = 0
+                                        }
+                                    })
                             }
-                        })
+                        }
+                    }
                 }
             }
         }
-        Button(
-            onClick = onApply,
-            modifier = Modifier
-                .height(45.dp)
-                .fillMaxWidth()
-                .padding(all = 20.dp)
-                .weight(1f),
-            shape = RoundedCornerShape(7.dp),
-        ) {
-            Text(text = stringResource(id = R.string.show_results))
-        }
 
-    }
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                shape = CircleShape,
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.BottomEnd)
+                    .padding(13.dp),
+                onClick = onApply
+            ) {
+                Icon(
+                    FontAwesomeIcons.Solid.Check,
+                    contentDescription = stringResource(id = R.string.apply),
+                    Modifier.size(20.dp)
+                )
+            }
+        }
 
 }

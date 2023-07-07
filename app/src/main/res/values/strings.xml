@@ -75,4 +75,5 @@
     <string name="PRICE_LOW_TO_HIGH">Price low to high</string>
     <string name="NEWEST_FIRST">Newest first</string>
     <string name="show_results">Show results</string>
+    <string name="price_range_error">Min value must be lower than Max</string>
 </resources>

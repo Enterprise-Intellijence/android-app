@@ -70,4 +70,9 @@
     <string name="condition">Condition</string>
     <string name="brand">Brand</string>
     <string name="material">Material</string>
+    <string name="RELEVANCE">Relevance</string>
+    <string name="PRICE_HIGH_TO_LOW">Price high to low</string>
+    <string name="PRICE_LOW_TO_HIGH">Price low to high</string>
+    <string name="NEWEST_FIRST">Newest first</string>
+    <string name="show_results">Show results</string>
 </resources>

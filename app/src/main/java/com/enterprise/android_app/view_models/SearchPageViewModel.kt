@@ -21,6 +21,7 @@ class SearchPageViewModel: ViewModel() {
     private val _search: MutableState<Boolean> = mutableStateOf(false)
     private val _searchResults = mutableStateListOf<ProductBasicDTO> ()
     private var currentCategories: MutableList<String?> = mutableListOf(null, null, null)
+    var tempSelectedCategories: MutableList<String?> = mutableListOf(null, null, null)
     val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0
 
@@ -42,12 +43,17 @@ class SearchPageViewModel: ViewModel() {
 
     fun selectCategory(category: String) {
         if(category == "All") {
+            currentCategories[0] = tempSelectedCategories[0]
+            currentCategories[1] = tempSelectedCategories[1]
+            currentCategories[2] = tempSelectedCategories[2]
+            clearTempCategories()
+            _categories.value = categoryViewModel.primaryCategories
             _search.value = true
             return
         }
         for(i in 0 until currentCategories.size) {
-            if (currentCategories[i] == null) {
-                currentCategories[i] = category
+            if (tempSelectedCategories[i] == null) {
+                tempSelectedCategories[i] = category
                 when(i) {
                     0 -> {
                         categoryViewModel.getSecondaryCategories(category)
@@ -58,10 +64,25 @@ class SearchPageViewModel: ViewModel() {
                         _categories.value = categoryViewModel.tertiaryCategories
                     }
                 }
-                _search.value = i >= currentCategories.size - 1
+                if(i >= currentCategories.size - 1)
+                {
+                    currentCategories[0] = tempSelectedCategories[0]
+                    currentCategories[1] = tempSelectedCategories[1]
+                    currentCategories[2] = tempSelectedCategories[2]
+                    clearTempCategories()
+                    _categories.value = categoryViewModel.primaryCategories
+                    _search.value = true
+                }else
+                    _search.value = false
                 break
             }
         }
+    }
+
+    fun clearTempCategories() {
+        tempSelectedCategories[0] = null
+        tempSelectedCategories[1] = null
+        tempSelectedCategories[2] = null
     }
 
     fun getSelectedCategories(): List<String?> {

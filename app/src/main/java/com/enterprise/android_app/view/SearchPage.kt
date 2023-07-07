@@ -53,8 +53,6 @@ fun SearchPage(){
 
     val searchPageViewModel: SearchPageViewModel = viewModel()
 
-    var categories = searchPageViewModel.categories.collectAsState()
-
     val search = remember { searchPageViewModel.search }
     val filterPage: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
 
@@ -67,6 +65,7 @@ fun SearchPage(){
     if (filterPage.value)
         FilterScreen(viewModel = searchPageViewModel, onApply = {
             searchPageViewModel.search()
+            searchPageViewModel.search.value = true
             filterPage.value = false
         })
     else {
@@ -95,22 +94,61 @@ fun SearchPage(){
 
                 }
             } else
-                CircularProgressIndicator(Modifier.size(40.dp))
+                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator(Modifier.size(40.dp))
+                }
+
         } else {
-            LazyColumn(state = lazyColumnState) {
-                item {
-                    SingleRowTemplate(name = "All", icona = null, icon_label = null,
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { searchPageViewModel.selectCategory("All") })
-                }
-                for (category in categories.value) {
-                    item {
-                        SingleRowTemplate(name = category, icona = null, icon_label = null,
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = { searchPageViewModel.selectCategory(category) })
-                    }
-                }
+            CategorySelection(searchPageViewModel = searchPageViewModel){
+                searchPageViewModel.selectCategory("All")
             }
         }
     }
+}
+
+@Composable
+fun CategorySelection(searchPageViewModel: SearchPageViewModel, onApply: () -> Unit = {}) {
+    var categories = searchPageViewModel.categories.collectAsState()
+    val lazyColumnState = rememberLazyListState()
+    val counter: MutableState<Int> = rememberSaveable { mutableStateOf(0) }
+    Column(Modifier.fillMaxSize()) {
+        LazyColumn(state = lazyColumnState) {
+            item {
+                SingleRowTemplate(name = "All", icona = null, icon_label = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        searchPageViewModel.selectCategory("All")
+                        onApply()
+                    })
+            }
+            for (category in categories.value) {
+                item {
+                    SingleRowTemplate(name = category, icona = null, icon_label = null,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            counter.value += 1
+                            searchPageViewModel.selectCategory(category)
+                            if (counter.value >= 3)
+                            {
+                                onApply()
+                                counter.value = 0
+                            }
+                        })
+                }
+            }
+        }
+        Button(
+            onClick = onApply,
+            modifier = Modifier
+                .height(45.dp)
+                .fillMaxWidth()
+                .padding(all = 20.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(7.dp),
+        ) {
+            Text(text = stringResource(id = R.string.show_results))
+        }
+
+    }
+
 }

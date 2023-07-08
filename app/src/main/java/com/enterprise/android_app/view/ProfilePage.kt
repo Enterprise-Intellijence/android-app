@@ -176,7 +176,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
                     }
                 }
             } else {
-                Button(onClick = { MainRouter.changePage(Navigation.ProfileDetailsScreen)}) {
+                Button(onClick = { MainRouter.changePage(Navigation.ProfileDetailsPage)}) {
                     Text("Edit profile")
                 }
             }

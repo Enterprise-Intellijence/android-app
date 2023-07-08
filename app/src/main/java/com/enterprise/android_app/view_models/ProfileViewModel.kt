@@ -4,11 +4,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.FollowingControllerApi
 import io.swagger.client.apis.ProductControllerApi
+import io.swagger.client.apis.ReportControllerApi
 import io.swagger.client.apis.ReviewControllerApi
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.ProductBasicDTO
+import io.swagger.client.models.ReportDTO
 import io.swagger.client.models.ReviewDTO
 import io.swagger.client.models.UserBasicDTO
 import kotlinx.coroutines.CoroutineScope
@@ -22,16 +25,21 @@ class ProfileViewModel() : ViewModel() {
     private val reviewControllerApi: ReviewControllerApi = ReviewControllerApi()
     private val followingControllerApi: FollowingControllerApi = FollowingControllerApi()
     private val userControllerApi: UserControllerApi = UserControllerApi()
+    private val reportControllerApi: ReportControllerApi = ReportControllerApi()
+
     val productList = mutableStateListOf<ProductBasicDTO>()
     val reviewList = mutableStateListOf<ReviewDTO>()
+
     val areProducts: MutableState<Boolean?> = mutableStateOf(false)
     val areReviews: MutableState<Boolean?> = mutableStateOf(false)
     val isVisitedUserLoaded: MutableState<Boolean?> = mutableStateOf(false)
-    var currentProductPage: Int = 0
-    var currentReviewPage: Int = 0
-    private val visitedUserId: MutableState<String?> = mutableStateOf(null)
-    var isFollowing: MutableState<Boolean?> = mutableStateOf(null)
     var visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
+    var isFollowing: MutableState<Boolean?> = mutableStateOf(null)
+    private val visitedUserId: MutableState<String?> = mutableStateOf(null)
+
+    var currentReviewPage: Int = 0
+    var currentProductPage: Int = 0
+
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun setUserId(userId: String) {
@@ -126,6 +134,24 @@ class ProfileViewModel() : ViewModel() {
                     userControllerApi.userById(id = visitedUserId.value!!)
                 }
                 isVisitedUserLoaded.value = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun report(description: String) {
+        coroutineScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    reportControllerApi.createReport(
+                        body = ReportDTO(
+                            reporterUser = CurrentDataUtils.currentUser as UserBasicDTO,
+                            reportedUser = visitedUser.value,
+                            description = description
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

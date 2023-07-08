@@ -52,7 +52,7 @@ import com.enterprise.android_app.view.settings.updateUser
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
-fun ProfileDetailsScreen() {
+fun ProfileDetailsPage() {
     var user: MutableState<UserDTO?> = remember {
         mutableStateOf(CurrentDataUtils.currentUser)
     }
@@ -128,7 +128,7 @@ fun ProfileDetailsScreen() {
                     mToast(mContext, mText )
                     focusManager.clearFocus()
                     originalTextState.value = currentTextState.value
-                    MainRouter.changePage(Navigation.ProfileDetailsScreen)
+                    MainRouter.changePage(Navigation.ProfileDetailsPage)
 
                 },
                 modifier = Modifier.align(Alignment.End)

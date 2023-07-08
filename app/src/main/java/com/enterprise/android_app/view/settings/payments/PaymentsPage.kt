@@ -50,7 +50,7 @@ fun PaymentsPage(){
                 modifier = Modifier.height(18.dp)
             )
             Text(
-                text = stringResource(id = R.string.payments),
+                text = stringResource(id = R.string.payment_methods),
                 style = TextStyle(fontSize = 20.sp),
                 modifier = Modifier
                     .weight(1f)

@@ -1,7 +1,6 @@
 package com.enterprise.android_app.view
 
 import NewProductPage
-import android.app.Application
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,27 +25,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
-import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
 import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import com.enterprise.android_app.view.settings.payments.PaymentsPage
 import com.enterprise.android_app.view.screen.ProductScreen
-import com.enterprise.android_app.view.settings.profiles.ProfileDetailsScreen
+import com.enterprise.android_app.view.settings.profiles.ProfileDetailsPage
 import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
 import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
-import com.enterprise.android_app.view_models.UserViewModel
 import java.io.File
 
 
@@ -132,11 +128,11 @@ fun MainScreen(){
                 is Navigation.ShippingPage ->{
                     ShippingPage()
                 }
-                is Navigation.PaymentsScreen ->{
+                is Navigation.PaymentsPage ->{
                     PaymentsPage()
                 }
-                is Navigation.ProfileDetailsScreen ->{
-                    ProfileDetailsScreen()
+                is Navigation.ProfileDetailsPage ->{
+                    ProfileDetailsPage()
                 }
                 is Navigation.AddEditShippingScreen ->{
                    AddEditShippingScreen()

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">android-app</string>
+    <string name="app_name">Svinted</string>
     <string name = "hello">Hey there, </string>
     <string name = "create_an_account">Create an account</string>
     <string name = "welcome_back">Welcome back</string>
@@ -17,15 +17,20 @@
     <string name="toRegister">"Don't have an account yet? "</string>
     <string name="review_insert">"Insert your review"</string>
     <string name="reviewing">"Let a review"</string>
-    <string name="give_a_vote">Rate the seller (1 - 5):</string>
+    <string name="give_a_vote">Rate the seller (1 – 5):</string>
     <string name="submit_review">Submit</string>
     <string name="back">back</string>
-    <string name="settings">settings</string>
+    <string name="settings">Settings</string>
+    <string name="profile_details">Profile Details</string>
+    <string name="account_settings">Account</string>
+    <string name="shipping_page">Shipping</string>
+    <string name="payment_methods">Payments</string>
     <string name="home">Home Page</string>
     <string name="search">Search Page</string>
     <string name="sell">Sell Product</string>
     <string name="inbox">Message</string>
     <string name="profile">My Profile</string>
+    <string name="not_my_profile">Profile</string>
     <string name="favourite">Favourite</string>
     <string name="enter">enter</string>
     <string name="watch_orders">Watch your orders</string>
@@ -38,9 +43,6 @@
     <string name="sign_up">Sign up</string>
     <string name="search_hint">Search</string>
     <string name="item_description">Item description</string>
-    <string name="accountSettings">Account Settings</string>
-    <string name="shipping">Shipping</string>
-    <string name="payments">Payments</string>
     <string name="changePhoto">Change Photo</string>
     <string name="apply">Apply change</string>
     <string name="edit">Edit</string>

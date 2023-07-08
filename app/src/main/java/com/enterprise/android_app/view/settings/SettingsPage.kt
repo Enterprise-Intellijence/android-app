@@ -1,6 +1,5 @@
 package com.enterprise.android_app.view.settings
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -10,7 +9,6 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -31,25 +29,25 @@ fun SettingsPage(){
             icona = Icons.Filled.Person,
             icon_label = stringResource(id = R.string.profile ),
             modifier= modifier,
-            onClick = { MainRouter.changePage(Navigation.ProfileDetailsScreen) }
+            onClick = { MainRouter.changePage(Navigation.ProfileDetailsPage) }
         )
         SingleRowTemplate(
             name = "Account",
             icona = Icons.Filled.List,
-            icon_label = stringResource( id = R.string.accountSettings),
+            icon_label = stringResource( id = R.string.settings),
             modifier = modifier,
             onClick = { MainRouter.changePage(Navigation.AccountSettingsPage)})
         SingleRowTemplate(
             name = "Shipping",
             icona = Icons.Filled.LocationOn,
-            icon_label = stringResource(id = R.string.shipping),
+            icon_label = stringResource(id = R.string.shipping_page),
             modifier = modifier, onClick =  { MainRouter.changePage(Navigation.ShippingPage)})
         SingleRowTemplate(
             name = "Payments",
             icona = Icons.Filled.Notifications,
             icon_label = stringResource(
-            id = R.string.payments
-        ), modifier = modifier, onClick = { MainRouter.changePage(Navigation.PaymentsScreen)} )
+            id = R.string.payment_methods
+        ), modifier = modifier, onClick = { MainRouter.changePage(Navigation.PaymentsPage)} )
     }
 }
 

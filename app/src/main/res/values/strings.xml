@@ -31,10 +31,22 @@
     <string name="inbox">Message</string>
     <string name="profile">My Profile</string>
     <string name="not_my_profile">Profile</string>
+    <string name="empty_bio">Wow, such empty!</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="follow">Follow</string>
+    <string name="followers_label">Followers: </string>
+    <string name="following_label">Following: </string>
+    <string name="Closet">Closet</string>
+    <string name="Reviews">Reviews</string>
+    <string name="unfollow">Unfollow</string>
     <string name="favourite">Favourite</string>
     <string name="enter">enter</string>
-    <string name="watch_orders">Watch your orders</string>
-    <string name="aboutSvinted">About Svinted</string>
+    <string name="orders">My Orders</string>
+    <string name="about">About Svinted</string>
+    <string name="about_description">"We want to show you just how great second-hand can be. Sell the clothes that have more to give. Shop for items you won\'t find in stores. Vinted is open to everyone who believes that good clothes should live long."</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="github">Github</string>
     <string name="viewMyProfile">View my profile</string>
     <string name="ask_seller">Ask seller</string>
     <string name="buy_now">Buy now</string>
@@ -83,4 +95,7 @@
     <string name="show_results">Show results</string>
     <string name="price_range_error">Min value must be lower than Max</string>
     <string name="clear">Clear</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="bio">Bio</string>
+    <string name="reviews_label">"Reviews: "</string>
 </resources>

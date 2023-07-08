@@ -1,14 +1,11 @@
 package com.enterprise.android_app
 
-import android.content.IntentSender
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import com.enterprise.android_app.controller.RefreshInterceptor
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.ui.theme.AndroidappTheme
-import com.enterprise.android_app.view.GoogleAuthUiClient
 import com.enterprise.android_app.view.PageApp
 import okhttp3.OkHttpClient
 

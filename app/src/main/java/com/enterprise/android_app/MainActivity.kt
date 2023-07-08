@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.room.Room
+import com.enterprise.android_app.controller.RefreshInterceptor
 import com.enterprise.android_app.model.CurrentDataUtils
 //import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.PageApp
+import okhttp3.OkHttpClient
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //gfgHttpClient()
         CurrentDataUtils._application = this.application
 
         setContent {
@@ -43,6 +44,13 @@ class MainActivity : ComponentActivity() {
             Log.println(Log.ASSERT, "ciao", "dbGIAcreato")
         }
         */
+}
+
+
+fun gfgHttpClient(): OkHttpClient {
+    val builder = OkHttpClient().newBuilder()
+        .addInterceptor(RefreshInterceptor())
+    return builder.build()
 }
 
 

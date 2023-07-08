@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.enterprise.android_app.R
@@ -43,10 +45,7 @@ sealed class Options {
     object Category : Options()
     object Price : Options()
     object Size : Options()
-    object Color : Options()
     object Condition : Options()
-    object Brand : Options()
-    object Material : Options()
 }
 @Composable
 fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: Modifier = Modifier) {
@@ -55,7 +54,7 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
             .fillMaxSize()) {
                 when(Router.currentPage.value) {
                     Options.Root -> {
-                        RootPage(onApply = onApply)
+                        RootPage(viewModel ,onClear = { viewModel.clearFilter() }, onApply = onApply)
                     }
 
                     Options.SortBy -> {
@@ -66,6 +65,7 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
 
                     Options.Category -> {
                         CategoryPage(viewModel = viewModel, onApply = {
+                            viewModel.filter.value.sizes = null
                             Router.navigateTo(Options.Root)
                         })
                     }
@@ -82,11 +82,6 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
                         })
                     }
 
-                    Options.Color -> {
-                        ColorPage(viewModel = viewModel, onApply = {
-                            Router.navigateTo(Options.Root)
-                        })
-                    }
 
                     Options.Condition -> {
                         ConditionPage(viewModel = viewModel, onApply = {
@@ -94,17 +89,6 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
                         })
                     }
 
-                    Options.Brand -> {
-                        BrandPage(viewModel = viewModel, onApply = {
-                            Router.navigateTo(Options.Root)
-                        })
-                    }
-
-                    Options.Material -> {
-                        MaterialPage(viewModel = viewModel, onApply = {
-                            Router.navigateTo(Options.Root)
-                        })
-                    }
                 }
 
         }
@@ -118,7 +102,7 @@ fun FilterScreen(viewModel: SearchPageViewModel, onApply: () -> Unit, modifier: 
 }
 
 @Composable
-fun RootPage(onApply: () -> Unit){
+fun RootPage(viewModel: SearchPageViewModel,onClear: () -> Unit, onApply: () -> Unit){
     val scrollState = rememberLazyListState()
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -126,6 +110,12 @@ fun RootPage(onApply: () -> Unit){
             item {
                 SingleRowTemplate(
                     name = stringResource(R.string.sort_by),
+                    content = when(viewModel.filter.value.sortBy) {
+                        "productCost.price" -> stringResource(R.string.price)
+                        "uploadDate" -> stringResource(R.string.NEWEST_FIRST)
+                        "views" -> stringResource(R.string.RELEVANCE)
+                        else -> stringResource(R.string.RELEVANCE)
+                    },
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()
@@ -134,8 +124,17 @@ fun RootPage(onApply: () -> Unit){
                 }
             }
             item {
+                val primaryCat = viewModel.filter.value.primaryCat?:"All"
+                var secondaryCat = viewModel.filter.value.secondaryCat?:""
+
+
                 SingleRowTemplate(
                     name = stringResource(R.string.category),
+                    content = if(secondaryCat != "") {
+                        "$primaryCat > $secondaryCat..."
+                    } else {
+                        primaryCat
+                    },
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()
@@ -146,6 +145,11 @@ fun RootPage(onApply: () -> Unit){
             item {
                 SingleRowTemplate(
                     name = stringResource(R.string.price),
+                    content = if(viewModel.filter.value.minProductCost == null && viewModel.filter.value.maxProductCost == null){
+                        ""
+                    }else{
+                        "${viewModel.filter.value.minProductCost?:""} € - ${viewModel.filter.value.maxProductCost?:""} €"
+                    },
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()
@@ -156,6 +160,7 @@ fun RootPage(onApply: () -> Unit){
             item {
                 SingleRowTemplate(
                     name = stringResource(R.string.size),
+                    content = viewModel.filter.value.sizes?.joinToString(", ") ?: "",
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()
@@ -163,44 +168,16 @@ fun RootPage(onApply: () -> Unit){
                     Router.navigateTo(Options.Size)
                 }
             }
-            item {
-                SingleRowTemplate(
-                    name = stringResource(R.string.color),
-                    icona = null,
-                    icon_label = null,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Router.navigateTo(Options.Color)
-                }
-            }
+
             item {
                 SingleRowTemplate(
                     name = stringResource(id = R.string.condition),
+                    content = viewModel.filter.value.condition,
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Router.navigateTo(Options.Condition)
-                }
-            }
-            item {
-                SingleRowTemplate(
-                    name = stringResource(id = R.string.brand),
-                    icona = null,
-                    icon_label = null,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Router.navigateTo(Options.Brand)
-                }
-            }
-            item {
-                SingleRowTemplate(
-                    name = stringResource(id = R.string.material),
-                    icona = null,
-                    icon_label = null,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Router.navigateTo(Options.Material)
                 }
             }
         }
@@ -216,6 +193,16 @@ fun RootPage(onApply: () -> Unit){
                 contentDescription = stringResource(id = R.string.apply),
                 Modifier.size(20.dp)
             )
+        }
+
+        FloatingActionButton(containerColor = MaterialTheme.colorScheme.errorContainer,
+            shape = RoundedCornerShape(13.dp),
+            modifier = Modifier
+                .width(100.dp)
+                .align(Alignment.BottomStart)
+                .padding(13.dp),
+            onClick = onClear) {
+            Text(text = stringResource(id = R.string.clear))
         }
     }
 }

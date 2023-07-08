@@ -4,9 +4,6 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,62 +37,58 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.enterprise.android_app.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.ImageSelectorComponent
-import com.enterprise.android_app.view.components.ViewImage
 import com.enterprise.android_app.view_models.ProductCategoryViewModel
 import com.enterprise.android_app.view_models.SizeViewModel
-import io.swagger.client.models.ClothingDTO
+import io.swagger.client.models.ClothingCreateDTO
 import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.EntertainmentDTO
-import io.swagger.client.models.HomeDTO
+import io.swagger.client.models.EntertainmentCreateDTO
+import io.swagger.client.models.HomeCreateDTO
+import io.swagger.client.models.ProductCategoryDTO
+import io.swagger.client.models.ProductCreateDTO
 import io.swagger.client.models.ProductDTO
-import java.time.LocalDateTime
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewProductPage() {
 
+    val context = LocalContext.current
+
     val categoryViewModel = remember { ProductCategoryViewModel() }
     val sizeViewModel = remember { SizeViewModel() }
+    val newProductViewModel: NewProductPageViewModel = viewModel()
 
-    var productCost: CustomMoneyDTO = CustomMoneyDTO(0.0, null)
-    var deliveryCost: CustomMoneyDTO = CustomMoneyDTO(0.0, null)
-    var product: ProductDTO = ProductDTO("1", "", "", productCost, deliveryCost, "", null, 0, null, null, 0, LocalDateTime.now(), null, null, null, null, null, null, "")
-    var titleText by remember { mutableStateOf(TextFieldValue(product.title ?: "")) }
-    var descriptionText by remember { mutableStateOf(TextFieldValue(product.description ?: "")) }
-    var brandText by remember { mutableStateOf(TextFieldValue(product.brand ?: "")) }
+    var titleText by remember { mutableStateOf(TextFieldValue("")) }
+    var descriptionText by remember { mutableStateOf(TextFieldValue("")) }
+    var brandText by remember { mutableStateOf(TextFieldValue("")) }
     var priceText by remember { mutableStateOf(TextFieldValue("")) }
+    var deliveryPriceText by remember { mutableStateOf(TextFieldValue("")) }
     var selectedCondition by remember { mutableStateOf("") }
     var selectedVisibility by remember { mutableStateOf("") }
     var selectedCurrency by remember { mutableStateOf("") }
 
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
+    var selectedPrimaryCategory by remember { mutableStateOf("") }
+    var selectedSecondaryCategory by remember { mutableStateOf("") }
+    var selectedTertiaryCategory by remember { mutableStateOf("") }
+    var selectedLanguage by remember { mutableStateOf("") }
+    var selectedColor by remember { mutableStateOf("") }
+    var selectedSize by remember { mutableStateOf("") }
+    var selectedMaterial by remember { mutableStateOf("") }
+    var selectedGender by remember { mutableStateOf("") }
+
+    var imagesUri = newProductViewModel.images
 
     categoryViewModel.getCategories()
-    var primaryCategories = categoryViewModel.primaryCategories.collectAsState(initial = emptyList());
+    var primaryCategories = categoryViewModel.primaryCategories.collectAsState(initial = emptyList())
 
     sizeViewModel.getSizes()
-
-    /*var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-
-    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImageUri = uri }
-    )*/
 
     Column(modifier = Modifier
         .padding(16.dp)
@@ -106,9 +99,11 @@ fun NewProductPage() {
             modifier = Modifier
                 .padding(start = 8.dp)
                 .weight(1f))
-            ImageSelectorComponent(imageUri, { imageUri = it })
+            if(imagesUri.size < 5) {
+                ImageSelectorComponent { imagesUri.add(it) }
+            }
         }
-        ImagesContainer(imageUri)
+        ImagesContainer(imagesUri) { imagesUri.remove(it) }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -167,7 +162,12 @@ fun NewProductPage() {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel)
+        CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel, selectedPrimaryCategory, { selectedPrimaryCategory = it },
+            selectedSecondaryCategory, { selectedSecondaryCategory = it },
+            selectedTertiaryCategory, { selectedTertiaryCategory = it },
+            selectedMaterial, { selectedMaterial = it }, selectedColor, { selectedColor = it },
+            selectedSize, { selectedSize = it }, selectedGender, { selectedGender = it },
+            selectedLanguage, { selectedLanguage = it })
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -185,6 +185,19 @@ fun NewProductPage() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Delivery price")
+            Spacer(modifier = Modifier.width(16.dp))
+            OutlinedTextField(
+                value = deliveryPriceText,
+                onValueChange = { deliveryPriceText = it },
+                label = { Text(text = "Enter a price") },
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Currency")
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -193,7 +206,16 @@ fun NewProductPage() {
 
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 16.dp)) {
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                var category = ProductCategoryDTO(null, selectedPrimaryCategory, selectedSecondaryCategory, selectedTertiaryCategory)
+                var productCost = CustomMoneyDTO(priceText.text.toDouble(), CustomMoneyDTO.Currency.valueOf(selectedCurrency))
+                var deliveryCost = CustomMoneyDTO(deliveryPriceText.text.toDouble(), CustomMoneyDTO.Currency.valueOf(selectedCurrency))
+                var product = ProductCreateDTO(titleText.text, descriptionText.text, productCost, deliveryCost, brandText.text, ProductCreateDTO.Condition.valueOf(selectedCondition), null,
+                    ProductCreateDTO.Visibility.valueOf(selectedVisibility), category, null, selectedPrimaryCategory)
+
+                newProductViewModel.saveNewProduct(product, context, imagesUri)
+
+            }) {
                 Text("Load product")
             }
         }
@@ -202,7 +224,7 @@ fun NewProductPage() {
 
 
 @Composable
-fun ImagesContainer(imageUri: Uri?) {
+fun ImagesContainer(imageUri: List<Uri?>, onDelete: (Uri) -> Unit) {
     LazyRow(
         modifier = Modifier
             .height(150.dp)
@@ -214,32 +236,31 @@ fun ImagesContainer(imageUri: Uri?) {
                 shape = MaterialTheme.shapes.small
             )
     ) {
-        item(imageUri) {
+        items(imageUri) {uri ->
             val context = LocalContext.current
             val bitmap =  remember {
                 mutableStateOf<Bitmap?>(null)
             }
 
-            imageUri.let {
+            uri?.let {
                 if (Build.VERSION.SDK_INT < 28) {
                     bitmap.value = MediaStore.Images
-                        .Media.getBitmap(context.contentResolver,it)
+                        .Media.getBitmap(context.contentResolver, it)
 
                 } else {
-                    val source = it?.let { it1 ->
-                        ImageDecoder
-                            .createSource(context.contentResolver, it1)
-                    }
-                    bitmap.value = source?.let { it1 -> ImageDecoder.decodeBitmap(it1) }
+                    val source = ImageDecoder
+                        .createSource(context.contentResolver,it)
+                    bitmap.value = ImageDecoder.decodeBitmap(source)
                 }
-                bitmap.value?.let { it1 -> BoxImage(btm = it1) }
+
+                bitmap.value?.let { it1 -> BoxImage(it1, { onDelete(it) }) }
             }
         }
     }
 }
 
 @Composable
-fun BoxImage(btm: Bitmap) {
+fun BoxImage(btm: Bitmap, onDeleteUri: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -254,9 +275,8 @@ fun BoxImage(btm: Bitmap) {
                 .padding(8.dp)
                 .align(Alignment.TopEnd)
         ) {
-            IconToggleButton(
-                checked = false,
-                onCheckedChange = { /* Handle icon click event */ },
+            IconButton(
+                onClick = onDeleteUri,
                 modifier = Modifier.fillMaxSize(),
             ) {
                 Icon(
@@ -346,19 +366,17 @@ fun DropDownCategory(selectedOptionText: String, onChange: (String) -> Unit, lis
 }
 
 @Composable
-fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductCategoryViewModel, sizesViewModel: SizeViewModel) {
-    var selectedPrimaryCategory by remember { mutableStateOf("") }
-    var selectedSecondaryCategory by remember { mutableStateOf("") }
-    var selectedTertiaryCategory by remember { mutableStateOf("") }
-    var selectedLanguage by remember { mutableStateOf("") }
-    var selectedColor by remember { mutableStateOf("") }
-    var selectedSize by remember { mutableStateOf("") }
-    var selectedMaterial by remember { mutableStateOf("") }
-    var selectedGender by remember { mutableStateOf("") }
+fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductCategoryViewModel, sizesViewModel: SizeViewModel,
+                  selectedPrimaryCategory: String, onPrimaryCatChange: (String) -> Unit, selectedSecondaryCategory: String, onSecondaryCatChange: (String) -> Unit,
+                  selectedTertiaryCategory: String, onTertiaryCatChange: (String) -> Unit,
+                  selectedMaterial: String, onMaterialChange: (String) -> Unit, selectedColor: String, onColorChange: (String) -> Unit,
+                  selectedSize: String, onSizeChange: (String) -> Unit, selectedGender: String, onGenderChange: (String) -> Unit,
+                  selectedLanguage: String, onLanguageChange: (String) -> Unit) {
+
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = "Categories")
-        DropDownCategory(selectedPrimaryCategory, {selectedPrimaryCategory = it}, list = primaryCat, "Category")
+        DropDownCategory(selectedPrimaryCategory, { onPrimaryCatChange(it) }, list = primaryCat, "Category")
     }
     if(selectedPrimaryCategory != "") {
         Spacer(modifier = Modifier.height(16.dp))
@@ -367,7 +385,7 @@ fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductC
         var secondaryCategories = categoriesViewModel.secondaryCategories.collectAsState(initial = emptyList());
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.weight(1f))
-            DropDownCategory(selectedSecondaryCategory, {selectedSecondaryCategory = it}, list = secondaryCategories, "Category")
+            DropDownCategory(selectedSecondaryCategory, { onSecondaryCatChange(it) }, list = secondaryCategories, "Category")
         }
     }
 
@@ -378,49 +396,52 @@ fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductC
         var tertiaryCategories = categoriesViewModel.tertiaryCategories.collectAsState(initial = emptyList());
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
             Spacer(modifier = Modifier.weight(1f))
-            DropDownCategory(selectedTertiaryCategory, { selectedTertiaryCategory = it }, list = tertiaryCategories, "Category")
+            DropDownCategory(selectedTertiaryCategory, { onTertiaryCatChange(it) }, list = tertiaryCategories, "Category")
         }
         Spacer(modifier = Modifier.height(16.dp))
     }
+
     if(selectedTertiaryCategory != "") {
-        if(selectedPrimaryCategory == "Home") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Material", modifier = Modifier.weight(1f))
-                DropDown(selectedMaterial, { selectedMaterial = it }, HomeDTO.HomeMaterial.values().map { it.name }, "Material")
+        when(selectedPrimaryCategory) {
+            "Home" -> {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Material", modifier = Modifier.weight(1f))
+                    DropDown(selectedMaterial, { onMaterialChange(it) }, HomeCreateDTO.HomeMaterial.values().map { it.name }, "Material")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Color", modifier = Modifier.weight(1f))
+                    DropDown(selectedColor, { onColorChange(it) }, HomeCreateDTO.Colour.values().map { it.name }, "Color")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    sizesViewModel.getSizesByCategory("Home")
+                    Text("Size", modifier = Modifier.weight(1f))
+                    DropDownCategory(selectedSize, { onSizeChange(it) }, sizesViewModel.sizesByCat.collectAsState(initial = emptyList()), "Size")
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Color", modifier = Modifier.weight(1f))
-                DropDown(selectedColor, { selectedColor = it }, HomeDTO.Colour.values().map { it.name }, "Color")
+            "Entertainment" -> {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Language", modifier = Modifier.weight(1f))
+                    DropDown(selectedLanguage, { onLanguageChange(it) }, EntertainmentCreateDTO.EntertainmentLanguage.values().map { it.name }, "Language")
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                sizesViewModel.getSizesByCategory("Home")
-                Text("Size", modifier = Modifier.weight(1f))
-                DropDownCategory(selectedSize, { selectedSize = it }, sizesViewModel.sizesByCat.collectAsState(initial = emptyList()), "Size")
-            }
-        }
-        else if(selectedPrimaryCategory == "Entertainment") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Language", modifier = Modifier.weight(1f))
-                DropDown(selectedLanguage, { selectedLanguage = it }, EntertainmentDTO.EntertainmentLanguage.values().map { it.name }, "Language")
-            }
-        }
-        else if(selectedPrimaryCategory == "Clothing") {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Gender", modifier = Modifier.weight(1f))
-                DropDown(selectedGender, { selectedGender = it }, ClothingDTO.ProductGender.values().map { it.name }, "Gender")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Color", modifier = Modifier.weight(1f))
-                DropDown(selectedColor, { selectedColor = it }, ClothingDTO.Colour.values().map { it.name }, "Color")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                sizesViewModel.getSizesByCategory(selectedSecondaryCategory)
-                Text("Size", modifier = Modifier.weight(1f))
-                DropDownCategory(selectedSize, { selectedSize = it }, sizesViewModel.sizesByCat.collectAsState(emptyList()), "Size")
+            "Clothing" -> {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Gender", modifier = Modifier.weight(1f))
+                    DropDown(selectedGender, { onGenderChange(it) }, ClothingCreateDTO.ProductGender.values().map { it.name }, "Gender")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Color", modifier = Modifier.weight(1f))
+                    DropDown(selectedColor, { onColorChange(it) }, ClothingCreateDTO.Colour.values().map { it.name }, "Color")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    sizesViewModel.getSizesByCategory(selectedSecondaryCategory)
+                    Text("Size", modifier = Modifier.weight(1f))
+                    DropDownCategory(selectedSize, { onSizeChange(it) }, sizesViewModel.sizesByCat.collectAsState(emptyList()), "Size")
+                }
             }
         }
     }

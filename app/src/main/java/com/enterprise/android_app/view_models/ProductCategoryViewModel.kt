@@ -16,12 +16,17 @@ class ProductCategoryViewModel : ViewModel() {
     private var _secondaryCategoryList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     private var _tertiaryCategoryList: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
 
+    private var _categoryId = MutableStateFlow("")
+
     val primaryCategories: MutableStateFlow<List<String>>
         get() = _primaryCategoryList
     val secondaryCategories: MutableStateFlow<List<String>>
         get() = _secondaryCategoryList
     val tertiaryCategories: MutableStateFlow<List<String>>
         get() = _tertiaryCategoryList
+
+    val categoryId: MutableStateFlow<String>
+        get() = _categoryId
 
     fun getCategories() {
             coroutineScope.launch {
@@ -37,6 +42,20 @@ class ProductCategoryViewModel : ViewModel() {
             }
     }
 
+    fun getCategoryId(tertiaryCat: String) {
+        coroutineScope.launch {
+            try {
+                val cat = withContext(Dispatchers.IO) {
+                    productControllerApi.getCategoryId(tertiaryCat)
+                }
+                _categoryId.emit(cat)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        println("categoryId: " + _categoryId.value)
+    }
     fun getSecondaryCategories(primary: String) {
 
             coroutineScope.launch {

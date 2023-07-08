@@ -2,6 +2,7 @@ package com.enterprise.android_app.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -21,8 +24,11 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -113,29 +119,36 @@ fun ProfileMenuPage(){
 @Composable
 fun SingleRowTemplate(
     name: String,
+    content: String? = null,
     icona: ImageVector?,
     icon_label: String?,
     modifier: Modifier,
     onClick: ()->Unit
 ){
+    val _content = content ?: ""
     Row(modifier = modifier.height(80.dp)/*.padding(top = 10.dp)*/, verticalAlignment = Alignment.CenterVertically) {
         Button(
             onClick = onClick,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .height(80.dp),
-            border = BorderStroke(1.dp, Color.Gray),
             shape = RectangleShape,
-            contentPadding = PaddingValues(start = 8.dp),
+            contentPadding = PaddingValues(start = 13.dp),
+            colors = ButtonDefaults.buttonColors(Color.Transparent),
             content = {
                 if (icona != null && icon_label != null)
-                    Icon(icona, icon_label, modifier = Modifier.size(18.dp))
+                    Icon(icona, icon_label, tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(12.dp))
-                Text(text = name,modifier = modifier.weight(1f), style = TextStyle(fontSize= 18.sp, fontWeight = FontWeight.Light))
-                Icon(Icons.Filled.KeyboardArrowRight, contentDescription = stringResource(id = R.string.enter))
+                Text(text = name ,modifier = modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface,style = TextStyle(fontSize= 18.sp, fontWeight = FontWeight.Normal))
+                Spacer(modifier =  Modifier.width(12.dp))
+                Text(text = _content, Modifier.widthIn(max = 150.dp),color = Color.Gray,style = TextStyle(fontSize= 18.sp, fontWeight = FontWeight.Light))
+                Spacer(modifier = Modifier.width(15.dp))
+                Icon(Icons.Filled.KeyboardArrowRight, modifier = Modifier.padding(end = 8.dp),
+                    tint = MaterialTheme.colorScheme.onSurface, contentDescription = stringResource(id = R.string.enter) )
             }
         )
     }
+    Divider( modifier = Modifier.padding(top = 5.dp, start = 20.dp, end = 20.dp), color = Color.Gray )
 }
 
 @Composable

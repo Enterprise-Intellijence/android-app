@@ -172,8 +172,8 @@ fun LoginPage(){
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
                     authViewModel.authenticate(
-                        "username1",
-                        "password1",
+                        "username3",
+                        "password3",
                         //textValueUsername.text,
                         //textValuePassword.text,
                         onError = {errorMessage.value = "Authentication failed. Please check your username and password."}

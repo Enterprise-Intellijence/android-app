@@ -84,6 +84,12 @@ open class ApiClient(val baseUrl: String) {
             mapOf(Authorization to CurrentDataUtils.refreshToken)
 
         val headers = requestConfig.headers + defaultHeaders + customHeaders
+
+        /*
+        if (url.toString().contains("refreshToken")!!)
+            headers + mapOf(Authorization to CurrentDataUtils.refreshToken)
+        */
+
         if (headers[ContentType] ?: "" == "") {
             throw kotlin.IllegalStateException("Missing Content-Type header. This is required.")
         }

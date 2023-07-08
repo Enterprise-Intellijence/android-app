@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.MutableSnapshot
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.PaymentMethodBasicDTO
@@ -117,6 +116,20 @@ object CurrentDataUtils {
                 println("UPDATE")
             }
 
+        }
+    }
+
+    fun refreshToken(){
+        CoroutineScope(Dispatchers.IO).launch{
+            //TODO get refreshtoken from db
+            if( refreshToken != null){
+                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                if (tokenMap.isNotEmpty()) {
+                    _accessToken.value = tokenMap["accessToken"]!!
+                    _refreshToken.value = tokenMap["refreshToken"]!!
+                }
+                //TODO persist new refreshtoken
+            }
         }
     }
 

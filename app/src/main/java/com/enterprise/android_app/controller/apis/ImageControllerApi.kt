@@ -12,7 +12,6 @@
 package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
-import io.swagger.client.models.ImagesProductBody
 import io.swagger.client.models.PhotoprofileIdBody
 import io.swagger.client.models.ProductIdBody
 import io.swagger.client.models.ProductImageDTO
@@ -154,7 +153,7 @@ class ImageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
      * @return ProductImageDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun saveImageProduct(body: ImagesProductBody, productId: kotlin.String, description: kotlin.String): ProductImageDTO {
+    fun saveImageProduct(body: ByteArray?, productId: String, description: String): ProductImageDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             put("product_id", listOf(productId.toString()))

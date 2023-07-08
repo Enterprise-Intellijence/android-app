@@ -140,6 +140,7 @@ fun MainScreen(){
                 }
                 //is Navigation.ImageSelectorComponent ->{
                 /*is Navigation.ImageSelectorComponent ->{
+                is Navigation.ImageSelectorComponent ->{
                     ImageSelectorComponent(
                         fileState = fileState,
                         onFileUploaded = {

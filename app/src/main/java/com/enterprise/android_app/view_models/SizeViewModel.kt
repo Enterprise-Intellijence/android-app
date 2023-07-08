@@ -49,7 +49,7 @@ class SizeViewModel : ViewModel() {
                 }
                 _sizesByCat.emit(sizes as List<String>)
 
-                println("sizesss by cattt: " + _sizesByCat)
+                println("sizesss by cattt: " + _sizesByCat.value[0])
 
             } catch (e: Exception) {
                 println("error")

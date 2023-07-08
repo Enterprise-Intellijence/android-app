@@ -83,4 +83,7 @@
     <string name="show_results">Show results</string>
     <string name="price_range_error">Min value must be lower than Max</string>
     <string name="clear">Clear</string>
+    <string name="expDate">Exp date:</string>
+    <string name="owner">Owner:</string>
+    <string name="defaultPaymentMethod">Default Payment</string>
 </resources>

@@ -153,15 +153,3 @@ fun AddEditShippingScreen(){
     }
 }
 
-private fun updateValue(addressDTO: AddressDTO, headerText: String,streetText: String,zipCodeText: String,cityText: String,countryText: String,phoneNumber: String,isDefault: Boolean ): AddressDTO {
-    return addressDTO.copy(
-        header = headerText,
-        street = streetText,
-        zipCode = zipCodeText,
-        city = cityText,
-        country = countryText,
-        phoneNumber = phoneNumber,
-        default = isDefault
-
-        )
-}

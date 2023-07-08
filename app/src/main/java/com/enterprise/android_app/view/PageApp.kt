@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import com.enterprise.android_app.MainActivity
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
@@ -42,12 +43,13 @@ import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
+import com.enterprise.android_app.view.settings.payments.AddEditPaymentMethodScreen
 import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
 import java.io.File
 
 
 @Composable
-fun PageApp(){
+fun PageApp(mainActivity: MainActivity) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
@@ -70,7 +72,7 @@ fun PageApp(){
                     LoginPage()
                 }
                 is Screen.MainScreen -> {
-                    MainScreen()
+                    MainScreen(mainActivity)
                 }
 
                 else -> {}
@@ -82,8 +84,9 @@ fun PageApp(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(){
+fun MainScreen(mainActivity: MainActivity) {
     val fileState = remember { mutableStateOf<File?>(null) }
+
 
 
     Scaffold(topBar = { SearchTopBar()}, bottomBar = { MainBottomBar()}, floatingActionButton = {}, floatingActionButtonPosition = FabPosition.End) {
@@ -137,6 +140,12 @@ fun MainScreen(){
                 is Navigation.AddEditShippingScreen ->{
                    AddEditShippingScreen()
 
+                }
+                is Navigation.PaymentsPage ->{
+                    PaymentsPage()
+                }
+                is Navigation.AddEditPaymentMethodScreen ->{
+                    AddEditPaymentMethodScreen(mainActivity)
                 }
                 //is Navigation.ImageSelectorComponent ->{
                 /*is Navigation.ImageSelectorComponent ->{

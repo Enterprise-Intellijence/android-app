@@ -45,6 +45,9 @@ sealed class Navigation() {
     object ProfileDetailsPage : Navigation(){}
     object AddEditShippingScreen : Navigation(){}
 
+    object AddEditPaymentMethodScreen : Navigation() {
+
+    }
 
 
 }

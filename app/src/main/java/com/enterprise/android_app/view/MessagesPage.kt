@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view_models.MessagePageViewModel
 import com.enterprise.android_app.view_models.OfferViewModel
@@ -47,6 +48,15 @@ import java.time.format.DateTimeFormatter
 fun MessagesPage() {
     val messagePageViewModel: MessagePageViewModel = viewModel()
     val offerViewModel: OfferViewModel = viewModel()
+
+    if(CurrentDataUtils.chatUserId.value != null) {
+        messagePageViewModel.openChat(CurrentDataUtils.chatUserId.value!!, CurrentDataUtils.chatProductId.value)
+        CurrentDataUtils.chatUserId.value = null
+        CurrentDataUtils.chatProductId.value = null
+
+        messagePageViewModel.isMakingOffer.value = CurrentDataUtils.makeOffer.value
+        CurrentDataUtils.makeOffer.value = false
+    }
 
     Column() {
         if (!messagePageViewModel.inChat.value) {

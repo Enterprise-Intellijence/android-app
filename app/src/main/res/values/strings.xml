@@ -14,6 +14,7 @@
     <string name="login">Already have an account?</string>
     <string name="forgot_password">"Forgot your password? "</string>
     <string name="button_login">Login</string>
+    <string name="button_login_google">Login with google</string>
     <string name="toRegister">"Don't have an account yet? "</string>
     <string name="review_insert">"Insert your review"</string>
     <string name="reviewing">"Let a review"</string>
@@ -80,4 +81,5 @@
     <string name="NEWEST_FIRST">Newest first</string>
     <string name="show_results">Show results</string>
     <string name="price_range_error">Min value must be lower than Max</string>
+    <string name="web_client_id">1049827257011-ete5d6u7kjq601i6ra2ukaus5nsd3het.apps.googleusercontent.com</string>
 </resources>

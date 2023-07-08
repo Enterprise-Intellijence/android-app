@@ -33,7 +33,6 @@ import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.view.components.TopBarGeneric
 import com.enterprise.android_app.view.components.TopBarSearch
-import com.enterprise.android_app.view.screen.AboutScreen
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import com.enterprise.android_app.view.settings.payments.PaymentsPage
 import com.enterprise.android_app.view.screen.ProductScreen
@@ -41,6 +40,7 @@ import com.enterprise.android_app.view.settings.profiles.ProfileDetailsPage
 import com.enterprise.android_app.view.settings.shippings.ShippingPage
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
+import com.enterprise.android_app.view.settings.about.AboutPage
 import com.enterprise.android_app.view.settings.account.AccountSettingsPage
 import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
 import java.io.File
@@ -113,8 +113,8 @@ fun MainScreen(){
                 is Navigation.OrdersPage ->{
                     OrdersPage()
                 }
-                is Navigation.AboutScreen ->{
-                    AboutScreen()
+                is Navigation.AboutPage ->{
+                    AboutPage()
                 }
                 is Navigation.ProductScreen ->{
                     ProductScreen( CurrentDataUtils.currentProductId)

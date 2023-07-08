@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +29,13 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.view_models.ProfileViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.ExclamationCircle
+import io.swagger.client.models.UserBasicDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +72,7 @@ fun TopBarSearch() = TopAppBar(
 fun TopBarGeneric() {
 
     val profileViewModel: ProfileViewModel = ProfileViewModel()
+    val visitedUser = remember { profileViewModel.visitedUser }
 
     Row(
         modifier = Modifier
@@ -95,22 +99,11 @@ fun TopBarGeneric() {
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
-                        Navigation.ProfilePage -> {
-
-                            if (CurrentDataUtils.currentUser?.id == profileViewModel.visitedUser.value?.id) {
-                                Text(
-                                    text = stringResource(id = R.string.profile),
-                                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                                    textAlign = TextAlign.Center
-                                )
-                            } else {
-                                Text(
-                                    text = stringResource(id = R.string.not_my_profile),
-                                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
+                        Navigation.ProfilePage -> Text(
+                                text = stringResource(id = R.string.not_my_profile),
+                                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                                textAlign = TextAlign.Center
+                        )
 
                         Navigation.SettingsPage -> Text(
                             text = stringResource(id = R.string.settings),
@@ -142,16 +135,20 @@ fun TopBarGeneric() {
                             textAlign = TextAlign.Center
                         )
 
+                        Navigation.AboutPage -> Text(
+                            text = stringResource(id = R.string.about),
+                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
 
                         else -> Text(
                             text = stringResource(id = R.string.app_name),
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center
-                            )
+                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
                         )
                     }
                 },
+
                 navigationIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
@@ -170,16 +167,18 @@ fun TopBarGeneric() {
             horizontalAlignment = Alignment.End
         ) {
             if (MainRouter.currentPage.value == Navigation.ProfilePage) {
-                if (CurrentDataUtils.currentUser?.id != profileViewModel.visitedUser.value?.id) {
-                    IconButton(onClick = {
+                if (visitedUser.value != null) {
+                    if (CurrentDataUtils.currentUser?.id != profileViewModel.visitedUser.value?.id) {
+                        IconButton(onClick = {
 
-                    }) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
-                            contentDescription = "report",
-                            tint = Color.Yellow,
-                            modifier = Modifier.height(20.dp)
-                        )
+                        }) {
+                            Icon(
+                                imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
+                                contentDescription = "report",
+                                tint = Secondary,
+                                modifier = Modifier.height(20.dp)
+                            )
+                        }
                     }
                 }
             }

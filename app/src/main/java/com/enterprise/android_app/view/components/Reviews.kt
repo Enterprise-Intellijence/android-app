@@ -39,7 +39,7 @@ fun Reviews(viewModel: ProfileViewModel) {
         }
     } else {
 
-        if (!viewModel.areProducts.value!!) {
+        if (viewModel.visitedUser.value?.reviewsNumber != 0) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,

@@ -22,8 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
+import java.lang.Thread.sleep
 
 @Composable
 fun StartScreen() {
@@ -35,7 +37,18 @@ fun StartScreen() {
             Text(text = "Svinted", fontSize = 30.sp)
             
 
-            Button( onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+            Button( onClick = {
+
+                              AppRouter.navigateTo(Screen.LoginScreen)
+                /*
+                CurrentDataUtils.checkRefreshToken()
+                sleep(3000)
+                if(!CurrentDataUtils.hasToCheck)
+                    AppRouter.navigateTo(Screen.MainScreen)
+                else
+                    AppRouter.navigateTo(Screen.LoginScreen)
+                */
+                              },
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth()

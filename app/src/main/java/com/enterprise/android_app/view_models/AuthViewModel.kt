@@ -28,6 +28,8 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                 val tokenMap = userController.authenticate(username, password)
                 if (tokenMap.isNotEmpty()) {
                     CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
+
+                    //set the refresh token to the DB
                     CurrentDataUtils.setRefresh(tokenMap["refreshToken"].toString())
                     CurrentDataUtils.retrieveCurrentUser()
 
@@ -41,8 +43,9 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                 onError()
             }
         }
-
-
     }
+
+
+
 
 }

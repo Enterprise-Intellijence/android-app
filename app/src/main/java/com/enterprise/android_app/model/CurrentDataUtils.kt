@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
+import com.enterprise.android_app.model.persistence.User
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.UserBasicDTO
@@ -15,6 +16,7 @@ import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 
 object CurrentDataUtils {
     private val userControllerApi = UserControllerApi()
@@ -29,15 +31,30 @@ object CurrentDataUtils {
     private var _PaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
     private var _currentPaymentMethod: PaymentMethodDTO? = null
 
+    private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
+
+
+    private var _hasToCheck: MutableState<Boolean> = mutableStateOf(false)
+
     var _application: Application? = null
 
     var accessToken: String
         get() = _accessToken.value
         set(newValue) { _accessToken.value = newValue }
 
+
+    var hasToCheck: Boolean
+        get() = _hasToCheck.value
+        set(newValue){ _hasToCheck.value = newValue}
+
     var refreshToken: String
         get() = _refreshToken.value
         set(newValue) { _refreshToken.value = newValue }
+
+    var refreshTokenDB: String
+        get() = _refreshTokenDB.value
+        set(newValue) {
+            _refreshToken.value = newValue}
 
     var currentUser: UserDTO? = null
         get() = _currentUser.value
@@ -100,6 +117,7 @@ object CurrentDataUtils {
         _PaymentsMethod.clear()
         _currentUser.value?.paymentMethods?.let { _PaymentsMethod.addAll(it.toList()) }
     }
+
     fun setRefresh(refresh_token: String){
         _refreshToken.value = refresh_token
         CoroutineScope(Dispatchers.IO).launch{
@@ -118,17 +136,44 @@ object CurrentDataUtils {
         }
     }
 
-    fun refreshToken(){
+        fun refreshToken(){
         CoroutineScope(Dispatchers.IO).launch{
-            //TODO get refreshtoken from db
             if( refreshToken != null){
                 var tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                 }
-                //TODO persist new refreshtoken
             }
+        }
+    }
+
+
+    fun checkRefreshToken(){
+
+
+        println("QUA CI SONO ARRIVATO")
+        /*
+        CoroutineScope(Dispatchers.IO).launch {
+            _refreshTokenDB.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            sleep(2000)
+            println("REFRESHTOKEN DB --> " + _refreshToken.value)
+        }
+        */
+
+
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            var MapCheckRefreshToken = userControllerApi.refreshToken()
+            var checkRefreshToken = MapCheckRefreshToken["refreshToken"].toString()
+            println("CHECK REFRESHTOKEN --> " + checkRefreshToken)
+
+
+            sleep(3000)
+
+            if(_refreshTokenDB.value != checkRefreshToken)
+                _hasToCheck.value = true
         }
     }
 

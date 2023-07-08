@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view.screen
 
 import android.provider.Settings.Global.getString
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,25 +23,52 @@ import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
+import com.enterprise.android_app.view_models.AuthViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
+import com.stevdzasan.onetap.rememberOneTapSignInState
 
 @Composable
 fun StartScreen() {
+    val authViewModel: AuthViewModel = viewModel()
+    val state = rememberOneTapSignInState()
 
-    Surface(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()) {
-        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    OneTapSignInWithGoogle(
+        state = state,
+        clientId = stringResource(id = R.string.web_client_id),
+        onTokenIdReceived = { tokenId ->
+            Log.d("LoginPage", "tokenId: $tokenId")
+            authViewModel.authenticateGoogle(tokenId) {
+                Log.d("LoginPage", "authenticateGoogle error")
+            }
+        },
+        onDialogDismissed = { message ->
+            Log.d("LoginPage", "dismissed, message: $message")
+        }
+    )
+
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             Text(text = "Svinted", fontSize = 30.sp)
-            
 
-            Button( onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+
+            Button(
+                onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth()
@@ -51,7 +79,8 @@ fun StartScreen() {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Button( onClick = { AppRouter.navigateTo(Screen.SignUpScreen) },
+            Button(
+                onClick = { AppRouter.navigateTo(Screen.SignUpScreen) },
                 colors = ButtonDefaults.outlinedButtonColors(),
                 modifier = Modifier
                     .height(45.dp)
@@ -66,6 +95,27 @@ fun StartScreen() {
             ) {
                 Text(text = stringResource(id = R.string.sign_up))
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+
+            Button(
+                onClick = { state.open() },
+                colors = ButtonDefaults.outlinedButtonColors(),
+                modifier = Modifier
+                    .height(45.dp)
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(7.dp)
+                    ),
+                shape = RoundedCornerShape(7.dp)
+            ) {
+                Text(text = "continue with Google")
+            }
+
 
         }
     }

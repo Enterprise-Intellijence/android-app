@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import android.R.id
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -63,6 +64,8 @@ import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.AuthViewModel
 import com.enterprise.android_app.view_models.UserViewModel
 import com.google.android.gms.auth.api.identity.Identity
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
+import com.stevdzasan.onetap.rememberOneTapSignInState
 import compose.icons.AllIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -84,22 +87,6 @@ fun LoginPage() {
     var textValuePassword by remember { mutableStateOf(TextFieldValue()) }
 
     val errorMessage = rememberSaveable { mutableStateOf("") }
-
-    val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context,
-            Identity.getSignInClient(context)
-        )
-    }
-
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { result ->
-            if (result.resultCode == ComponentActivity.RESULT_OK) {
-                googleAuthUiClient.signInWithIntent(result.data!!)
-            }
-        })
 
 
     Surface(
@@ -215,20 +202,6 @@ fun LoginPage() {
                         }
                     )
                 })
-
-
-            val scope = rememberCoroutineScope()
-
-            Button(onClick = {
-                scope.launch {
-                    val signInIntentSender = googleAuthUiClient.signIn()
-                    // TODO:
-                    launcher.launch(IntentSenderRequest.Builder(signInIntentSender).build())
-
-                }
-            }) {
-                Text(text = "Sign in with Google")
-            }
 
             if (errorMessage.value.isNotEmpty()) {
                 Text(text = errorMessage.value, color = Color.Red)

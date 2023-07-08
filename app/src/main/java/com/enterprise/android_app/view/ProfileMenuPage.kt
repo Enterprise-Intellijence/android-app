@@ -1,8 +1,6 @@
 package com.enterprise.android_app.view
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -54,7 +51,6 @@ import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
-import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalCoilApi::class)
@@ -108,11 +104,11 @@ fun ProfileMenuPage(){
             modifier = modifier,
             onClick = {MainRouter.changePage(Navigation.SettingsPage)})
         SingleRowTemplate(name = "My orders", icona = Icons.Filled.Menu, icon_label = stringResource(
-            id = R.string.watch_orders
+            id = R.string.orders
         ), modifier = modifier, onClick =  {MainRouter.changePage(Navigation.OrdersPage)})
         SingleRowTemplate(name = "About Svinted", icona = Icons.Filled.Info, icon_label = stringResource(
-            id = R.string.aboutSvinted
-        ), modifier = modifier, onClick = {MainRouter.changePage(Navigation.AboutScreen)} )
+            id = R.string.about
+        ), modifier = modifier, onClick = {MainRouter.changePage(Navigation.AboutPage)} )
     }
 }
 

@@ -1,21 +1,15 @@
 package com.enterprise.android_app.view
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -27,36 +21,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.Yellow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
-import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view.components.Closet
 import com.enterprise.android_app.view.components.Reviews
-import com.enterprise.android_app.view.settings.updateUser
 import com.enterprise.android_app.view_models.ProfileViewModel
-import com.enterprise.android_app.view_models.UserViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cubes
-import compose.icons.fontawesomeicons.solid.ExclamationCircle
 import compose.icons.fontawesomeicons.solid.PencilAlt
 import io.swagger.client.models.UserBasicDTO
 
 @Composable
 fun ProfilePage(visitedUser: UserBasicDTO?){
     var tabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Closet", "Reviews")
+    val tabs = listOf(stringResource(id = R.string.Closet), stringResource(id = R.string.Reviews))
     val profileViewModel = ProfileViewModel()
     profileViewModel.visitedUser.value = visitedUser
     profileViewModel.setUserId(visitedUser?.id!!)
@@ -73,10 +62,10 @@ fun ProfilePage(visitedUser: UserBasicDTO?){
                     icon = {
                         when (index) {
                             0 -> Icon(imageVector = FontAwesomeIcons.Solid.Cubes,
-                                        contentDescription = "Closet",
+                                        contentDescription = stringResource(id = R.string.Closet),
                                         modifier = Modifier.height(20.dp))
                             1 -> Icon(imageVector = FontAwesomeIcons.Solid.PencilAlt,
-                                        contentDescription = "Reviews",
+                                        contentDescription = stringResource(id = R.string.Reviews),
                                         modifier = Modifier.height(20.dp))
                         }
                     }
@@ -111,7 +100,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
                     transformations(RoundedCornersTransformation(4f))
                 }
             ),
-                contentDescription = "profile picture",
+                contentDescription = stringResource(id = R.string.profile_picture),
                 modifier = Modifier
                     .size(100.dp)
                     .aspectRatio(1f)
@@ -132,19 +121,21 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
             }
 
             Row() {
-                Text("Followers: ", fontWeight = FontWeight.Bold,
+                Text(stringResource(id = R.string.followers_label), fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleSmall,)
                 Text(visitedUser.value?.followersNumber.toString())
             }
 
             Row() {
-                Text("Following: ", fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleSmall,)
+                Text(
+                    stringResource(id = R.string.following_label), fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleSmall,
+                )
                 Text(visitedUser.value?.followingNumber.toString())
             }
 
             Row() {
-                Text("Reviews: ", fontWeight = FontWeight.Bold,
+                Text(stringResource(id = R.string.reviews_label), fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleSmall)
                 Text(visitedUser.value?.reviewsNumber.toString())
             }
@@ -165,26 +156,27 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
                         profileViewModel.unfollow()
                         isFollowing.value = false
                     }) {
-                        Text("Unfollow")
+                        Text(stringResource(id = R.string.unfollow))
                     }
                 } else {
                     Button(onClick = {
                         profileViewModel.follow()
                         isFollowing.value = true
                     }) {
-                        Text("Follow")
+                        Text(stringResource(id = R.string.follow))
                     }
                 }
             } else {
                 Button(onClick = { MainRouter.changePage(Navigation.ProfileDetailsPage)}) {
-                    Text("Edit profile")
+                    Text(stringResource(id = R.string.edit_profile))
                 }
             }
         }
     }
 
     Row() {
-        Text("Bio",
+        Text(
+            stringResource(id = R.string.bio),
             Modifier.padding(top = 10.dp, start = 10.dp),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight . Bold,
@@ -197,7 +189,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(visitedUser.value?.bio ?: "Wow, such empty and boring bio, much sad, very bad, wow, incredible, amazing, fuck you",
+            Text(visitedUser.value?.bio ?: stringResource(id = R.string.empty_bio),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(top = 5.dp, start = 10.dp, end= 10.dp))
         }

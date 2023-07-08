@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view.screen
 
+import android.provider.Settings.Global.getString
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,10 +26,14 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import java.lang.Thread.sleep
 
 @Composable
 fun StartScreen() {
+
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()) {

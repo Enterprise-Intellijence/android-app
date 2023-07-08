@@ -1,6 +1,11 @@
 package com.enterprise.android_app.view
 
+import android.R.id
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -38,6 +45,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -54,19 +62,21 @@ import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.AuthViewModel
 import com.enterprise.android_app.view_models.UserViewModel
+import com.google.android.gms.auth.api.identity.Identity
 import compose.icons.AllIcons
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Eye
 import compose.icons.fontawesomeicons.solid.EyeSlash
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage(){
+fun LoginPage() {
     var context = LocalContext.current
     //only for password
-    var passwordVisible by remember { mutableStateOf(false)}
+    var passwordVisible by remember { mutableStateOf(false) }
 
     val authViewModel: AuthViewModel = viewModel()
 
@@ -75,14 +85,33 @@ fun LoginPage(){
 
     val errorMessage = rememberSaveable { mutableStateOf("") }
 
+    val googleAuthUiClient by lazy {
+        GoogleAuthUiClient(
+            context,
+            Identity.getSignInClient(context)
+        )
+    }
+
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            if (result.resultCode == ComponentActivity.RESULT_OK) {
+                googleAuthUiClient.signInWithIntent(result.data!!)
+            }
+        })
+
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(28.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(28.dp)
+        ) {
             NormalTextComponent(value = stringResource(id = R.string.hello))
 
             HeadingTextComponent(value = stringResource(id = R.string.welcome_back))
@@ -98,7 +127,7 @@ fun LoginPage(){
 
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
+                    focusedLabelColor = colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
                     cursorColor = colorResource(id = R.color.colorPrimary),
                     textColor = Color.Black
@@ -120,11 +149,11 @@ fun LoginPage(){
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(componentShapes.small),
-                label = { Text(text = stringResource(id = R.string.password))},
+                label = { Text(text = stringResource(id = R.string.password)) },
 
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
+                    focusedLabelColor = colorResource(id = R.color.colorPrimary),
                     containerColor = colorResource(id = R.color.colorBackground),
                     cursorColor = colorResource(id = R.color.colorPrimary),
                     textColor = Color.Black
@@ -155,12 +184,16 @@ fun LoginPage(){
                         stringResource(id = R.string.show_password)
                     }
 
-                    IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon( iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            iconImage, contentDescription = description, modifier = Modifier
+                                .size(25.dp)
+                                .padding(end = 4.dp)
+                        )
                     }
                 },
 
-                visualTransformation = if(passwordVisible) VisualTransformation.None else
+                visualTransformation = if (passwordVisible) VisualTransformation.None else
                     PasswordVisualTransformation()
             )
 
@@ -176,11 +209,26 @@ fun LoginPage(){
                         "password5",
                         //textValueUsername.text,
                         //textValuePassword.text,
-                        onError = {errorMessage.value = "Authentication failed. Please check your username and password."}
+                        onError = {
+                            errorMessage.value =
+                                "Authentication failed. Please check your username and password."
+                        }
                     )
-
-
                 })
+
+
+            val scope = rememberCoroutineScope()
+
+            Button(onClick = {
+                scope.launch {
+                    val signInIntentSender = googleAuthUiClient.signIn()
+                    // TODO:
+                    launcher.launch(IntentSenderRequest.Builder(signInIntentSender).build())
+
+                }
+            }) {
+                Text(text = "Sign in with Google")
+            }
 
             if (errorMessage.value.isNotEmpty()) {
                 Text(text = errorMessage.value, color = Color.Red)
@@ -189,10 +237,9 @@ fun LoginPage(){
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
 
-            ClickableLoginTextComponent(tryingToLogin = false ,onTextSelected = {
-                    AppRouter.navigateTo(Screen.SignUpScreen)
+            ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
+                AppRouter.navigateTo(Screen.SignUpScreen)
             })
-
 
 
         }
@@ -202,8 +249,6 @@ fun LoginPage(){
         AppRouter.navigateTo(Screen.SignUpScreen)
     }
 }
-
-
 
 
 fun TextFieldValueSaver(): Saver<TextFieldValue, *> = Saver(

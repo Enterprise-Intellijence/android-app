@@ -1,16 +1,15 @@
 package com.enterprise.android_app.model
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
-import io.swagger.client.models.PaymentMethodBasicDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.PaymentMethodDTO
-import io.swagger.client.models.User
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
@@ -27,8 +26,8 @@ object CurrentDataUtils {
     private var _visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     private var _currentAddress: AddressDTO? = null
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
-    private var _currentPaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
-    private var _currentPaymentMethod: MutableState<PaymentMethodDTO>? = null
+    private var _PaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
+    private var _currentPaymentMethod: PaymentMethodDTO? = null
 
     var _application: Application? = null
 
@@ -81,7 +80,7 @@ object CurrentDataUtils {
         get() = _currentAddress
         set(newValue){ _currentAddress = newValue}
 
-    var paymentMethodDTO: MutableState<PaymentMethodDTO>?
+    var currentPaymentMethodDTO: PaymentMethodDTO?
         get() = _currentPaymentMethod
         set(newValue){ _currentPaymentMethod = newValue}
 
@@ -94,12 +93,12 @@ object CurrentDataUtils {
         _currentUser.value?.addresses?.let { _currentAddresses.addAll(it.toList()) }
     }
 
-    val currentPaymentsMethod: SnapshotStateList<PaymentMethodDTO>
-        get() = _currentPaymentsMethod
+    val PaymentsMethod: SnapshotStateList<PaymentMethodDTO>
+        get() = _PaymentsMethod
 
     fun retrievePaymentsMethod(){
-        _currentPaymentsMethod.clear()
-        _currentUser.value?.paymentMethods?.let { _currentPaymentsMethod.addAll(it.toList()) }
+        _PaymentsMethod.clear()
+        _currentUser.value?.paymentMethods?.let { _PaymentsMethod.addAll(it.toList()) }
     }
     fun setRefresh(refresh_token: String){
         _refreshToken.value = refresh_token

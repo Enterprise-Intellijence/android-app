@@ -165,9 +165,9 @@ fun ShippingCard(address: AddressDTO){
 
                     {
                         Text(
-                            text = if(address.default == true)"Default Address" else "Set as default",
+                            text = stringResource(id = R.string.setAsDefault),
                             style = TextStyle(
-                                color = (if(address.default==true) DarkGreen else Color.Red),
+                                color = Color.Red,
                                 fontStyle = FontStyle.Italic
                             )
                         )

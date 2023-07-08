@@ -1,7 +1,6 @@
 package com.enterprise.android_app
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.enterprise.android_app.controller.RefreshInterceptor
@@ -20,7 +19,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AndroidappTheme {
-                PageApp()
+                PageApp(this)
             }
         }
 

@@ -34,6 +34,7 @@ object CurrentDataUtils {
 
 
     private var _showLoadingScreen: MutableState<Boolean> = mutableStateOf(true)
+    private var _goToHome: MutableState<Boolean> = mutableStateOf(false)
 
     val chatUserId = mutableStateOf(null as String?)
     val chatProductId = mutableStateOf(null as String?)
@@ -47,9 +48,12 @@ object CurrentDataUtils {
         set(newValue) { _accessToken.value = newValue }
 
 
+
     var showLoadingScreen: MutableState<Boolean> = mutableStateOf(false)
         get() = _showLoadingScreen
 
+    var goToHome: MutableState<Boolean> = mutableStateOf(false)
+        get() = _goToHome
     var refreshToken: String
         get() = _refreshToken.value
         set(newValue) { _refreshToken.value = newValue }
@@ -149,7 +153,7 @@ object CurrentDataUtils {
     }
 
 
-    fun checkRefreshToken(onSuccess: () -> Unit){
+    fun checkRefreshToken(){
         CoroutineScope(Dispatchers.IO).launch {
             _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
 
@@ -161,7 +165,7 @@ object CurrentDataUtils {
                     retrieveCurrentUser()
                     UserServices.retriveLikedProducts()
                     _showLoadingScreen.value = false
-                    onSuccess()
+                    _goToHome.value = true
                 }
             }catch (e: Exception){
                 _showLoadingScreen.value = false

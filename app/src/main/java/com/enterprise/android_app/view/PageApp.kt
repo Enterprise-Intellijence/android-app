@@ -140,7 +140,9 @@ fun MainScreen(navController: NavHostController) {
                                 //MainRouter.changePage(Navigation.ProfileDetailsScreen)
                             })
                     }*/
-                    else -> {}
+                    else -> {
+                        HomePage()
+                    }
                     }
 
                 BackHandler {

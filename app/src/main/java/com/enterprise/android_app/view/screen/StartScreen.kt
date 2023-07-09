@@ -49,17 +49,17 @@ import java.lang.Thread.sleep
 fun StartScreen(navController: NavHostController) {
     val authViewModel: AuthViewModel = viewModel()
     val state = rememberOneTapSignInState()
-    val isRefreshTokenChecked = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = "StartScreen", block = {
-        CurrentDataUtils.checkRefreshToken(
-            onSuccess = {isRefreshTokenChecked.value = true}
-        )
+        CurrentDataUtils.checkRefreshToken()
     })
 
-    if (isRefreshTokenChecked.value) {
+    if (CurrentDataUtils.goToHome.value) {
+        CurrentDataUtils.goToHome.value = false
         navController.navigate(Screen.MainScreen.route)
+
     }
+
 
     OneTapSignInWithGoogle(
         state = state,

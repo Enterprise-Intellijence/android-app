@@ -25,10 +25,10 @@ object CurrentDataUtils {
     private var _currentUser: MutableState<UserDTO?> = mutableStateOf(null)
     private var _currentProductId: MutableState<String> = mutableStateOf("")
     private var _visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
-    private var _currentAddress: AddressDTO? = null
-    private var _currentAddresses = mutableStateListOf<AddressDTO>()
+    private var _currentAddress: MutableState<AddressDTO?>  = mutableStateOf(null)
+    private var _Addresses = mutableStateListOf<AddressDTO>()
     private var _PaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
-    private var _currentPaymentMethod: PaymentMethodDTO? = null
+    private var _currentPaymentMethod: MutableState<PaymentMethodDTO?>  = mutableStateOf(null)
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
 
@@ -96,22 +96,21 @@ object CurrentDataUtils {
         )
     }
 
-    var addressDTO: AddressDTO?
+    var addressDTO: MutableState<AddressDTO?>
         get() = _currentAddress
         set(newValue){ _currentAddress = newValue}
 
-    var currentPaymentMethodDTO: PaymentMethodDTO?
-        get() = _currentPaymentMethod
-        set(newValue){ _currentPaymentMethod = newValue}
-
     val addresses: SnapshotStateList<AddressDTO>
-        get() = _currentAddresses
-
+        get() = _Addresses
 
     fun retrieveAddresses(){
-        _currentAddresses.clear()
-        _currentUser.value?.addresses?.let { _currentAddresses.addAll(it.toList()) }
+        _Addresses.clear()
+        _currentUser.value?.addresses?.let { _Addresses.addAll(it.toList()) }
     }
+
+    var currentPaymentMethodDTO: MutableState<PaymentMethodDTO?>
+        get() = _currentPaymentMethod
+        set(newValue){ _currentPaymentMethod = newValue}
 
     val PaymentsMethod: SnapshotStateList<PaymentMethodDTO>
         get() = _PaymentsMethod

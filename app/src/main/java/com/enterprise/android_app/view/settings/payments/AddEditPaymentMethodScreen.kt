@@ -10,23 +10,38 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.MainActivity
+import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.navigation.MainRouter
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
 import com.enterprise.android_app.view_models.PaymentViewModel
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Calendar
+import compose.icons.fontawesomeicons.solid.Edit
+import io.swagger.client.models.PaymentMethodCreateDTO
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
@@ -37,10 +52,10 @@ import java.util.Date
 fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
     var payment = CurrentDataUtils.currentPaymentMethodDTO
     val paymentViewModel = PaymentViewModel()
-    var creditCardText= remember { mutableStateOf(payment?.creditCard ?: "") }
-    var expireDate= remember { mutableStateOf(payment?.expiryDate ?: LocalDate.now()) }
-    var ownerText= remember { mutableStateOf(payment?.owner ?: "") }
-    var isDefaultBoolean= remember { mutableStateOf(payment?.default ?: false) }
+    var creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
+    var expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
+    var ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
+    var isDefaultBoolean= remember { mutableStateOf(payment.value?.default ?: false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -54,13 +69,6 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
                 modifier = Modifier.weight(1f)
             )
         }
-        //Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
-        ) {
-            showDatePicker(context = mainActivity)
-        }
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
@@ -71,39 +79,68 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
                 label = { Text("Owner") },
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 20.dp)
             )
         }
+        Row(verticalAlignment = Alignment.CenterVertically ,modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
+        ) {
+            Icon(
+                imageVector = FontAwesomeIcons.Solid.Calendar ,
+                contentDescription = "Exp Date ",
+                modifier = Modifier
+                    .height(20.dp),
+
+                )
+            Text(text = expireDate.value.toString(),
+                style = TextStyle(fontSize = 20.sp),
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp).weight(1f)
+
+
+
+            )
+            showDatePicker(context = mainActivity, date = expireDate)
+        }
+
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)) {
             Spacer(modifier = Modifier.weight(1f))
             TransparentGreenButton(
                 onClick = {
-                    /*if(payment?.id!=null)
+                    if(payment.value?.id!=null)
                     {
 
-                        paymentViewModel.updatePayment(payment.copy(
+                        paymentViewModel.updatePayment(payment.value?.copy(
                             creditCard = creditCardText.value,
-                            expiryDate = expireDateText.value,
+                            expiryDate = expireDate.value,
                             owner = ownerText.value,
-                            default = isDefaultBoolean.value))
+                            default = isDefaultBoolean.value)!!)
 
-                        MainRouter.changePage(Navigation.ShippingPage)
+                        //MainRouter.changePage(Navigation.PaymentsPage)
 
                     } else {
                         paymentViewModel.createPayment(payment =  PaymentMethodCreateDTO(
                             creditCard = creditCardText.value,
-                            expiryDate = expireDateText.value,
+                            expiryDate = expireDate.value,
                             owner = ownerText.value,
                             default = isDefaultBoolean.value)
                         )
-                        )
-                    }*/
+
+                    }
                 },
-                buttonName = if(payment?.id!=null)"Edit" else "Create"
+                buttonName = if(payment.value?.id!=null)"Edit" else "Create"
             )
         }
+        //Spacer(modifier = Modifier.height(8.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
+        ) {
+            Text(text = stringResource(id = R.string.setAsDefault))
+            RadioButton(selected = isDefaultBoolean.value, onClick = { isDefaultBoolean.value = !isDefaultBoolean.value })
+        }
+
 
 
     }
@@ -111,39 +148,51 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
 }
 
 @Composable
-fun showDatePicker(context: Context){
+fun showDatePicker(context: Context, date: MutableState<LocalDate> ){
 
-    val year: Int
+/*    val year: Int
     val month: Int
     val day: Int
 
     val calendar = Calendar.getInstance()
-    year = calendar.get(Calendar.YEAR)
-    month = calendar.get(Calendar.MONTH)
-    day = calendar.get(Calendar.DAY_OF_MONTH)
-    calendar.time = Date()
+    year = calendar.get(date.value.year)
+    month = calendar.get(date.value.month.value)
+    day = calendar.get(date.value.dayOfMonth)
+    calendar.time = Date()*/
+    val calendar = Calendar.getInstance()
+    calendar.time = Date.from(date.value.atStartOfDay().toInstant(java.time.ZoneOffset.UTC))
 
-    val date = remember { mutableStateOf("") }
+/*
     val datePickerDialog = DatePickerDialog(
         context,
         {_: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/$month/$year"
+            date.value = LocalDate.of(year,month,dayOfMonth) *//*"$dayOfMonth/$month/$year"*//*
         }, year, month, day
+    )*/
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = LocalDate.of(year, month + 1, dayOfMonth)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-    Column(
+/*    Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
+    ) {*/
 
-        Text(text = "Selected Date: ${date.value}")
-        Spacer(modifier = Modifier.size(16.dp))
+        //Text(text = "Selected Date: ${date.value}")
+        //Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
         }) {
-            Text(text = "Open Date Picker")
+            Text(text = "Change Exp Date")
         }
-    }
+    //}
 
 }

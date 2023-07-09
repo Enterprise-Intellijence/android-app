@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,8 +46,8 @@ import compose.icons.fontawesomeicons.solid.Trash
 import io.swagger.client.models.PaymentMethodDTO
 
 @Composable
-fun PaymentsMethodCard(payment: PaymentMethodDTO){
-    val paymentViewModel = DeliveryViewModel()
+fun PaymentsMethodCard(payment: MutableState<PaymentMethodDTO?> ){
+    val paymentViewModel = PaymentViewModel()
 
     val mContext = LocalContext.current
 
@@ -63,7 +64,7 @@ fun PaymentsMethodCard(payment: PaymentMethodDTO){
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = payment.creditCard,
+                        text = payment.value?.creditCard !!,
                         style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                     )
                 }
@@ -85,7 +86,7 @@ fun PaymentsMethodCard(payment: PaymentMethodDTO){
                         }
                         IconButton(
                             onClick = {
-                                payment.id?.let { paymentViewModel.deleteAddress(it) }
+                                payment.value?.id?.let { paymentViewModel.deletePayment(it) }
 
                             }
 
@@ -108,34 +109,29 @@ fun PaymentsMethodCard(payment: PaymentMethodDTO){
                 Icon(imageVector = FontAwesomeIcons.Solid.Calendar,
                     contentDescription = "Phone Number",
                     modifier = Modifier.height(12.dp))
-                Text(text = stringResource(id = R.string.expDate)+" ${payment.expiryDate}")
+                Text(text = stringResource(id = R.string.expDate)+" ${payment.value?.expiryDate}")
 
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(imageVector = FontAwesomeIcons.Solid.PersonBooth,
                     contentDescription = "Owner",
                     modifier = Modifier.height(12.dp))
-                Text(text = stringResource(id = R.string.owner)+" ${payment.owner}")
+                Text(text = stringResource(id = R.string.owner)+" ${payment.value?.owner}")
 
             }
-            if(payment.default==true){
+            if(payment.value?.default==true){
                 Text(text = stringResource(id = R.string.defaultPaymentMethod), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
-            else{
+            /*else{
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.weight(1f,true))
                     Button(
                         onClick = {
-                            changeDefaultPayment(payment = payment.copy(default = true))
+                            changeDefaultPayment(payment = payment.value?.copy(default = true) !!)
                             mToast(context = mContext, "Address default changed")
-
-
-
-
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            //contentColor = DarkGreen
                         ),
 
                         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp) ,
@@ -148,8 +144,6 @@ fun PaymentsMethodCard(payment: PaymentMethodDTO){
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                         border = BorderStroke(1.dp, Color.Red),
                         modifier = Modifier.height(33.dp)
-
-
                     )
 
                     {
@@ -163,7 +157,7 @@ fun PaymentsMethodCard(payment: PaymentMethodDTO){
                     }
                 }
 
-            }
+            }*/
         }
     }
 
@@ -178,6 +172,6 @@ private fun mToast(context: Context, text: String){
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }
 
-private fun EditPayment(payment: PaymentMethodDTO) {
+private fun EditPayment(payment: MutableState<PaymentMethodDTO?>) {
     CurrentDataUtils.currentPaymentMethodDTO = payment
 }

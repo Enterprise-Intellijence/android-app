@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import com.enterprise.android_app.ui.theme.TransparentGreenButton
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.CreditCard
+import io.swagger.client.models.PaymentMethodDTO
 
 @Composable
 fun PaymentsPage(){
@@ -53,7 +55,7 @@ fun PaymentsPage(){
             )
             TransparentGreenButton(
                 onClick = {
-                    CurrentDataUtils.currentPaymentMethodDTO = null
+                    CurrentDataUtils.currentPaymentMethodDTO.value = null
                     MainRouter.changePage(Navigation.AddEditPaymentMethodScreen)
                 },
                 modifier = Modifier.height(35.dp),
@@ -68,8 +70,8 @@ fun PaymentsPage(){
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(payments) { item ->
-                val payment = remember { mutableStateOf(item) }
-                PaymentsMethodCard(payment = payment.value)
+                val payment: MutableState<PaymentMethodDTO?> = remember { mutableStateOf(item) }
+                PaymentsMethodCard(payment = payment)
             }
         }
     }

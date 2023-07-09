@@ -148,7 +148,8 @@ fun MainScreen(navController: NavHostController) {
 @Composable
 fun SearchTopBar(navController: NavHostController) {
 
-    if (MainRouter.currentPage.value == Navigation.HomePage || MainRouter.currentPage.value == Navigation.SearchPage) {
+    if (navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry).value?.destination?.route == Navigation.HomePage.route ||
+        navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry).value?.destination?.route == Navigation.SearchPage.route) {
         TopBarSearch()
     } else {
         TopBarGeneric(navController)

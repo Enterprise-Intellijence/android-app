@@ -51,7 +51,7 @@ class ProfileViewModel() : ViewModel() {
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
-                    productControllerApi.getFilteredProducts(userId = visitedUser.value?.id, page = currentProductPage)
+                    productControllerApi.getMyProducts(page = currentProductPage)
                 }
                 val productsToAdd = newProducts.content?.toList() ?: emptyList()
                 productList.addAll(productsToAdd)

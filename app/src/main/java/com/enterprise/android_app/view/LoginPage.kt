@@ -70,6 +70,8 @@ fun LoginPage(navController: NavHostController) {
 
     val errorMessage = rememberSaveable { mutableStateOf("") }
 
+    val isAuthenticated = rememberSaveable { mutableStateOf(false) }
+
 
     Surface(
         modifier = Modifier
@@ -147,7 +149,7 @@ fun LoginPage(navController: NavHostController) {
                         FontAwesomeIcons.Solid.EyeSlash
                     }
 
-                    var description = if (passwordVisible) {
+                    val description = if (passwordVisible) {
                         stringResource(id = R.string.hide_password)
                     } else {
                         stringResource(id = R.string.show_password)
@@ -182,11 +184,13 @@ fun LoginPage(navController: NavHostController) {
                             errorMessage.value =
                                 "Authentication failed. Please check your username and password."
                         },
-                    onSuccess = { Log.d("login page","sono qui")
-                        navController.navigate(Screen.MainScreen.route)
-                    }
+                    onSuccess = { isAuthenticated.value = true}
                     )
                 })
+
+            if (isAuthenticated.value) {
+                navController.navigate(Screen.MainScreen.route)
+            }
 
             if (errorMessage.value.isNotEmpty()) {
                 Text(text = errorMessage.value, color = Color.Red)

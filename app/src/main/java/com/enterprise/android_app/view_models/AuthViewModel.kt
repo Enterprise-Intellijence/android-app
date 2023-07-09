@@ -24,7 +24,6 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
 
     fun authenticate(username: String, password: String, onError: () -> Unit, onSuccess: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-
             try {
                 val tokenMap = userController.authenticate(username, password)
                 if (tokenMap.isNotEmpty()) {

@@ -123,8 +123,8 @@ object CurrentDataUtils {
     fun setRefresh(refresh_token: String){
         _refreshToken.value = refresh_token
         CoroutineScope(Dispatchers.IO).launch{
-            var user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
-            var refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            val user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
+            val refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
             println(refresh_token2)
             if( refresh_token2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
@@ -139,7 +139,7 @@ object CurrentDataUtils {
         fun refreshToken(){
         CoroutineScope(Dispatchers.IO).launch{
             if( refreshToken != null){
-                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                val tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
@@ -149,19 +149,19 @@ object CurrentDataUtils {
     }
 
 
-    fun checkRefreshToken(){
+    fun checkRefreshToken(onSuccess: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
 
             try {
-                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                val tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                     retrieveCurrentUser()
                     UserServices.retriveLikedProducts()
                     _showLoadingScreen.value = false
-                    AppRouter.navigateTo(Screen.MainScreen)
+                    onSuccess()
                 }
             }catch (e: Exception){
                 _showLoadingScreen.value = false

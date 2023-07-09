@@ -27,11 +27,10 @@ fun HomePage(){
     val productList = homePageViewModel.productList
     val lazyGridState = rememberLazyGridState()
 
-
     LaunchedEffect(key1 = homePageViewModel.currentPage) {
         homePageViewModel.loadNextPage()
-
     }
+
     Column(Modifier.padding(top = 10.dp).fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
         if (productList.isEmpty()) {

@@ -266,7 +266,7 @@ fun SignUpPage(navController: NavHostController){
             DividerTextComponent()
 
             ClickableLoginTextComponent(tryingToLogin = true,onTextSelected = {
-                    AppRouter.navigateTo(Screen.LoginScreen)
+                    navController.navigate(Screen.LoginScreen.route)
             })
         }
         

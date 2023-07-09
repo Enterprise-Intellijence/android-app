@@ -100,7 +100,7 @@ fun AddEditPaymentMethodScreen() {
 
 
             )
-            showDatePicker(context = mainActivity, date = expireDate)
+            showDatePicker(context = LocalContext.current as Activity, date = expireDate)
         }
 
         Row(modifier = Modifier

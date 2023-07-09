@@ -20,6 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.VerticalAlignmentLine
@@ -46,6 +49,17 @@ import java.lang.Thread.sleep
 fun StartScreen(navController: NavHostController) {
     val authViewModel: AuthViewModel = viewModel()
     val state = rememberOneTapSignInState()
+    val isRefreshTokenChecked = rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = "StartScreen", block = {
+        CurrentDataUtils.checkRefreshToken(
+            onSuccess = {isRefreshTokenChecked.value = true}
+        )
+    })
+
+    if (isRefreshTokenChecked.value) {
+        navController.navigate(Screen.MainScreen.route)
+    }
 
     OneTapSignInWithGoogle(
         state = state,
@@ -79,7 +93,7 @@ fun StartScreen(navController: NavHostController) {
             }else {
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+                    onClick = { navController.navigate(Screen.LoginScreen.route) },
 
                     modifier = Modifier
                         .height(45.dp)
@@ -92,7 +106,7 @@ fun StartScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
-                    onClick = { navController.navigate(Screen.LoginScreen.route) },
+                    onClick = { navController.navigate(Screen.SignUpScreen.route) },
                     colors = ButtonDefaults.outlinedButtonColors(),
                     modifier = Modifier
                         .height(45.dp)

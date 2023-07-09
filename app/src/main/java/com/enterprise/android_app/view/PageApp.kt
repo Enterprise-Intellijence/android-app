@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.MainActivity
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -49,7 +50,7 @@ import java.io.File
 
 
 @Composable
-fun PageApp(mainActivity: MainActivity) {
+fun PageApp(navController: NavHostController) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
@@ -60,19 +61,19 @@ fun PageApp(mainActivity: MainActivity) {
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
 
-                    StartScreen()
+                    StartScreen(navController)
                     //ProductScreen()
                 }
                 is Screen.SignUpScreen -> {
-                    SignUpPage()
+                    SignUpPage(navController)
                     //ProductScreen()
                     //MainScreen()
                 }
                 is Screen.LoginScreen -> {
-                    LoginPage()
+                    LoginPage(navController)
                 }
                 is Screen.MainScreen -> {
-                    MainScreen(mainActivity)
+                    MainScreen(navController)
                 }
 
                 else -> {}
@@ -84,7 +85,7 @@ fun PageApp(mainActivity: MainActivity) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(mainActivity: MainActivity) {
+fun MainScreen(navController: NavHostController) {
     val fileState = remember { mutableStateOf<File?>(null) }
 
 
@@ -145,7 +146,7 @@ fun MainScreen(mainActivity: MainActivity) {
                     PaymentsPage()
                 }
                 is Navigation.AddEditPaymentMethodScreen ->{
-                    AddEditPaymentMethodScreen(mainActivity)
+                    AddEditPaymentMethodScreen()
                 }
                 //is Navigation.ImageSelectorComponent ->{
                 /*is Navigation.ImageSelectorComponent ->{

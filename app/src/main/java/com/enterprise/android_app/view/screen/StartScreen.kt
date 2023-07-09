@@ -24,6 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.enterprise.android_app.MainActivity
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.AppRouter
@@ -37,7 +40,7 @@ import com.stevdzasan.onetap.rememberOneTapSignInState
 import java.lang.Thread.sleep
 
 @Composable
-fun StartScreen() {
+fun StartScreen(navController: NavHostController) {
     val authViewModel: AuthViewModel = viewModel()
     val state = rememberOneTapSignInState()
 
@@ -70,7 +73,7 @@ fun StartScreen() {
 
 
             Button(
-                onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+                onClick = { navController.navigate(Screen.LoginScreen.route) },
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth()
@@ -82,7 +85,7 @@ fun StartScreen() {
 
             Spacer(modifier = Modifier.height(10.dp))
             Button(
-                onClick = { AppRouter.navigateTo(Screen.SignUpScreen) },
+                onClick = { navController.navigate(Screen.SignUpScreen.route) },
                 colors = ButtonDefaults.outlinedButtonColors(),
                 modifier = Modifier
                     .height(45.dp)
@@ -117,8 +120,6 @@ fun StartScreen() {
             ) {
                 Text(text = "continue with Google")
             }
-
-
         }
     }
 }

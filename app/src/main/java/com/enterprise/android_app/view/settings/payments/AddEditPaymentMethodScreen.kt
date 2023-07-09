@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view.settings.payments
 
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
@@ -34,7 +35,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
+fun AddEditPaymentMethodScreen() {
     var payment = CurrentDataUtils.currentPaymentMethodDTO
     val paymentViewModel = PaymentViewModel()
     var creditCardText= remember { mutableStateOf(payment?.creditCard ?: "") }
@@ -59,7 +60,7 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
             .fillMaxWidth()
             .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
         ) {
-            showDatePicker(context = mainActivity)
+            showDatePicker(context = LocalContext.current as Activity)
         }
         Row(modifier = Modifier
             .fillMaxWidth()

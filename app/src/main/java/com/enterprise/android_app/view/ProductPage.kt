@@ -44,9 +44,12 @@ import com.enterprise.android_app.view.components.ProductHeader
 import com.enterprise.android_app.view.components.SellerRow
 import com.enterprise.android_app.view.components.TabProductComponent
 import com.enterprise.android_app.view.components.VerticalDivider
-import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.ProductDTO
 import io.swagger.client.models.UserBasicDTO
+import android.content.Intent
+import android.app.Activity
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 
 @Composable
 fun ProductPage(
@@ -55,6 +58,8 @@ fun ProductPage(
     lazyList_state: LazyListState,
     padding: PaddingValues
 ) {
+    var context = LocalContext.current
+
     LazyColumn(state = lazyList_state, content = {
         item {
             ImageCarousell(images = product.productImages!!.toList(), modifier = Modifier)
@@ -174,7 +179,21 @@ fun ProductPage(
                 }
                 VerticalDivider(color = Color.Gray)
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, )
+                            type = "text/plain"
+                        }
+
+
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+
+                        ContextCompat.startActivity(context, shareIntent, null)
+
+
+                    },
                     colors = ButtonDefaults.outlinedButtonColors(),
                     shape = RectangleShape,
                     modifier = Modifier

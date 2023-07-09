@@ -158,6 +158,8 @@ object CurrentDataUtils {
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
+                    retrieveCurrentUser()
+                    UserServices.retriveLikedProducts()
                     _showLoadingScreen.value = false
                     AppRouter.navigateTo(Screen.MainScreen)
                 }

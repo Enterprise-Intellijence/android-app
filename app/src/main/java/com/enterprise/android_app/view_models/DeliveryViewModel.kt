@@ -39,20 +39,20 @@ class DeliveryViewModel {
                             addresses[index] = address
                         }
                     }*/
-                    CurrentDataUtils.retrieveCurrentUser()
-                    CurrentDataUtils.retrieveAddresses()
+
 
 
                     //return@withContext address.id!=""
 
                 }
-
+                CurrentDataUtils.retrieveCurrentUser()
+                CurrentDataUtils.retrieveAddresses()
+                MainRouter.changePage(Navigation.ShippingPage)
             } catch (e: Exception) {
 
                 e.printStackTrace()
             }
         }
-        MainRouter.changePage(Navigation.ShippingPage)
 
 
     }
@@ -87,21 +87,16 @@ class DeliveryViewModel {
                     deliveryControllerApi.deleteAddress(id)
 
                 }
-                Log.d("RESPONSE SSSSS",response.toString())
 
 
-                /*if (response) {
-                    CurrentDataUtils.retrieveCurrentUser()
-                    CurrentDataUtils.retrieveAddresses()
-                    MainRouter.changePage(Navigation.ShippingPage)
-                }*/
+                CurrentDataUtils.retrieveCurrentUser()
+                CurrentDataUtils.retrieveAddresses()
+
+                MainRouter.changePage(Navigation.ShippingPage)
             } catch (e: Exception){
                 e.printStackTrace()
             }
-            CurrentDataUtils.retrieveCurrentUser()
-            CurrentDataUtils.retrieveAddresses()
 
-            MainRouter.changePage(Navigation.ShippingPage)
         }
 
 

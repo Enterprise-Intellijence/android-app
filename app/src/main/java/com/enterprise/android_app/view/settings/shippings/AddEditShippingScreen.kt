@@ -36,13 +36,13 @@ import io.swagger.client.models.UserDTO
 fun AddEditShippingScreen(){
     var address = CurrentDataUtils.addressDTO
     val deliveryViewModel = DeliveryViewModel()
-    var headerText= remember {mutableStateOf(address?.header ?: "")}
-    var streetText= remember {mutableStateOf(address?.street ?: "")}
-    var zipCodeText= remember {mutableStateOf(address?.zipCode ?: "")}
-    var cityText= remember {mutableStateOf(address?.city ?: "")}
-    var countryText= remember {mutableStateOf(address?.country ?: "")}
-    var phoneNumber= remember {mutableStateOf(address?.phoneNumber ?: "")}
-    var isDefaultBoolean= remember {mutableStateOf(address?.default ?: false)}
+    var headerText= remember {mutableStateOf(address.value?.header ?: "")}
+    var streetText= remember {mutableStateOf(address.value?.street ?: "")}
+    var zipCodeText= remember {mutableStateOf(address.value?.zipCode ?: "")}
+    var cityText= remember {mutableStateOf(address.value?.city ?: "")}
+    var countryText= remember {mutableStateOf(address.value?.country ?: "")}
+    var phoneNumber= remember {mutableStateOf(address.value?.phoneNumber ?: "")}
+    var isDefaultBoolean= remember {mutableStateOf(address.value?.default ?: false)}
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -121,16 +121,16 @@ fun AddEditShippingScreen(){
             Spacer(modifier = Modifier.weight(1f))
             TransparentGreenButton(
                 onClick = {
-                    if(address?.id!=null)
+                    if(address.value?.id!=null)
                     {
 
-                        deliveryViewModel.updateAddress(address.copy(header = headerText.value,
+                        deliveryViewModel.updateAddress(address.value?.copy(header = headerText.value,
                             street = streetText.value,
                             zipCode = zipCodeText.value,
                             city = cityText.value,
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
-                            default = isDefaultBoolean.value))
+                            default = isDefaultBoolean.value)!!)
 
                         MainRouter.changePage(Navigation.ShippingPage)
 
@@ -145,7 +145,7 @@ fun AddEditShippingScreen(){
                             default = isDefaultBoolean.value))
                     }
                           },
-                buttonName = if(address?.id!=null)"Edit" else "Create"
+                buttonName = if(address.value?.id!=null)"Edit" else "Create"
             )
         }
 

@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import NewProductPage
+import OrdersPage
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -115,6 +116,9 @@ fun MainScreen(mainActivity: MainActivity) {
                 }
                 is Navigation.OrdersPage ->{
                     OrdersPage()
+                }
+                is Navigation.PurchasePage ->{
+                    PurchasePage()
                 }
                 is Navigation.AboutPage ->{
                     AboutPage()

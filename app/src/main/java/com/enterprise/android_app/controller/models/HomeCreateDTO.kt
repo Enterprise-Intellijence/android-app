@@ -22,12 +22,49 @@ import io.swagger.client.models.SizeDTO
  * @param homeSize 
  * @param homeMaterial 
  */
-data class HomeCreateDTO (
+class HomeCreateDTO: ProductCreateDTO {
+    constructor (
+        title: kotlin.String? = null,
+        description: kotlin.String? = null,
+        productCost: CustomMoneyDTO,
+        deliveryCost: CustomMoneyDTO,
+        brand: kotlin.String? = null,
+        condition: ProductCreateDTO.Condition? = null,
+        productSize: ProductCreateDTO.ProductSize? = null,
+        visibility: ProductCreateDTO.Visibility? = null,
+        productCategory: ProductCategoryDTO? = null,
+        productImages: kotlin.Array<kotlin.Array<kotlin.Byte>>? = null,
+        type: kotlin.String,
+        colour: HomeCreateDTO.Colour,
+        homeSize: SizeDTO,
+        homeMaterial: HomeCreateDTO.HomeMaterial) :
+            super(
+                title,
+                description,
+                productCost,
+                deliveryCost,
+                brand,
+                condition,
+                productSize,
+                visibility,
+                productCategory,
+                productImages,
+                type)
 
-    val colour: Colour,
-    val homeSize: SizeDTO,
-    val homeMaterial: HomeMaterial
-) {
+    constructor(productCreateDTO: ProductCreateDTO,
+                colour: HomeCreateDTO.Colour,
+                homeSize: SizeDTO,
+                homeMaterial: HomeCreateDTO.HomeMaterial): super(title = productCreateDTO.title,
+                description = productCreateDTO.description,
+                productCost = productCreateDTO.productCost,
+                deliveryCost = productCreateDTO.deliveryCost,
+                brand = productCreateDTO.brand,
+                condition = productCreateDTO.condition,
+                productSize = productCreateDTO.productSize,
+                visibility = productCreateDTO.visibility,
+                productCategory = productCreateDTO.productCategory,
+                productImages = productCreateDTO.productImages,
+                type = productCreateDTO.type)
     /**
     * 
     * Values: YELLOW,GREEN,BLUE,RED,BLACK,WHITE,MULTICOLOUR

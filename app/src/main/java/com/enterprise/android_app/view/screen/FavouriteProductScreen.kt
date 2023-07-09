@@ -6,12 +6,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
 import com.enterprise.android_app.view.components.LazyGridProductsCard
 import com.enterprise.android_app.view_models.FavouriteViewModel
 import com.enterprise.android_app.view_models.HomePageViewModel
 
 @Composable
-fun FavouriteProductScreen(){
+fun FavouriteProductScreen(navController: NavController){
     val favouriteViewModel = remember { FavouriteViewModel() }
 
     val productList = favouriteViewModel.productList

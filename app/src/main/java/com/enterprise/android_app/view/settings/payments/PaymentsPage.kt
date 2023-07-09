@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -34,7 +35,7 @@ import compose.icons.fontawesomeicons.solid.CreditCard
 import io.swagger.client.models.PaymentMethodDTO
 
 @Composable
-fun PaymentsPage(){
+fun PaymentsPage(navController: NavHostController) {
     val payments = CurrentDataUtils.PaymentsMethod
 
     Column(modifier = Modifier

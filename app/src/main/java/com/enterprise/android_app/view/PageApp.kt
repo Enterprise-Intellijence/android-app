@@ -6,12 +6,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -23,8 +17,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -55,7 +47,6 @@ import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.PlusCircle
 import compose.icons.fontawesomeicons.solid.Search
 import compose.icons.fontawesomeicons.solid.User
-import java.io.File
 
 
 @Composable
@@ -125,11 +116,16 @@ fun MainScreen(navController: NavHostController) {
                     Navigation.ProductScreen.route ->{ ProductScreen( CurrentDataUtils.currentProductId) }
                     Navigation.NewProductPage.route ->{ NewProductPage() }
                     Navigation.AccountSettingsPage.route ->{ AccountSettingsPage() }
-                    Navigation.ShippingPage.route ->{ ShippingPage() }
-                    Navigation.PaymentsPage.route ->{ PaymentsPage() }
-                    Navigation.ProfileDetailsPage.route ->{ ProfileDetailsPage() }
-                    Navigation.AddEditShippingScreen.route ->{ AddEditShippingScreen() }
-                    Navigation.PaymentsPage.route ->{ PaymentsPage() }
+                    Navigation.ShippingPage.route ->{ ShippingPage(navController)
+                    }
+                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController)
+                    }
+                    Navigation.ProfileDetailsPage.route ->{ ProfileDetailsPage(navController)
+                    }
+                    Navigation.AddEditShippingScreen.route ->{ AddEditShippingScreen(navController)
+                    }
+                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController)
+                    }
                     Navigation.AddEditPaymentMethodScreen.route ->{ AddEditPaymentMethodScreen() }
                     /*is Navigation.ImageSelectorComponent ->{
                         is Navigation.ImageSelectorComponent ->{
@@ -140,10 +136,8 @@ fun MainScreen(navController: NavHostController) {
                                 //MainRouter.changePage(Navigation.ProfileDetailsScreen)
                             })
                     }*/
-                    else -> {
-                        HomePage()
-                    }
-                    }
+                    else -> { HomePage() }
+                }
 
                 BackHandler {
                     navController.popBackStack()

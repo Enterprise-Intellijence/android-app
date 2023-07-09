@@ -28,14 +28,15 @@ class PaymentViewModel {
 
 
                 }
+                CurrentDataUtils.retrieveCurrentUser()
+                CurrentDataUtils.retrievePaymentsMethod()
+                MainRouter.changePage(Navigation.PaymentsPage)
 
             } catch (e: Exception) {
 
                 e.printStackTrace()
             }
-            CurrentDataUtils.retrieveCurrentUser()
-            CurrentDataUtils.retrievePaymentsMethod()
-            MainRouter.changePage(Navigation.PaymentsPage)
+
 
         }
 
@@ -47,20 +48,16 @@ class PaymentViewModel {
     fun createPayment(payment: PaymentMethodCreateDTO){
         coroutineScope.launch {
             try{
-
                 withContext(Dispatchers.IO) {
                     paymentControllerApi.createPaymentMethod(payment)
-
-
-
                 }
 
             } catch (e: Exception) {
-
                 e.printStackTrace()
             }
             CurrentDataUtils.retrieveCurrentUser()
             CurrentDataUtils.retrievePaymentsMethod()
+
             MainRouter.changePage(Navigation.PaymentsPage)
 
         }
@@ -71,20 +68,18 @@ class PaymentViewModel {
         coroutineScope.launch {
             try{
 
-                withContext(Dispatchers.IO) {
+                val response = withContext(Dispatchers.IO) {
                     paymentControllerApi.deletePaymentMethod(id)
-
-
-
                 }
 
+                CurrentDataUtils.retrieveCurrentUser()
+                CurrentDataUtils.retrievePaymentsMethod()
+                MainRouter.changePage(Navigation.PaymentsPage)
             } catch (e: Exception) {
 
                 e.printStackTrace()
             }
-            CurrentDataUtils.retrieveCurrentUser()
-            CurrentDataUtils.retrievePaymentsMethod()
-            MainRouter.changePage(Navigation.PaymentsPage)
+
 
         }
 

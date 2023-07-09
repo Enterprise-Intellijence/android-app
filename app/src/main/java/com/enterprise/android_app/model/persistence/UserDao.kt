@@ -4,19 +4,19 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
+
 
 
 @Dao
 interface UserDao {
-    @Query("SELECT refresh_token FROM user where uid==7")
+    @Query("SELECT refresh_token FROM user where uid=7")
     fun getRefreshToken(): String
 
     @Insert
     fun insert(vararg users: User)
 
-    @Update
-    fun update(vararg users: User)
+    @Query("UPDATE user SET refresh_token = :refreshToken where uid=7")
+    fun update(refreshToken: String)
 
     @Delete
     fun delete(user: User)

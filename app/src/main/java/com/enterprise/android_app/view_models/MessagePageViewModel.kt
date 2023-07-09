@@ -91,6 +91,7 @@ class MessagePageViewModel : ViewModel() {
 
                 // add message at the start of the list
                 chatMessages.add(0, sentMessage)
+                loadConversations()
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -123,6 +124,7 @@ class MessagePageViewModel : ViewModel() {
                 // add message at the start of the list
                 chatMessages.add(0, sentMessage)
                 loadConversations()
+                openChat(otherUser.id!!, product?.id)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -130,8 +132,13 @@ class MessagePageViewModel : ViewModel() {
     }
 
     fun sendMessage(message: String) {
-        if (chatConversation.value == null) return
-        else sendMessage(message, chatConversation.value!!)
+        if (chatConversation.value != null)
+            sendMessage(message, chatConversation.value!!)
+        else if(chatUser.value != null)
+            sendMessage(message, chatUser.value!!, chatProduct.value)
+        else {
+            Log.e(TAG, "sendMessage: no conversation or user")
+        }
     }
 
     fun findConversationWith(otherUserID: String, productID: String?): ConversationDTO? {

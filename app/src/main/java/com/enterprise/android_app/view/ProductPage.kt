@@ -50,10 +50,11 @@ import android.content.Intent
 import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import com.enterprise.android_app.view_models.ProductPageViewModel
 
 @Composable
 fun ProductPage(
-    productPageViewModel: ViewModel,
+    productPageViewModel: ProductPageViewModel,
     product: ProductDTO,
     lazyList_state: LazyListState,
     padding: PaddingValues
@@ -181,9 +182,14 @@ fun ProductPage(
                 Button(
                     onClick = {
 
+                        val url = productPageViewModel.getProductShareLink(product)
+                        val text = "Hey, check out this product on Svinted: ${product.title} for ${product.productCost.price} ${product.productCost.currency}\n\n$url"
+
+
+
                         val sendIntent: Intent = Intent().apply {
                             action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, )
+                            putExtra(Intent.EXTRA_TEXT, text)
                             type = "text/plain"
                         }
 

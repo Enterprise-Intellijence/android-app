@@ -84,11 +84,12 @@ class ProductPageViewModel: ViewModel() {
     }
 
 
-    fun getProductShareLink(product: ProductDTO): String {
+    public fun getProductShareLink(product: ProductDTO): String {
         CurrentDataUtils.currentUser?.let {
             if(product.visibility == ProductDTO.Visibility.PRIVATE) {
                 // todo get capability to share private products
-                return ""
+                val token = productControllerApi.createCapability(product.id!!).capabilityToken
+                return "${BasePath.WEB_BASE_PATH}/products/token/$token"
             }
             if(it.id == product.seller?.id) {
                 return "${BasePath.WEB_BASE_PATH}/products/${product.id}"

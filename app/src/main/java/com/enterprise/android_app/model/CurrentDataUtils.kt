@@ -9,6 +9,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.model.persistence.User
+import com.enterprise.android_app.navigation.AppRouter
+import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.UserBasicDTO
@@ -129,7 +131,7 @@ object CurrentDataUtils {
                 println("INSERT")
             }
             else{
-                AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(user)
+                AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(refresh_token)
                 println("UPDATE")
             }
 
@@ -150,30 +152,23 @@ object CurrentDataUtils {
 
 
     fun checkRefreshToken(){
-
-
         println("QUA CI SONO ARRIVATO")
-        /*
+
         CoroutineScope(Dispatchers.IO).launch {
-            _refreshTokenDB.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
             sleep(2000)
             println("REFRESHTOKEN DB --> " + _refreshToken.value)
-        }
-        */
-
-
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-            var MapCheckRefreshToken = userControllerApi.refreshToken()
-            var checkRefreshToken = MapCheckRefreshToken["refreshToken"].toString()
-            println("CHECK REFRESHTOKEN --> " + checkRefreshToken)
-
-
-            sleep(3000)
-
-            if(_refreshTokenDB.value != checkRefreshToken)
-                _hasToCheck.value = true
+            try {
+                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                if (tokenMap.isNotEmpty()) {
+                    _accessToken.value = tokenMap["accessToken"]!!
+                    _refreshToken.value = tokenMap["refreshToken"]!!
+                    AppRouter.navigateTo(Screen.MainScreen)
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                AppRouter.navigateTo(Screen.LoginScreen)
+            }
         }
     }
 

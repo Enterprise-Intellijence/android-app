@@ -38,17 +38,9 @@ fun StartScreen() {
             
 
             Button( onClick = {
-
-                              AppRouter.navigateTo(Screen.LoginScreen)
-                /*
+                //AppRouter.navigateTo(Screen.LoginScreen)
                 CurrentDataUtils.checkRefreshToken()
-                sleep(3000)
-                if(!CurrentDataUtils.hasToCheck)
-                    AppRouter.navigateTo(Screen.MainScreen)
-                else
-                    AppRouter.navigateTo(Screen.LoginScreen)
-                */
-                              },
+            },
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth()

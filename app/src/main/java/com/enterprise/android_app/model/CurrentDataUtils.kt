@@ -1,14 +1,12 @@
 package com.enterprise.android_app.model
 
 import android.app.Application
-import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.models.AddressDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
-import com.enterprise.android_app.model.persistence.User
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
@@ -18,7 +16,6 @@ import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Thread.sleep
 
 object CurrentDataUtils {
             private val userControllerApi = UserControllerApi()
@@ -36,7 +33,7 @@ object CurrentDataUtils {
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
 
 
-    private var _hasToCheck: MutableState<Boolean> = mutableStateOf(false)
+    private var _showLoadingScreen: MutableState<Boolean> = mutableStateOf(true)
 
     val chatUserId = mutableStateOf(null as String?)
     val chatProductId = mutableStateOf(null as String?)
@@ -50,9 +47,8 @@ object CurrentDataUtils {
         set(newValue) { _accessToken.value = newValue }
 
 
-    var hasToCheck: Boolean
-        get() = _hasToCheck.value
-        set(newValue){ _hasToCheck.value = newValue}
+    var showLoadingScreen: MutableState<Boolean> = mutableStateOf(false)
+        get() = _showLoadingScreen
 
     var refreshToken: String
         get() = _refreshToken.value
@@ -133,11 +129,9 @@ object CurrentDataUtils {
             println(refresh_token2)
             if( refresh_token2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
-                println("INSERT")
             }
             else{
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(refresh_token)
-                println("UPDATE")
             }
 
         }
@@ -157,25 +151,21 @@ object CurrentDataUtils {
 
 
     fun checkRefreshToken(){
-        println("QUA CI SONO ARRIVATO")
-
         CoroutineScope(Dispatchers.IO).launch {
             _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
-            sleep(2000)
-            println("REFRESHTOKEN DB --> " + _refreshToken.value)
+
             try {
                 var tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
+                    _showLoadingScreen.value = false
                     AppRouter.navigateTo(Screen.MainScreen)
                 }
             }catch (e: Exception){
-                e.printStackTrace()
-                AppRouter.navigateTo(Screen.LoginScreen)
+                _showLoadingScreen.value = false
             }
         }
     }
-
 }
 

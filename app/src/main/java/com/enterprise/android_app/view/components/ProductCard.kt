@@ -50,11 +50,8 @@ import io.swagger.client.models.ProductBasicDTO
 
 @Composable
 fun ProductCard(product: ProductBasicDTO) {
-    val productPageViewModel: ProductPageViewModel = viewModel()
-
     var likes by rememberSaveable { mutableStateOf(product.likesNumber) }
     var liked by rememberSaveable { mutableStateOf(UserServices.isProductLiked(product.id!!))}
-
 
     Card(
         modifier = Modifier

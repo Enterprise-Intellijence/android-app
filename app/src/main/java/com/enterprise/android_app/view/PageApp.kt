@@ -65,7 +65,6 @@ fun PageApp(mainActivity: MainActivity) {
 
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
-
                     StartScreen()
                     //ProductScreen()
                 }
@@ -125,6 +124,13 @@ fun MainScreen(mainActivity: MainActivity) {
                 is Navigation.PurchasePage ->{
                     PurchasePage()
                 }
+                is Navigation.SelectAddressPage ->{
+                    SelectAddressPage()
+                }
+                is Navigation.SelectPaymentPage ->{
+                    SelectPaymentMethodPage()
+                }
+
                 is Navigation.AboutPage ->{
                     AboutPage()
                 }
@@ -139,9 +145,6 @@ fun MainScreen(mainActivity: MainActivity) {
                 }
                 is Navigation.ShippingPage ->{
                     ShippingPage()
-                }
-                is Navigation.PaymentsPage ->{
-                    PaymentsPage()
                 }
                 is Navigation.ProfileDetailsPage ->{
                     ProfileDetailsPage()

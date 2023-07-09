@@ -5,12 +5,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import io.swagger.client.models.AddressDTO
 import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
+import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.PaymentMethodDTO
+import io.swagger.client.models.ProductBasicDTO
+import io.swagger.client.models.ProductDTO
 import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 import kotlinx.coroutines.CoroutineScope
@@ -18,17 +20,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 object CurrentDataUtils {
-            private val userControllerApi = UserControllerApi()
+
+    private val userControllerApi = UserControllerApi()
 
     private var _accessToken: MutableState<String> = mutableStateOf("")
     private var _refreshToken: MutableState<String> = mutableStateOf("")
     private var _currentUser: MutableState<UserDTO?> = mutableStateOf(null)
     private var _currentProductId: MutableState<String> = mutableStateOf("")
     private var _visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
-    private var _currentAddress: MutableState<AddressDTO?>  = mutableStateOf(null)
+    private var _currentAddress: MutableState<AddressDTO?> = mutableStateOf(null)
     private var _Addresses = mutableStateListOf<AddressDTO>()
     private var _PaymentsMethod = mutableStateListOf<PaymentMethodDTO>()
     private var _currentPaymentMethod: MutableState<PaymentMethodDTO?>  = mutableStateOf(null)
+    private var _defaultAddress: MutableState<AddressDTO?> = mutableStateOf(null)
+    private var _currentAddresses = mutableStateListOf<AddressDTO>()
+    private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
+
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
 
@@ -100,12 +107,41 @@ object CurrentDataUtils {
         get() = _currentAddress
         set(newValue){ _currentAddress = newValue}
 
+    fun toProductBasicDTO(p: ProductDTO): ProductBasicDTO {
+
+        return ProductBasicDTO(
+                id = p.id,
+                title = p.title,
+                description = p.description,
+                uploadDate = p.uploadDate,
+                productCost = p.productCost,
+                deliveryCost = p.deliveryCost,
+                brand = p.brand,
+                condition = ProductBasicDTO.Condition.valueOf(p.condition?.name!!),
+                likesNumber = p.likesNumber,
+                seller = p.seller,
+                productImages = p.productImages,
+                productCategory = p.productCategory
+            )
+    }
+
+    var defaultAddress: MutableState<AddressDTO?>
+        get() = _defaultAddress
+        set(newValue){ _defaultAddress = newValue}
+
+    var defaultPaymentMethod: MutableState<PaymentMethodDTO?>
+        get() = _defaultPaymentMethod
+        set(newValue){ _defaultPaymentMethod = newValue}
     val addresses: SnapshotStateList<AddressDTO>
         get() = _Addresses
 
     fun retrieveAddresses(){
         _Addresses.clear()
         _currentUser.value?.addresses?.let { _Addresses.addAll(it.toList()) }
+        _currentAddresses.forEach {a ->
+            if(a.default == true)
+                _defaultAddress.value = a
+        }
     }
 
     var currentPaymentMethodDTO: MutableState<PaymentMethodDTO?>
@@ -118,6 +154,10 @@ object CurrentDataUtils {
     fun retrievePaymentsMethod(){
         _PaymentsMethod.clear()
         _currentUser.value?.paymentMethods?.let { _PaymentsMethod.addAll(it.toList()) }
+        _PaymentsMethod.forEach {p ->
+            if(p.default == true)
+                _defaultPaymentMethod.value = p
+        }
     }
 
     fun setRefresh(refresh_token: String){

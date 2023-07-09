@@ -26,6 +26,9 @@ sealed class Navigation() {
     object FavouriteProductScreen : Navigation()
     object SettingsPage : Navigation ()
     object PurchasePage : Navigation()
+    object SelectAddressPage: Navigation()
+    object SelectPaymentPage: Navigation()
+
     object OrdersPage : Navigation()
 
     object AboutPage : Navigation()

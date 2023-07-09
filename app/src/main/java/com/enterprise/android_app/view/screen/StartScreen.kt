@@ -2,6 +2,7 @@ package com.enterprise.android_app.view.screen
 
 import android.provider.Settings.Global.getString
 import android.util.Log
+import android.widget.Space
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,9 +11,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -66,60 +69,62 @@ fun StartScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(text = "Svinted", fontSize = 30.sp)
+            Text(text = "Svinted", fontSize = 30.sp, )
+            if (CurrentDataUtils.showLoadingScreen.value) {
+                Spacer(modifier = Modifier.height(20.dp))
+                CircularProgressIndicator(Modifier.size(40.dp))
+            }else {
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+
+                    modifier = Modifier
+                        .height(45.dp)
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp),
+                    shape = RoundedCornerShape(7.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.login))
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = { AppRouter.navigateTo(Screen.SignUpScreen) },
+                    colors = ButtonDefaults.outlinedButtonColors(),
+                    modifier = Modifier
+                        .height(45.dp)
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp)
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(7.dp)
+                        ),
+                    shape = RoundedCornerShape(7.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.sign_up))
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
 
-
-            Button(
-                onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
-
-                modifier = Modifier
-                    .height(45.dp)
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp),
-                shape = RoundedCornerShape(7.dp)
-            ) {
-                Text(text = stringResource(id = R.string.login))
+                Button(
+                    onClick = { state.open() },
+                    colors = ButtonDefaults.outlinedButtonColors(),
+                    modifier = Modifier
+                        .height(45.dp)
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp)
+                        .border(
+                            1.dp,
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(7.dp)
+                        ),
+                    shape = RoundedCornerShape(7.dp)
+                ) {
+                    Text(text = "continue with Google")
+                }
             }
-
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = { AppRouter.navigateTo(Screen.SignUpScreen) },
-                colors = ButtonDefaults.outlinedButtonColors(),
-                modifier = Modifier
-                    .height(45.dp)
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp)
-                    .border(
-                        1.dp,
-                        MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(7.dp)
-                    ),
-                shape = RoundedCornerShape(7.dp)
-            ) {
-                Text(text = stringResource(id = R.string.sign_up))
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-
-            Button(
-                onClick = { state.open() },
-                colors = ButtonDefaults.outlinedButtonColors(),
-                modifier = Modifier
-                    .height(45.dp)
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp)
-                    .border(
-                        1.dp,
-                        MaterialTheme.colorScheme.primary,
-                        RoundedCornerShape(7.dp)
-                    ),
-                shape = RoundedCornerShape(7.dp)
-            ) {
-                Text(text = "continue with Google")
-            }
-
 
         }
     }

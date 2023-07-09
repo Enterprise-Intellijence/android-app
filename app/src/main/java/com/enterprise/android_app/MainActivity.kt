@@ -5,13 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.enterprise.android_app.controller.RefreshInterceptor
 import com.enterprise.android_app.model.CurrentDataUtils
-//import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.PageApp
 import okhttp3.OkHttpClient
 
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //gfgHttpClient()
@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
                 PageApp(this)
             }
         }
-
     }
 
 

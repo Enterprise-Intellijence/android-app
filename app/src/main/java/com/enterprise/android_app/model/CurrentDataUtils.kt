@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.lang.Thread.sleep
 
 object CurrentDataUtils {
-    private val userControllerApi = UserControllerApi()
+            private val userControllerApi = UserControllerApi()
 
     private var _accessToken: MutableState<String> = mutableStateOf("")
     private var _refreshToken: MutableState<String> = mutableStateOf("")
@@ -37,6 +37,11 @@ object CurrentDataUtils {
 
 
     private var _hasToCheck: MutableState<Boolean> = mutableStateOf(false)
+
+    val chatUserId = mutableStateOf(null as String?)
+    val chatProductId = mutableStateOf(null as String?)
+    val makeOffer = mutableStateOf(false)
+
 
     var _application: Application? = null
 

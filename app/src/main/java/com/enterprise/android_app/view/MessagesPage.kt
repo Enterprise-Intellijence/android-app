@@ -21,6 +21,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.view_models.MessagePageViewModel
 import com.enterprise.android_app.view_models.OfferViewModel
@@ -48,7 +50,23 @@ fun MessagesPage() {
     val messagePageViewModel: MessagePageViewModel = viewModel()
     val offerViewModel: OfferViewModel = viewModel()
 
+    LaunchedEffect(CurrentDataUtils.chatUserId) {
+        if (CurrentDataUtils.chatUserId.value != null) {
+            messagePageViewModel.openChat(
+                CurrentDataUtils.chatUserId.value!!,
+                CurrentDataUtils.chatProductId.value
+            )
+            CurrentDataUtils.chatUserId.value = null
+            CurrentDataUtils.chatProductId.value = null
+
+            messagePageViewModel.isMakingOffer.value = CurrentDataUtils.makeOffer.value
+            CurrentDataUtils.makeOffer.value = false
+        }
+    }
+
+
     Column() {
+
         if (!messagePageViewModel.inChat.value) {
             if (messagePageViewModel.conversationList.isEmpty()) {
                 messagePageViewModel.loadConversations()
@@ -65,21 +83,28 @@ fun MessagesPage() {
                     messagePageViewModel::openChat
                 )
             }
-        } else if (messagePageViewModel.inChat.value) {
-            val conversation = messagePageViewModel.chatConversation.value
-            if (conversation != null)
-                ChatPage(
-                    conversation.otherUser,
-                    conversation.productBasicDTO,
-                    messagePageViewModel.chatMessages,
-                    isMakingOffer = messagePageViewModel.isMakingOffer.value,
-                    onSendMessage = { messagePageViewModel.sendMessage(it) },
-                    onBack = (messagePageViewModel::clearCurrentConversation),
-                    onMakeOffer = { text: String, product: ProductBasicDTO ->
-                        makeOffer(text, product, offerViewModel)
-                    },
-                    offerToggle = (messagePageViewModel::toggleMakeOffer),
-                )
+        } else if (messagePageViewModel.inChat.value && messagePageViewModel.chatUser.value != null) {
+
+            ChatPage(
+                messagePageViewModel.chatUser.value!!,
+                messagePageViewModel.chatProduct.value,
+                messagePageViewModel.chatMessages,
+                isMakingOffer = messagePageViewModel.isMakingOffer.value,
+                onSendMessage = { messagePageViewModel.sendMessage(it) },
+                onBack = (messagePageViewModel::clearCurrentConversation),
+                onMakeOffer = { text: String, product: ProductBasicDTO ->
+                    makeOffer(text, product, offerViewModel)
+                },
+                offerToggle = (messagePageViewModel::toggleMakeOffer),
+            )
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(40.dp))
+            }
         }
 
 

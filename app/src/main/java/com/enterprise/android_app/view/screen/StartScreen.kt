@@ -69,8 +69,10 @@ fun StartScreen() {
             Text(text = "Svinted", fontSize = 30.sp)
 
 
+
             Button(
                 onClick = { AppRouter.navigateTo(Screen.LoginScreen) },
+
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth()

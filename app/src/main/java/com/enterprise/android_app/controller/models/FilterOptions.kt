@@ -1,5 +1,6 @@
 package com.enterprise.android_app.controller.models
 
+import com.enterprise.android_app.view.screen.filter.Condition
 import io.swagger.client.models.ProductCategory
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -10,7 +11,7 @@ data class FilterOptions(
     var minProductCost: Number? = null,
     var maxProductCost: Number? = null,
     var brands: Array<String>? = null,
-    var condition: String? = null,
+    var condition: Array<Condition>? = null,
     var views: Number? = null,
     var userId: String? = null,
     var uploadDate: LocalDateTime? = null,

@@ -53,11 +53,17 @@ class OfferViewModel : ViewModel() {
         }
     }
 
-    fun makeOffer(product: ProductBasicDTO, amount: CustomMoneyDTO){
+    fun makeOffer(product: ProductBasicDTO, amount: CustomMoneyDTO) {
         coroutineScope.launch {
             try {
                 val offer = OfferCreateDTO(product = product, amount = amount)
                 offerControllerApi.createOffer(offer)
+                messagePageViewModel.loadConversations()
+                if (messagePageViewModel.chatConversation.value?.conversationId != null) {
+                    messagePageViewModel.loadMessagesForConversation(messagePageViewModel.chatConversation.value?.conversationId!!)
+                } else {
+                    messagePageViewModel.openChat(messagePageViewModel.conversationList[0])
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

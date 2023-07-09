@@ -12,6 +12,7 @@
 package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
+import com.enterprise.android_app.view.screen.filter.Condition
 import io.swagger.client.models.AdminProductsBody
 import io.swagger.client.models.CapabilityDTO
 import io.swagger.client.models.OrderBasicDTO
@@ -160,7 +161,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return PageProductBasicDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun getFilteredProducts(title: kotlin.String? = null, description: kotlin.String? = null, minProductCost: kotlin.Double? = null, maxProductCost: kotlin.Double? = null, brands: kotlin.Array<kotlin.String>? = null, condition: kotlin.String? = null, views: kotlin.Int? = null, userId: kotlin.String? = null, uploadDate: java.time.LocalDateTime? = null, availability: kotlin.String? = null, productCategory: ProductCategory? = null, primaryCat: kotlin.String? = null, secondaryCat: kotlin.String? = null, tertiaryCat: kotlin.String? = null, likesNumber: kotlin.Int? = null, productGender: kotlin.String? = null, sizes: kotlin.Array<kotlin.String>? = null, colour: kotlin.String? = null, entertainmentLanguage: kotlin.String? = null, homeMaterial: kotlin.String? = null, page: kotlin.Int? = null, sizePage: kotlin.Int? = null, sortBy: kotlin.String? = null, sortDirection: kotlin.String? = null): PageProductBasicDTO {
+    fun getFilteredProducts(title: kotlin.String? = null, description: kotlin.String? = null, minProductCost: kotlin.Double? = null, maxProductCost: kotlin.Double? = null, brands: kotlin.Array<kotlin.String>? = null, condition: kotlin.Array<Condition>? = null, views: kotlin.Int? = null, userId: kotlin.String? = null, uploadDate: java.time.LocalDateTime? = null, availability: kotlin.String? = null, productCategory: ProductCategory? = null, primaryCat: kotlin.String? = null, secondaryCat: kotlin.String? = null, tertiaryCat: kotlin.String? = null, likesNumber: kotlin.Int? = null, productGender: kotlin.String? = null, sizes: kotlin.Array<kotlin.String>? = null, colour: kotlin.String? = null, entertainmentLanguage: kotlin.String? = null, homeMaterial: kotlin.String? = null, page: kotlin.Int? = null, sizePage: kotlin.Int? = null, sortBy: kotlin.String? = null, sortDirection: kotlin.String? = null): PageProductBasicDTO {
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             if (title != null) {
                 put("title", listOf(title.toString()))
@@ -178,7 +179,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
                 put("brands", toMultiValue(brands.toList(), "multi"))
             }
             if (condition != null) {
-                put("condition", listOf(condition.toString()))
+                put("condition", toMultiValue(condition.toList(), "multi"))
             }
             if (views != null) {
                 put("views", listOf(views.toString()))

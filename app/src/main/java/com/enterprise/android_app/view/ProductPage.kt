@@ -154,7 +154,13 @@ fun ProductPage(
         item {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                              if (UserServices.isProductLiked(product.id!!)) {
+                                  UserServices.removeLikedProduct(product.id!!)
+                              } else {
+                                  UserServices.addLikedProduct(product.id!!)
+                              }
+                    },
                     colors = ButtonDefaults.outlinedButtonColors(),
                     shape = RectangleShape,
                     modifier = Modifier

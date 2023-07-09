@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.controller.models.FilterOptions
+import com.enterprise.android_app.view.screen.filter.Condition
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.models.ProductBasicDTO
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +24,7 @@ class SearchPageViewModel: ViewModel() {
     var tempSelectedCategories: MutableList<String?> = mutableListOf(null, null, null)
     val tempSelectedSize: SnapshotStateList<String?> = mutableStateListOf()
     var currentCat: MutableState<String?> = mutableStateOf(null)
-    val selectedCondition: SnapshotStateList<String?> = mutableStateListOf()
+    val selectedCondition: SnapshotStateList<Condition?> = mutableStateListOf()
 
     val filter: MutableState<FilterOptions> = mutableStateOf(FilterOptions())
     var currentSearchPage = 0

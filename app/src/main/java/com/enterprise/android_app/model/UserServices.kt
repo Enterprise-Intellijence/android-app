@@ -1,5 +1,7 @@
 package com.enterprise.android_app.model
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import io.swagger.client.apis.UserControllerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,9 +10,9 @@ import kotlinx.coroutines.launch
 object UserServices {
     private val userControllerApi = UserControllerApi()
 
-    private var _likedProducts: MutableList<String> = mutableListOf()
+    private var _likedProducts: SnapshotStateList<String> = mutableStateListOf()
 
-    var likedProducts: MutableList<String> = mutableListOf()
+    var likedProducts: SnapshotStateList<String> = mutableStateListOf()
         get() = _likedProducts
 
     fun retriveLikedProducts(i:Int = 0) {
@@ -31,11 +33,10 @@ object UserServices {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                userControllerApi.like(id)
+                val response = userControllerApi.like(id)
             } catch (e: Exception) {
                 e.printStackTrace()
-                println("ciao")
-                //_likedProducts.remove(id)
+                _likedProducts.remove(id)
             }
         }
     }
@@ -45,10 +46,9 @@ object UserServices {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                userControllerApi.unlike(id)
+                val response = userControllerApi.unlike(id)
             } catch (e: Exception) {
                 e.printStackTrace()
-                println("ciao")
                 _likedProducts.add(id)
             }
         }

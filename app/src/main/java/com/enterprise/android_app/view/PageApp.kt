@@ -185,7 +185,7 @@ fun MainBottomBar(navController: NavHostController) {
             )
             NavigationBarItem(
                 selected = currentNavigation.value?.destination?.route == Navigation.NewProductPage.route,
-                onClick = { navController.navigate(Navigation.SearchPage.route) },
+                onClick = { navController.navigate(Navigation.NewProductPage.route) },
                 icon = {
                     Icon(
                         FontAwesomeIcons.Solid.PlusCircle,

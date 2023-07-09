@@ -106,26 +106,21 @@ fun MainScreen(navController: NavHostController) {
                 when(currentNavigation.value?.destination?.route){
                     Navigation.HomePage.route -> { HomePage() }
                     Navigation.SearchPage.route -> { SearchPage() }
-                    Navigation.MessagesPage.route -> { MessagesPage() }
-                    Navigation.ProfileMenuPage.route -> { ProfileMenuPage() }
-                    Navigation.ProfilePage.route -> { ProfilePage(CurrentDataUtils.visitedUser) }
-                    Navigation.FavouriteProductScreen.route -> { FavouriteProductScreen() }
-                    Navigation.SettingsPage.route -> { SettingsPage() }
-                    Navigation.OrdersPage.route ->{ OrdersPage() }
+                    Navigation.MessagesPage.route -> { MessagesPage(navController) }
+                    Navigation.ProfileMenuPage.route -> { ProfileMenuPage(navController) }
+                    Navigation.ProfilePage.route -> { CurrentDataUtils.visitedUser.id?.let { it1 -> ProfilePage(navController, it1) } }
+                    Navigation.FavouriteProductScreen.route -> { FavouriteProductScreen(navController) }
+                    Navigation.SettingsPage.route -> { SettingsPage(navController) }
+                    Navigation.OrdersPage.route ->{ OrdersPage(navController) }
                     Navigation.AboutPage.route ->{ AboutPage() }
-                    Navigation.ProductScreen.route ->{ ProductScreen( CurrentDataUtils.currentProductId) }
-                    Navigation.NewProductPage.route ->{ NewProductPage() }
+                    Navigation.ProductScreen.route ->{ ProductScreen(navController, CurrentDataUtils.currentProductId) }
+                    Navigation.NewProductPage.route ->{ NewProductPage(navController) }
                     Navigation.AccountSettingsPage.route ->{ AccountSettingsPage() }
-                    Navigation.ShippingPage.route ->{ ShippingPage(navController)
-                    }
-                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController)
-                    }
-                    Navigation.ProfileDetailsPage.route ->{ ProfileDetailsPage(navController)
-                    }
-                    Navigation.AddEditShippingScreen.route ->{ AddEditShippingScreen(navController)
-                    }
-                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController)
-                    }
+                    Navigation.ShippingPage.route ->{ ShippingPage(navController) }
+                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController) }
+                    Navigation.ProfileDetailsPage.route ->{ ProfileDetailsPage(navController) }
+                    Navigation.AddEditShippingScreen.route ->{ AddEditShippingScreen(navController) }
+                    Navigation.PaymentsPage.route ->{ PaymentsPage(navController) }
                     Navigation.AddEditPaymentMethodScreen.route ->{ AddEditPaymentMethodScreen() }
                     /*is Navigation.ImageSelectorComponent ->{
                         is Navigation.ImageSelectorComponent ->{

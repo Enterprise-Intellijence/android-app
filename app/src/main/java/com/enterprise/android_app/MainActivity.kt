@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //gfgHttpClient()
         CurrentDataUtils._application = this.application
-
         setContent {
             AndroidappTheme {
                 PageApp(this)

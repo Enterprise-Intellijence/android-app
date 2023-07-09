@@ -75,32 +75,32 @@ fun SearchPage(){
     else {
         if (search.value) {
             searchPageViewModel.search()
-            if (products.isNotEmpty()) {
+            Column(modifier = Modifier.padding(top = 10.dp).fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                if (products.isNotEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        LazyGridProductsCard(products = products, lazyGridState = lazyGridState) {
+                            searchPageViewModel.search()
+                        }
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    LazyGridProductsCard(products = products, lazyGridState = lazyGridState) {
-                        searchPageViewModel.search()
+                        FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = CircleShape,
+                            modifier = Modifier
+                                .size(80.dp)
+                                .align(Alignment.BottomEnd)
+                                .padding(13.dp),
+                            onClick = { filterPage.value = true }) {
+                            Icon(
+                                FontAwesomeIcons.Solid.Filter,
+                                contentDescription = stringResource(id = R.string.filter),
+                                Modifier.size(20.dp)
+                            )
+                        }
+
                     }
-
-                    FloatingActionButton(containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        shape = CircleShape,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.BottomEnd)
-                            .padding(13.dp),
-                        onClick = { filterPage.value = true }) {
-                        Icon(
-                            FontAwesomeIcons.Solid.Filter,
-                            contentDescription = stringResource(id = R.string.filter),
-                            Modifier.size(20.dp)
-                        )
-                    }
-
-                }
-            } else
-                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                } else {
                     CircularProgressIndicator(Modifier.size(40.dp))
                 }
+            }
 
         } else {
             searchPageViewModel.counter = 0

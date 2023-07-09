@@ -21,6 +21,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -51,6 +52,10 @@ import java.io.File
 
 @Composable
 fun PageApp(mainActivity: MainActivity) {
+
+    LaunchedEffect(key1 = "PageApp", block = {
+        CurrentDataUtils.checkRefreshToken()
+    })
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White

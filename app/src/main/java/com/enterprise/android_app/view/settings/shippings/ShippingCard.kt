@@ -57,7 +57,7 @@ import io.swagger.client.models.AddressDTO
 import kotlinx.coroutines.coroutineScope
 
 @Composable
-fun ShippingCard(address: AddressDTO){
+fun ShippingCard(address: MutableState<AddressDTO?>){
     val deliveryViewModel = DeliveryViewModel()
 
     val mContext = LocalContext.current
@@ -75,7 +75,7 @@ fun ShippingCard(address: AddressDTO){
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = address.header,
+                        text = address.value?.header!!,
                         style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                     )
                 }
@@ -100,7 +100,7 @@ fun ShippingCard(address: AddressDTO){
                         }
                         IconButton(
                             onClick = {
-                                deliveryViewModel.deleteAddress(address.id)
+                                deliveryViewModel.deleteAddress(address.value?.id!!)
 
                             }
 
@@ -119,34 +119,29 @@ fun ShippingCard(address: AddressDTO){
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "${address.street}, ${address.zipCode}")
-            Text(text = "${address.city}, ${address.country}")
+            Text(text = "${address.value?.street}, ${address.value?.zipCode}")
+            Text(text = "${address.value?.city}, ${address.value?.country}")
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(imageVector = FontAwesomeIcons.Solid.Phone,
                     contentDescription = "Phone Number",
                     modifier = Modifier.height(12.dp))
-                Text(text = address.phoneNumber,modifier = Modifier.padding(start = 8.dp))
+                Text(text = address.value?.phoneNumber!!,modifier = Modifier.padding(start = 8.dp))
 
             }
-            if(address.default==true){
+            if(address.value?.default==true){
                 Text(text = stringResource(id = R.string.defaultAddress), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
-            else{
+            /*else{
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.weight(1f,true))
                     Button(
                         onClick = {
-                            changeDefaultAddress(address = address.copy(default = true))
+                            changeDefaultAddress(address = address.value?.copy(default = true)!!)
                             mToast(context = mContext, "Address default changed")
-                            //refreshList(addressDTO = address.copy(default = true))
-                            //MainRouter.changePage(Navigation.ShippingPage)
-
-
 
                                   },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            //contentColor = DarkGreen
                         ),
 
                         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp) ,
@@ -174,7 +169,7 @@ fun ShippingCard(address: AddressDTO){
                     }
                 }
 
-            }
+            }*/
         }
     }
 
@@ -189,7 +184,7 @@ private fun mToast(context: Context, text: String){
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }
 
-private fun EditAddress(address: AddressDTO?){
+private fun EditAddress(address: MutableState<AddressDTO?>){
     CurrentDataUtils.addressDTO = address
 }
 

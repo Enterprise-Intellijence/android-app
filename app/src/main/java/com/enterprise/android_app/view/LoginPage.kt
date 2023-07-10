@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
+import com.enterprise.android_app.navigation.Screen
+import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view.components.ButtonComponent
 import com.enterprise.android_app.view.components.ClickableLoginTextComponent
 import com.enterprise.android_app.view.components.DividerTextComponent
@@ -223,7 +225,7 @@ fun CommonTextFieldPassword(
                 FontAwesomeIcons.Solid.EyeSlash
             }
 
-            var description = if (passwordVisible) {
+            val description = if (passwordVisible) {
                 stringResource(id = R.string.hide_password)
             } else {
                 stringResource(id = R.string.show_password)

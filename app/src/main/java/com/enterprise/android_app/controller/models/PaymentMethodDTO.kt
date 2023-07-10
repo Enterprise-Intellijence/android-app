@@ -26,6 +26,7 @@ data class PaymentMethodDTO (
     val creditCard: kotlin.String,
     val expiryDate: java.time.LocalDate,
     val owner: kotlin.String,
-    val isDefault: kotlin.Boolean
+    val isDefault: kotlin.Boolean,
+    val default: Any
 ) {
 }

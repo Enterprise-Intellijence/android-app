@@ -31,13 +31,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
-import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.view.components.Closet
 import com.enterprise.android_app.view.components.Reviews
@@ -46,7 +43,6 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cubes
 import compose.icons.fontawesomeicons.solid.PencilAlt
-import io.swagger.client.models.UserBasicDTO
 
 @Composable
 fun ProfilePage(navController: NavHostController, visitedUserId: String){

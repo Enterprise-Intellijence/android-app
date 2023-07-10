@@ -11,11 +11,6 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.ProductCategoryDTO
-import io.swagger.client.models.ProductCreateDTO
-import io.swagger.client.models.SizeDTO
-
 /**
  * 
  * @param colour 
@@ -49,22 +44,25 @@ class HomeCreateDTO: ProductCreateDTO {
                 visibility,
                 productCategory,
                 productImages,
-                type)
+                type,
+            )
 
     constructor(productCreateDTO: ProductCreateDTO,
                 colour: HomeCreateDTO.Colour,
                 homeSize: SizeDTO,
-                homeMaterial: HomeCreateDTO.HomeMaterial): super(title = productCreateDTO.title,
-                description = productCreateDTO.description,
-                productCost = productCreateDTO.productCost,
-                deliveryCost = productCreateDTO.deliveryCost,
-                brand = productCreateDTO.brand,
-                condition = productCreateDTO.condition,
-                productSize = productCreateDTO.productSize,
-                visibility = productCreateDTO.visibility,
-                productCategory = productCreateDTO.productCategory,
-                productImages = productCreateDTO.productImages,
-                type = productCreateDTO.type)
+                homeMaterial: HomeCreateDTO.HomeMaterial): super(
+        title = productCreateDTO.title,
+        description = productCreateDTO.description,
+        productCost = productCreateDTO.productCost,
+        deliveryCost = productCreateDTO.deliveryCost,
+        brand = productCreateDTO.brand,
+        condition = productCreateDTO.condition,
+        productSize = productCreateDTO.productSize,
+        visibility = productCreateDTO.visibility,
+        productCategory = productCreateDTO.productCategory,
+        productImages = productCreateDTO.productImages,
+        type = productCreateDTO.type,
+    )
     /**
     * 
     * Values: YELLOW,GREEN,BLUE,RED,BLACK,WHITE,MULTICOLOUR

@@ -42,7 +42,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.enterprise.android_app.ui.theme.AndroidappTheme
@@ -239,7 +238,7 @@ fun NewProductPage(navController: NavHostController) {
                     ProductCreateDTO.Visibility.valueOf(selectedVisibility),
                     category,
                     null,
-                    selectedPrimaryCategory
+                    selectedPrimaryCategory,
                 )
 
                 var finalProduct: ProductCreateDTO = product

@@ -11,9 +11,6 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.ProductCategoryDTO
-
 /**
  * 
  * @param title 
@@ -27,19 +24,48 @@ import io.swagger.client.models.ProductCategoryDTO
  * @param productCategory
  * @param type 
  */
-open class ProductCreateDTO (
+open class ProductCreateDTO(
 
-    val title: kotlin.String,
-    val description: kotlin.String? = null,
+    val title: String?,
+    val description: String? = null,
     val productCost: CustomMoneyDTO,
     val deliveryCost: CustomMoneyDTO,
-    val brand: kotlin.String? = null,
-    val condition: Condition,
-    val productSize: ProductSize,
-    val visibility: Visibility,
-    val productCategory: ProductCategoryDTO,
-    val type: kotlin.String
+    val brand: String? = null,
+    val condition: Condition?,
+    val productSize: ProductSize?,
+    val visibility: Visibility?,
+    val productCategory: ProductCategoryDTO?,
+    val productImages: Array<Array<Byte>>?,
+    val type: String?,
 ) {
+
+    constructor(
+        title: String?,
+        description: String?,
+        productCost: CustomMoneyDTO,
+        deliveryCost: CustomMoneyDTO,
+        brand: String?,
+        condition: Condition?,
+        productSize: ProductSize?,
+        visibility: Visibility?,
+        productCategory: ProductCategoryDTO?,
+        productImages: Array<Array<Byte>>?,
+        type: String?,
+        type1: String
+    ) : this(
+        title,
+        description,
+        productCost,
+        deliveryCost,
+        brand,
+        condition,
+        productSize,
+        visibility,
+        productCategory,
+        productImages,
+        type
+    )
+
     /**
     * 
     * Values: NEWWITHTAG,NEWWITHOUTTAG,VERYGOOD,GOOD,ACCEPTABLE

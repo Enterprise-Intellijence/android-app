@@ -50,16 +50,19 @@ import android.content.Intent
 import android.app.Activity
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.view_models.ProductPageViewModel
 
 @Composable
 fun ProductPage(
+    navController: NavHostController,
     productPageViewModel: ProductPageViewModel,
     product: ProductDTO,
     lazyList_state: LazyListState,
     padding: PaddingValues
 ) {
-    var context = LocalContext.current
+    val context = LocalContext.current
 
     LazyColumn(state = lazyList_state, content = {
         item {
@@ -72,7 +75,7 @@ fun ProductPage(
             SellerRow(product.seller as UserBasicDTO) {
                 CurrentDataUtils.chatUserId.value = product.seller.id
                 CurrentDataUtils.chatProductId.value = product.id
-                MainRouter.changePage(Navigation.MessagesPage)
+                navController.navigate(Navigation.MessagesPage.route)
             }
         }
         item {
@@ -118,9 +121,7 @@ fun ProductPage(
                         .height(110.dp)
                 ) {
                     Button(
-                        onClick = {
-                            MainRouter.changePage(
-                            Navigation.PurchasePage) },
+                        onClick = {},
                         modifier = Modifier
                             .height(45.dp)
                             .fillMaxWidth()
@@ -136,7 +137,7 @@ fun ProductPage(
                             CurrentDataUtils.chatUserId.value = product.seller.id
                             CurrentDataUtils.chatProductId.value = product.id
                             CurrentDataUtils.makeOffer.value = true
-                            MainRouter.changePage(Navigation.MessagesPage)
+                            navController.navigate(Navigation.MessagesPage.route)
                         },
                         colors = ButtonDefaults.outlinedButtonColors(),
                         modifier = Modifier

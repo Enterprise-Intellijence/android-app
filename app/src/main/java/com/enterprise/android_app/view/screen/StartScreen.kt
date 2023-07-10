@@ -57,7 +57,6 @@ fun StartScreen(navController: NavHostController) {
     if (CurrentDataUtils.goToHome.value) {
         CurrentDataUtils.goToHome.value = false
         navController.navigate(Screen.MainScreen.route)
-
     }
 
 

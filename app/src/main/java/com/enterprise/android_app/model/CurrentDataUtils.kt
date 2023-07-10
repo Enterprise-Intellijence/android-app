@@ -56,10 +56,10 @@ object CurrentDataUtils {
 
 
 
-    var showLoadingScreen: MutableState<Boolean> = mutableStateOf(false)
+    val showLoadingScreen: MutableState<Boolean>
         get() = _showLoadingScreen
 
-    var goToHome: MutableState<Boolean> = mutableStateOf(false)
+    val goToHome: MutableState<Boolean>
         get() = _goToHome
     var refreshToken: String
         get() = _refreshToken.value
@@ -70,7 +70,7 @@ object CurrentDataUtils {
         set(newValue) {
             _refreshToken.value = newValue}
 
-    var currentUser: UserDTO? = null
+    val currentUser: UserDTO?
         get() = _currentUser.value
 
     fun retrieveCurrentUser() {
@@ -121,7 +121,7 @@ object CurrentDataUtils {
                 productCost = p.productCost,
                 deliveryCost = p.deliveryCost,
                 brand = p.brand,
-                condition = ProductBasicDTO.Condition.valueOf(p.condition?.name!!),
+                condition = ProductBasicDTO.Condition.valueOf(p.condition.name),
                 likesNumber = p.likesNumber,
                 seller = p.seller,
                 productImages = p.productImages,
@@ -143,7 +143,7 @@ object CurrentDataUtils {
         _Addresses.clear()
         _currentUser.value?.addresses?.let { _Addresses.addAll(it.toList()) }
         _currentAddresses.forEach {a ->
-            if(a.default == true)
+            if(a.isDefault)
                 _defaultAddress.value = a
         }
     }

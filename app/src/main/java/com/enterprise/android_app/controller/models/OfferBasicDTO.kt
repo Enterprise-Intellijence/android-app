@@ -11,7 +11,7 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.CustomMoneyDTO
+import java.time.LocalDateTime
 
 /**
  * 
@@ -20,12 +20,12 @@ import io.swagger.client.models.CustomMoneyDTO
  * @param state 
  * @param creationTime 
  */
-data class OfferBasicDTO (
+data class OfferBasicDTO(
 
-    val id: kotlin.String,
+    val id: String?,
     val amount: CustomMoneyDTO,
-    val state: State,
-    val creationTime: java.time.LocalDateTime? = null
+    val state: State?,
+    val creationTime: LocalDateTime? = null
 ) {
     /**
     * 

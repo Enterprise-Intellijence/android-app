@@ -97,7 +97,7 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         visualTransformation = PasswordVisualTransformation(),
                         isError = newPassword.value.length<8 ,
-                        label = {if(newPassword.value.isNotEmpty() && newPassword.value.length<8) Text(text = stringResource(id = R.string.passwordTooShort)) else null}
+                        label = {if(newPassword.value.isNotEmpty() && newPassword.value.length<8) Text(text = stringResource(id = R.string.passwordTooShort))}
                     )
                 }
                 Text(text = stringResource(id = R.string.repeatNewPassword))

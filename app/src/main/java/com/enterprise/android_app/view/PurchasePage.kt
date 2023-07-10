@@ -33,10 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.navigation.MainRouter
-import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.DarkGreen
 import com.enterprise.android_app.view_models.ProductPageViewModel
 import compose.icons.FontAwesomeIcons
@@ -55,7 +54,7 @@ import io.swagger.client.models.ProductDTO
 import java.time.LocalDateTime
 
 @Composable
-fun PurchasePage(){
+fun PurchasePage(navController: NavHostController){
 
     val productViewModel: ProductPageViewModel = viewModel()
     val orderViewModel: PurchasePageViewModel = viewModel()
@@ -88,7 +87,7 @@ fun PurchasePage(){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { MainRouter.changePage(Navigation.SelectAddressPage) }) {
+        Button(onClick = { /*MainRouter.changePage(Navigation.SelectAddressPage)*/ }) {
             Text("Change address")
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -105,7 +104,7 @@ fun PurchasePage(){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { MainRouter.changePage(Navigation.SelectPaymentPage) }) {
+        Button(onClick = { /*MainRouter.changePage(Navigation.SelectPaymentPage)*/ }) {
             Text("Change payment method")
         }
         Row {
@@ -113,11 +112,15 @@ fun PurchasePage(){
                 .weight(1f)
                 .padding(top = 8.dp, end = 8.dp))
             Button(onClick = {
-                val offer: OfferBasicDTO = OfferBasicDTO(null, CustomMoneyDTO(
-                    product?.deliveryCost?.price?.let {
-                        product.productCost.price?.plus(it)
-                    }, product?.productCost?.currency
-                ), null, LocalDateTime.now())
+                val offer: OfferBasicDTO? = product?.deliveryCost?.price?.let {
+                    product.productCost.price?.plus(it)
+                }?.let {
+                    product?.productCost?.currency?.let { it1 ->
+                        CustomMoneyDTO(
+                            it, it1
+                        )
+                    }
+                }?.let { OfferBasicDTO(null, it, null, LocalDateTime.now()) }
 
                 val order: OrderCreateDTO? = product?.let {
                     CurrentDataUtils.toProductBasicDTO(it) }?.let { CurrentDataUtils.addressDTO.value?.let { it1 ->
@@ -212,7 +215,7 @@ fun SelectAddressPage(){
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { MainRouter.changePage(Navigation.PurchasePage) }) {
+        Button(onClick = { /*MainRouter.changePage(Navigation.PurchasePage)*/ }) {
             Text(text = "Confirm")
         }
     }
@@ -257,7 +260,7 @@ fun SelectPaymentMethodPage(){
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { MainRouter.changePage(Navigation.PurchasePage) }) {
+        Button(onClick = { /*MainRouter.changePage(Navigation.PurchasePage)*/ }) {
             Text(text = "Confirm")
         }
     }

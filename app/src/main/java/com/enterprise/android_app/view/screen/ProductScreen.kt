@@ -104,7 +104,7 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                     )
                 }) { contentPadding ->
 
-                ProductPage(productPageViewModel = productPageViewModel,
+                ProductPage(navController,productPageViewModel = productPageViewModel,
                     product = productPageViewModel.product!!,
                     lazyList_state = lazyList_state, padding = contentPadding)
             }

@@ -30,13 +30,13 @@ import io.swagger.client.models.AddressCreateDTO
 fun AddEditShippingScreen(navController: NavHostController) {
     var address = CurrentDataUtils.addressDTO
     val deliveryViewModel = DeliveryViewModel()
-    var headerText= remember {mutableStateOf(address.value?.header ?: "")}
-    var streetText= remember {mutableStateOf(address.value?.street ?: "")}
-    var zipCodeText= remember {mutableStateOf(address.value?.zipCode ?: "")}
-    var cityText= remember {mutableStateOf(address.value?.city ?: "")}
-    var countryText= remember {mutableStateOf(address.value?.country ?: "")}
-    var phoneNumber= remember {mutableStateOf(address.value?.phoneNumber ?: "")}
-    var isDefaultBoolean= remember {mutableStateOf(address.value?.default ?: false)}
+    val headerText= remember {mutableStateOf(address.value?.header ?: "")}
+    val streetText= remember {mutableStateOf(address.value?.street ?: "")}
+    val zipCodeText= remember {mutableStateOf(address.value?.zipCode ?: "")}
+    val cityText= remember {mutableStateOf(address.value?.city ?: "")}
+    val countryText= remember {mutableStateOf(address.value?.country ?: "")}
+    val phoneNumber= remember {mutableStateOf(address.value?.phoneNumber ?: "")}
+    val isDefaultBoolean= remember {mutableStateOf((address.value?.isDefault ?: false) as Boolean)}
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -124,7 +124,7 @@ fun AddEditShippingScreen(navController: NavHostController) {
                             city = cityText.value,
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
-                            default = isDefaultBoolean.value)!!)
+                            isDefault = isDefaultBoolean.value)!!)
 
                         MainRouter.changePage(Navigation.ShippingPage)
 
@@ -136,7 +136,7 @@ fun AddEditShippingScreen(navController: NavHostController) {
                             city = cityText.value,
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
-                            default = isDefaultBoolean.value))
+                            isDefault = isDefaultBoolean.value))
                     }
                           },
                 buttonName = if(address.value?.id!=null)"Edit" else "Create"

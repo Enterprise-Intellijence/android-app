@@ -51,12 +51,12 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditPaymentMethodScreen() {
-    var payment = CurrentDataUtils.currentPaymentMethodDTO
+    val payment = CurrentDataUtils.currentPaymentMethodDTO
     val paymentViewModel = PaymentViewModel()
-    var creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
-    var expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
-    var ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
-    var isDefaultBoolean= remember { mutableStateOf(payment.value?.default ?: false) }
+    val creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
+    val expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
+    val ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
+    val isDefaultBoolean = remember { mutableStateOf((payment.value?.default ?: false) as Boolean) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -125,7 +125,8 @@ fun AddEditPaymentMethodScreen() {
                             creditCard = creditCardText.value,
                             expiryDate = expireDate.value,
                             owner = ownerText.value,
-                            default = isDefaultBoolean.value)
+                            isDefault = isDefaultBoolean.value as Boolean
+                        )
                         )
 
                     }

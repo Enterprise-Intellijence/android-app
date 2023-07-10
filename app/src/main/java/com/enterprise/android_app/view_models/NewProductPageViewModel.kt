@@ -63,7 +63,7 @@ class NewProductPageViewModel: ViewModel() {
     fun uploadImage(uri: Uri?, context: Context, newProduct: ProductDTO) {
 
         if (uri != null) {
-            var file: File = File(uri.path)
+            val file: File = File(uri.path)
             println("file:" + file)
             println("id: " + newProduct.id)
 

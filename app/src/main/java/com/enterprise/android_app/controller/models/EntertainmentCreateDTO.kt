@@ -11,10 +11,6 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.ProductCategoryDTO
-import io.swagger.client.models.ProductCreateDTO
-
 /**
  * 
  * @param entertainmentLanguage 
@@ -34,21 +30,23 @@ class EntertainmentCreateDTO: ProductCreateDTO {
         type: kotlin.String,
         entertainmentLanguage: EntertainmentLanguage
         ): super(
-                title,
-                description,
-                productCost,
-                deliveryCost,
-                brand,
-                condition,
-                productSize,
-                visibility,
-                productCategory,
-                productImages,
-                type)
+        title,
+        description,
+        productCost,
+        deliveryCost,
+        brand,
+        condition,
+        productSize,
+        visibility,
+        productCategory,
+        productImages,
+        type,
+    )
 
     constructor(productCreateDTO: ProductCreateDTO,
                 entertainmentLanguage: EntertainmentLanguage
-    ): super(title = productCreateDTO.title,
+    ): super(
+        title = productCreateDTO.title,
         description = productCreateDTO.description,
         productCost = productCreateDTO.productCost,
         deliveryCost = productCreateDTO.deliveryCost,
@@ -58,7 +56,8 @@ class EntertainmentCreateDTO: ProductCreateDTO {
         visibility = productCreateDTO.visibility,
         productCategory = productCreateDTO.productCategory,
         productImages = productCreateDTO.productImages,
-        type = productCreateDTO.type)
+        type = productCreateDTO.type,
+    )
     /**
     * 
     * Values: MULTILANGUAGE,ITALIAN,FRENCH,GERMAN,ENGLISH,SPANISH,OTHERS

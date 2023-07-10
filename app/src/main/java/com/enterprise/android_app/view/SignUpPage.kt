@@ -52,7 +52,7 @@ import compose.icons.fontawesomeicons.solid.Eye
 import compose.icons.fontawesomeicons.solid.EyeSlash
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun SignUpPage(){
 
@@ -60,10 +60,10 @@ fun SignUpPage(){
     var passwordVisible by rememberSaveable { mutableStateOf(false)}
 
     //state check
-    var textValueUsername by remember { mutableStateOf(TextFieldValue())}
-    var textValueEmail by remember { mutableStateOf(TextFieldValue())}
-    var textValuePassword by remember { mutableStateOf(TextFieldValue())}
-    var textValueConfirmPassword by remember { mutableStateOf(TextFieldValue())}
+    var textValueUsername by rememberSaveable{ mutableStateOf("")}
+    var textValueEmail by rememberSaveable{ mutableStateOf("")}
+    var textValuePassword by rememberSaveable { mutableStateOf("")}
+    var textValueConfirmPassword by rememberSaveable { mutableStateOf("")}
 
     val registerViewModel : RegistrationViewModel = viewModel()
 
@@ -88,151 +88,30 @@ fun SignUpPage(){
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(componentShapes.small),
-                label = { Text(text = stringResource(id = R.string.username)) },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-                    containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary),
-                    textColor = Color.Black
-
-                ),
-
-                keyboardOptions = KeyboardOptions.Default,
-                value = textValueUsername,
-                onValueChange = {
-                    textValueUsername = it
-                },
-                leadingIcon = {
-                    Icon(painterResource(id = R.drawable.profileicon), contentDescription = "")
-                }
+            CommonTextField(
+                title = stringResource(id = R.string.username),
+                text =  textValueUsername,
+                onValueChange = {textValueUsername = it}
             )
 
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(componentShapes.small),
-                label = { Text(text = stringResource(id = R.string.email)) },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-                    containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary),
-                    textColor = Color.Black
-
-                ),
-
-                keyboardOptions = KeyboardOptions.Default,
-                value = textValueEmail,
-                onValueChange = {
-                    textValueEmail = it
-                },
-                leadingIcon = {
-                    Icon(painterResource(id = R.drawable.message), contentDescription = "")
-                }
+            CommonTextField(
+                title = stringResource(id = R.string.email),
+                text =  textValueEmail,
+                onValueChange = {textValueEmail = it}
             )
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(componentShapes.small),
-                label = { Text(text = stringResource(id = R.string.password)) },
-
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-                    containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary),
-                    textColor = Color.Black
-
-                ),
-
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                value = textValuePassword,
-                onValueChange = {
-                    textValuePassword = it
-                },
-
-                leadingIcon = {
-                    Icon(painterResource(id = R.drawable.password), contentDescription = "")
-                },
+            CommonTextFieldP(
+                title = stringResource(id = R.string.password),
+                text = textValuePassword,
+                onValueChange = {textValuePassword = it},
+                initialPasswordVisible = passwordVisible)
 
 
-                trailingIcon = {
-                    val iconImage = if (passwordVisible) {
-                        FontAwesomeIcons.Solid.Eye
-                    } else {
-                        FontAwesomeIcons.Solid.EyeSlash
-                    }
-
-                    var description = if (passwordVisible) {
-                        stringResource(id = R.string.hide_password)
-                    } else {
-                        stringResource(id = R.string.show_password)
-                    }
-
-                    IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon(iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
-                    }
-                },
-
-                visualTransformation = if(passwordVisible) VisualTransformation.None else
-                    PasswordVisualTransformation()
-            )
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(componentShapes.small),
-                label = { Text(text = stringResource(id = R.string.confirm_password)) },
-
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(id = R.color.colorPrimary),
-                    focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-                    containerColor = colorResource(id = R.color.colorBackground),
-                    cursorColor = colorResource(id = R.color.colorPrimary),
-                    textColor = Color.Black
-
-                ),
-
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                value = textValueConfirmPassword,
-                onValueChange = {
-                    textValueConfirmPassword = it
-                },
-
-                leadingIcon = {
-                    Icon(painterResource(id = R.drawable.password), contentDescription = "")
-                },
-
-
-                trailingIcon = {
-                    val iconImage = if (passwordVisible) {
-                        FontAwesomeIcons.Solid.Eye
-                    } else {
-                        FontAwesomeIcons.Solid.EyeSlash
-                    }
-
-                    var description = if (passwordVisible) {
-                        stringResource(id = R.string.hide_password)
-                    } else {
-                        stringResource(id = R.string.show_password)
-                    }
-
-                    IconButton(onClick = { passwordVisible= !passwordVisible}) {
-                        Icon(iconImage, contentDescription = description, modifier = Modifier.size(25.dp).padding(end = 4.dp))
-                    }
-                },
-
-                visualTransformation = if(passwordVisible) VisualTransformation.None else
-                    PasswordVisualTransformation()
-            )
-
+            CommonTextFieldP(
+                title = stringResource(id = R.string.confirm_password),
+                text = textValueConfirmPassword,
+                    onValueChange = {textValueConfirmPassword = it},
+                initialPasswordVisible = passwordVisible)
 
             
             Spacer(modifier = Modifier.height(20.dp))
@@ -247,14 +126,14 @@ fun SignUpPage(){
 
             Spacer(modifier = Modifier.height(30.dp))
             ButtonComponent(value = stringResource(id = R.string.register), onClickAction = {
-                if (textValuePassword.text != textValueConfirmPassword.text) {
+                if (textValuePassword != textValueConfirmPassword) {
                     errorMessage.value = "Passwords don't match"
                     return@ButtonComponent
                 }
                 registerViewModel.registerUser(
-                    textValueUsername.text,
-                    textValueEmail.text,
-                    textValuePassword.text,
+                    textValueUsername,
+                    textValueEmail,
+                    textValuePassword,
                     errorMessage
                 )
             })
@@ -274,10 +153,98 @@ fun SignUpPage(){
 
 }
 
-
-
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultPreviewOfSignUpScreen(){
-    SignUpPage()
+fun CommonTextField(
+    title: String,
+    text: String,
+    onValueChange: (String) -> Unit
+){
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(componentShapes.small),
+        label = {
+            Text(text = title)
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(id = R.color.colorPrimary),
+            focusedLabelColor = colorResource(id = R.color.colorPrimary),
+            containerColor = colorResource(id = R.color.colorBackground),
+            cursorColor = colorResource(id = R.color.colorPrimary),
+            textColor = Color.Black
+
+        ),
+
+        keyboardOptions = KeyboardOptions.Default,
+        value = text,
+        onValueChange = {
+            onValueChange(it)
+        },
+        leadingIcon = {
+            Icon(painterResource(id = R.drawable.message), contentDescription = "")
+        }
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CommonTextFieldP(
+    title: String,
+    text: String,
+    onValueChange: (String) -> Unit,
+    initialPasswordVisible: Boolean
+){
+    var passwordVisible by rememberSaveable { mutableStateOf(initialPasswordVisible) }
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(componentShapes.small),
+        label = { Text(text = title) },
+
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = colorResource(id = R.color.colorPrimary),
+            focusedLabelColor = colorResource(id = R.color.colorPrimary),
+            containerColor = colorResource(id = R.color.colorBackground),
+            cursorColor = colorResource(id = R.color.colorPrimary),
+            textColor = Color.Black
+
+        ),
+
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        value = text,
+        onValueChange = {
+            onValueChange(it)
+        },
+
+        leadingIcon = {
+            Icon(painterResource(id = R.drawable.password), contentDescription = "")
+        },
+
+
+        trailingIcon = {
+            val iconImage = if (passwordVisible) {
+                FontAwesomeIcons.Solid.Eye
+            } else {
+                FontAwesomeIcons.Solid.EyeSlash
+            }
+
+            var description = if (passwordVisible) {
+                stringResource(id = R.string.hide_password)
+            } else {
+                stringResource(id = R.string.show_password)
+            }
+
+            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                Icon(
+                    iconImage, contentDescription = description, modifier = Modifier
+                        .size(25.dp)
+                        .padding(end = 4.dp)
+                )
+            }
+        },
+
+        visualTransformation = if (passwordVisible) VisualTransformation.None else
+            PasswordVisualTransformation())
 }

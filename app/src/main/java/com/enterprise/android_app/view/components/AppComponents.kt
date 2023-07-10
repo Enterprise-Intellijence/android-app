@@ -21,6 +21,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -48,12 +49,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enterprise.android_app.R
+import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.ui.theme.componentShapes
+
+
 
 
 @Composable
@@ -63,14 +68,16 @@ fun NormalTextComponent(value:String){
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp),
-        style = TextStyle(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ),
-        color = colorResource(id = R.color.colorText),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Center
     )
+}
+
+@Preview
+@Composable
+fun PreviewNormalTextComponent(){
+    NormalTextComponent(value = "prova")
 }
 
 @Composable
@@ -85,7 +92,7 @@ fun HeadingTextComponent(value:String){
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal
         ),
-        color = colorResource(id = R.color.colorText),
+        color = MaterialTheme.colorScheme.primary,
         textAlign = TextAlign.Center
     )
 }
@@ -104,10 +111,10 @@ fun TextFieldComponent(labelValue: String, painterResource: Painter, textValue: 
         label = {Text(text = labelValue)},
 
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            focusedLabelColor =  colorResource(id = R.color.colorPrimary),
-            containerColor = colorResource(id = R.color.colorBackground),
-            cursorColor = colorResource(id = R.color.colorPrimary)
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor =  MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.background,
+            cursorColor = MaterialTheme.colorScheme.primary
 
         ),
 

@@ -28,7 +28,7 @@ import io.swagger.client.models.ProductCategoryDTO
  * @param productImages 
  * @param type 
  */
-data class ProductCreateDTO (
+open class ProductCreateDTO (
 
     val title: kotlin.String? = null,
     val description: kotlin.String? = null,

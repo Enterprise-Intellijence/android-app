@@ -118,7 +118,9 @@ fun ProductPage(
                         .height(110.dp)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            MainRouter.changePage(
+                            Navigation.PurchasePage) },
                         modifier = Modifier
                             .height(45.dp)
                             .fillMaxWidth()

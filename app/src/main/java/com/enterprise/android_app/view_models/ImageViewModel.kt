@@ -10,6 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 
 class ImageViewModel {
     private var imageControllerApi: ImageControllerApi = ImageControllerApi()
@@ -18,15 +21,14 @@ class ImageViewModel {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
 
-
-    fun saveChange(image: UsersPhotoprofileBody){
+    fun saveChange(image: UsersPhotoprofileBody) {
 
         coroutineScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    if(CurrentDataUtils.currentUser?.id != null){
+                    if (CurrentDataUtils.currentUser?.id != null) {
 
-                        imageControllerApi.savePhotoUser(image,"")
+                        imageControllerApi.savePhotoUser(image, "")
                     }
                 }
 
@@ -35,6 +37,5 @@ class ImageViewModel {
             }
             CurrentDataUtils.retrieveCurrentUser()
         }
-
     }
 }

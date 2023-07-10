@@ -12,13 +12,15 @@
 package io.swagger.client.apis
 
 import com.enterprise.android_app.controller.BasePath
+import io.swagger.client.infrastructure.*
 import io.swagger.client.models.PhotoprofileIdBody
 import io.swagger.client.models.ProductIdBody
 import io.swagger.client.models.ProductImageDTO
 import io.swagger.client.models.UserImageDTO
 import io.swagger.client.models.UsersPhotoprofileBody
+import okhttp3.MultipartBody
+import retrofit2.http.Part
 
-import io.swagger.client.infrastructure.*
 
 class ImageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
@@ -153,8 +155,8 @@ class ImageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
      * @return ProductImageDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun saveImageProduct(body: ByteArray?, productId: String, description: String): ProductImageDTO {
-        val localVariableBody: kotlin.Any? = body
+    fun saveImageProduct(@Part image: MultipartBody.Part, productId: String, description: String): ProductImageDTO {
+        val localVariableBody: kotlin.Any? = image
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             put("product_id", listOf(productId.toString()))
             put("description", listOf(description.toString()))

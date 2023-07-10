@@ -51,6 +51,7 @@ fun ConditionPage( viewModel: SearchPageViewModel, onApply: () -> Unit) {
                                     viewModel.selectedCondition.add(condition)
                                 } else {
                                     viewModel.selectedCondition.remove(condition)
+                                    
                                 }
                             }
                         )

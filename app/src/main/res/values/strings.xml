@@ -103,4 +103,7 @@
     <string name="bio">Bio</string>
     <string name="reviews_label">"Reviews: "</string>
     <string name="web_client_id">1049827257011-ete5d6u7kjq601i6ra2ukaus5nsd3het.apps.googleusercontent.com</string>
+    <string name="repeatNewPassword">Repeat new password</string>
+    <string name="passwordTooShort">Password too short</string>
+    <string name="passwordMissmatch">Passwords don\'t match</string>
 </resources>

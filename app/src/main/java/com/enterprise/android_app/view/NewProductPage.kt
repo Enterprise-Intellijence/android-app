@@ -56,6 +56,7 @@ import io.swagger.client.models.HomeCreateDTO
 import io.swagger.client.models.ProductCategoryDTO
 import io.swagger.client.models.ProductCreateDTO
 import io.swagger.client.models.ProductDTO
+import io.swagger.client.models.SizeDTO
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -210,13 +211,53 @@ fun NewProductPage(navController: NavHostController) {
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
-                var category = ProductCategoryDTO(null, selectedPrimaryCategory, selectedSecondaryCategory, selectedTertiaryCategory)
-                var productCost = CustomMoneyDTO(priceText.text.toDouble(), CustomMoneyDTO.Currency.valueOf(selectedCurrency))
-                var deliveryCost = CustomMoneyDTO(deliveryPriceText.text.toDouble(), CustomMoneyDTO.Currency.valueOf(selectedCurrency))
-                var product = ProductCreateDTO(titleText.text, descriptionText.text, productCost, deliveryCost, brandText.text, ProductCreateDTO.Condition.valueOf(selectedCondition), null,
-                    ProductCreateDTO.Visibility.valueOf(selectedVisibility), category, null, selectedPrimaryCategory)
+                // TODO: validazione campi mancante.
+                // Errore moshi su serializzazione di ClothingCreateDTO, EntertainmentCreateDTO e HomeCreateDTO
+                // Errore nel caricamento di immagini
+                var category = ProductCategoryDTO(
+                    null,
+                    selectedPrimaryCategory,
+                    selectedSecondaryCategory,
+                    selectedTertiaryCategory
+                )
+                var productCost = CustomMoneyDTO(
+                    priceText.text.toDouble(),
+                    CustomMoneyDTO.Currency.valueOf(selectedCurrency)
+                )
+                var deliveryCost = CustomMoneyDTO(
+                    deliveryPriceText.text.toDouble(),
+                    CustomMoneyDTO.Currency.valueOf(selectedCurrency)
+                )
+                var product = ProductCreateDTO(
+                    titleText.text,
+                    descriptionText.text,
+                    productCost,
+                    deliveryCost,
+                    brandText.text,
+                    ProductCreateDTO.Condition.valueOf(selectedCondition),
+                    null,
+                    ProductCreateDTO.Visibility.valueOf(selectedVisibility),
+                    category,
+                    null,
+                    selectedPrimaryCategory
+                )
 
-                newProductViewModel.saveNewProduct(product, context, imagesUri)
+                var finalProduct: ProductCreateDTO = product
+
+                when (selectedPrimaryCategory) {
+                    "Home" -> {
+                        finalProduct = HomeCreateDTO(product, HomeCreateDTO.Colour.valueOf(selectedColor),
+                            SizeDTO(null, selectedSize, "Home"), HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial))
+                    }
+                    "Entertainment" -> {
+                        finalProduct = EntertainmentCreateDTO(product, EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage))
+                    }
+                    "Clothing" -> {
+                        finalProduct = ClothingCreateDTO(product, ClothingCreateDTO.Colour.valueOf(selectedColor),
+                            SizeDTO(null, selectedSize, selectedSecondaryCategory), ClothingCreateDTO.ProductGender.valueOf(selectedGender))
+                    }
+                }
+                newProductViewModel.saveNewProduct(finalProduct, context, imagesUri)
 
             }) {
                 Text("Load product")

@@ -118,7 +118,9 @@ fun ProductPage(
                         .height(110.dp)
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            MainRouter.changePage(
+                            Navigation.PurchasePage) },
                         modifier = Modifier
                             .height(45.dp)
                             .fillMaxWidth()
@@ -160,7 +162,13 @@ fun ProductPage(
         item {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                              if (UserServices.isProductLiked(product.id!!)) {
+                                  UserServices.removeLikedProduct(product.id!!)
+                              } else {
+                                  UserServices.addLikedProduct(product.id!!)
+                              }
+                    },
                     colors = ButtonDefaults.outlinedButtonColors(),
                     shape = RectangleShape,
                     modifier = Modifier

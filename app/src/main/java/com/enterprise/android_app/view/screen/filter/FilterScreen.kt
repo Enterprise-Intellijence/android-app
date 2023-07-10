@@ -172,7 +172,7 @@ fun RootPage(viewModel: SearchPageViewModel,onClear: () -> Unit, onApply: () -> 
             item {
                 SingleRowTemplate(
                     name = stringResource(id = R.string.condition),
-                    content = viewModel.filter.value.condition,
+                    content = viewModel.filter.value.condition?.joinToString(", ") ?: "",
                     icona = null,
                     icon_label = null,
                     modifier = Modifier.fillMaxWidth()

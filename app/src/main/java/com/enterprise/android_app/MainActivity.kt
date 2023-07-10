@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //gfgHttpClient()
         CurrentDataUtils._application = this.application
-
         setContent {
             AndroidappTheme {
                 PageApp(this)
@@ -24,24 +23,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-    /*
-        if (false) {
-            db = Room.databaseBuilder(
-                applicationContext,
-                AppDatabase::class.java, "database-name"
-            ).build()
-
-            // Set the flag to indicate that the database has been created
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("isFirstRun", false)
-            editor.apply()
-
-            Log.println(Log.ASSERT, "ciao", "dbcreato")
-        } else {
-            Log.println(Log.ASSERT, "ciao", "dbGIAcreato")
-        }
-        */
 }
 
 

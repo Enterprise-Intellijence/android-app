@@ -35,7 +35,7 @@ import io.swagger.client.models.ProductDTO
 @Composable
 fun ConditionPage( viewModel: SearchPageViewModel, onApply: () -> Unit) {
 
-    val conditions = listOf<String>( Condition.NEW_WITH_TAG.value, Condition.NEW_WITHOUT_TAG.value, Condition.VERY_GOOD.value, Condition.GOOD.value, Condition.ACCEPTABLE.value)
+    val conditions = listOf<Condition>( Condition.NEW_WITH_TAG, Condition.NEW_WITHOUT_TAG, Condition.VERY_GOOD, Condition.GOOD, Condition.ACCEPTABLE)
 
     val lazyColumnState = rememberLazyListState()
     Box(modifier = Modifier.fillMaxSize()) {
@@ -51,13 +51,13 @@ fun ConditionPage( viewModel: SearchPageViewModel, onApply: () -> Unit) {
                                     viewModel.selectedCondition.add(condition)
                                 } else {
                                     viewModel.selectedCondition.remove(condition)
+                                    
                                 }
-
                             }
                         )
                         Text(
                             modifier = Modifier.padding(start = 3.dp),
-                            text = condition
+                            text = condition.value
                         )
                     }
                 }
@@ -72,7 +72,7 @@ fun ConditionPage( viewModel: SearchPageViewModel, onApply: () -> Unit) {
                 .align(Alignment.BottomEnd)
                 .padding(13.dp),
             onClick = {
-                //viewModel.filter.value.condition = viewModel.selectedCondition.stream().toArray()
+                viewModel.filter.value.condition = viewModel.selectedCondition.stream().toArray { arrayOfNulls<Condition>(it) }
                 onApply()
             }
         ) {

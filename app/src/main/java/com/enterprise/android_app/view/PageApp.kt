@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import NewProductPage
+import OrdersPage
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -50,6 +52,10 @@ import java.io.File
 
 @Composable
 fun PageApp(mainActivity: MainActivity) {
+
+    LaunchedEffect(key1 = "PageApp", block = {
+        CurrentDataUtils.checkRefreshToken()
+    })
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
@@ -59,7 +65,6 @@ fun PageApp(mainActivity: MainActivity) {
 
                 //TODO Implementare il tasto indietro che ritorna alla pagina precedente
                 is Screen.StartScreen -> {
-
                     StartScreen()
                     //ProductScreen()
                 }
@@ -116,6 +121,16 @@ fun MainScreen(mainActivity: MainActivity) {
                 is Navigation.OrdersPage ->{
                     OrdersPage()
                 }
+                is Navigation.PurchasePage ->{
+                    PurchasePage()
+                }
+                is Navigation.SelectAddressPage ->{
+                    SelectAddressPage()
+                }
+                is Navigation.SelectPaymentPage ->{
+                    SelectPaymentMethodPage()
+                }
+
                 is Navigation.AboutPage ->{
                     AboutPage()
                 }
@@ -130,9 +145,6 @@ fun MainScreen(mainActivity: MainActivity) {
                 }
                 is Navigation.ShippingPage ->{
                     ShippingPage()
-                }
-                is Navigation.PaymentsPage ->{
-                    PaymentsPage()
                 }
                 is Navigation.ProfileDetailsPage ->{
                     ProfileDetailsPage()

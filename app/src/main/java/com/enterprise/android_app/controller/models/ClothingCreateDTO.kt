@@ -11,6 +11,7 @@
  */
 package io.swagger.client.models
 
+import com.squareup.moshi.JsonClass
 import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.ProductCategoryDTO
 import io.swagger.client.models.ProductCreateDTO
@@ -22,12 +23,50 @@ import io.swagger.client.models.SizeDTO
  * @param clothingSize 
  * @param colour 
  */
-data class ClothingCreateDTO (
 
-    val productGender: ProductGender,
-    val clothingSize: SizeDTO,
-    val colour: Colour
-) {
+class ClothingCreateDTO: ProductCreateDTO {
+    constructor(
+        title: kotlin.String? = null,
+        description: kotlin.String? = null,
+        productCost: CustomMoneyDTO,
+        deliveryCost: CustomMoneyDTO,
+        brand: kotlin.String? = null,
+        condition: ProductCreateDTO.Condition? = null,
+        productSize: ProductCreateDTO.ProductSize? = null,
+        visibility: ProductCreateDTO.Visibility? = null,
+        productCategory: ProductCategoryDTO? = null,
+        productImages: kotlin.Array<kotlin.Array<kotlin.Byte>>? = null,
+        type: kotlin.String,
+        productGender: ProductGender,
+        clothingSize: SizeDTO,
+        colour: Colour
+        ) : super(
+            title,
+            description,
+            productCost,
+            deliveryCost,
+            brand,
+            condition,
+            productSize,
+            visibility,
+            productCategory,
+            productImages,
+            type)
+
+    constructor(productCreateDTO: ProductCreateDTO,
+                colour: ClothingCreateDTO.Colour,
+                homeSize: SizeDTO,
+                homeMaterial: ClothingCreateDTO.ProductGender): super(title = productCreateDTO.title,
+        description = productCreateDTO.description,
+        productCost = productCreateDTO.productCost,
+        deliveryCost = productCreateDTO.deliveryCost,
+        brand = productCreateDTO.brand,
+        condition = productCreateDTO.condition,
+        productSize = productCreateDTO.productSize,
+        visibility = productCreateDTO.visibility,
+        productCategory = productCreateDTO.productCategory,
+        productImages = productCreateDTO.productImages,
+        type = productCreateDTO.type)
     /**
     * 
     * Values: MALE,FEMALE,UNISEX

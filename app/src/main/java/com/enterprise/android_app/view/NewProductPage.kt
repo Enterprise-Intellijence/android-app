@@ -232,7 +232,7 @@ fun NewProductPage() {
                     deliveryCost,
                     brandText.text,
                     ProductCreateDTO.Condition.valueOf(selectedCondition),
-                    null,
+                    ProductCreateDTO.ProductSize.MEDIUM,
                     ProductCreateDTO.Visibility.valueOf(selectedVisibility),
                     category,
                     null,

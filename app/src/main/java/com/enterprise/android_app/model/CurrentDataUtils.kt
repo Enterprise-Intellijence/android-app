@@ -139,7 +139,7 @@ object CurrentDataUtils {
         _Addresses.clear()
         _currentUser.value?.addresses?.let { _Addresses.addAll(it.toList()) }
         _currentAddresses.forEach {a ->
-            if(a.default == true)
+            if(a.default)
                 _defaultAddress.value = a
         }
     }

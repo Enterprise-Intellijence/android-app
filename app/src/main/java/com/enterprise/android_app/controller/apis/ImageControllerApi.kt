@@ -19,6 +19,7 @@ import io.swagger.client.models.ProductImageDTO
 import io.swagger.client.models.UserImageDTO
 import io.swagger.client.models.UsersPhotoprofileBody
 import okhttp3.MultipartBody
+import retrofit2.http.Multipart
 import retrofit2.http.Part
 
 
@@ -155,8 +156,8 @@ class ImageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
      * @return ProductImageDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun saveImageProduct(@Part image: MultipartBody.Part, productId: String, description: String): ProductImageDTO {
-        val localVariableBody: kotlin.Any? = image
+    fun saveImageProduct(image: MultipartBody, productId: String, description: String): ProductImageDTO {
+        val localVariableBody: MultipartBody = image
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             put("product_id", listOf(productId.toString()))
             put("description", listOf(description.toString()))

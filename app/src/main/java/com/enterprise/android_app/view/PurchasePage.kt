@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +51,7 @@ import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.OfferBasicDTO
 import io.swagger.client.models.OrderCreateDTO
+import io.swagger.client.models.OrderDTO
 import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.ProductDTO
 import java.time.LocalDateTime
@@ -57,6 +59,7 @@ import java.time.LocalDateTime
 @Composable
 fun PurchasePage(){
 
+    val context = LocalContext.current
     val productViewModel: ProductPageViewModel = viewModel()
     val orderViewModel: PurchasePageViewModel = viewModel()
     productViewModel.getProductById(CurrentDataUtils.currentProductId)
@@ -123,10 +126,11 @@ fun PurchasePage(){
                     CurrentDataUtils.toProductBasicDTO(it) }?.let { CurrentDataUtils.addressDTO.value?.let { it1 ->
                     OrderCreateDTO(it, offer, it1) }
                     }
-                orderViewModel.createOrder(order)
-                // TODO: routing a pagina di conferma pagamento
+                orderViewModel.createOrder(order, context)
+
+                // TODO: routing a lista di ordini
             }) {
-                Text("Confirm")
+                Text("Buy now")
             }
         }
     }

@@ -35,6 +35,8 @@ open class ApiClient(val baseUrl: String) {
             when {
                 content is File -> RequestBody.create(mediaType.toMediaTypeOrNull(), content)
 
+                content is MultipartBody -> content
+
                 mediaType == FormDataMediaType -> {
                     var builder = FormBody.Builder()
                     // content's type *must* be Map<String, Any>
@@ -85,7 +87,6 @@ open class ApiClient(val baseUrl: String) {
             mapOf(Authorization to CurrentDataUtils.refreshToken)
 
         val headers = requestConfig.headers + defaultHeaders + customHeaders
-
         /*
         if (url.toString().contains("refreshToken")!!)
             headers + mapOf(Authorization to CurrentDataUtils.refreshToken)

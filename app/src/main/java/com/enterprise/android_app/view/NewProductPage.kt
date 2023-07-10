@@ -85,6 +85,8 @@ fun NewProductPage() {
     var selectedGender by remember { mutableStateOf("") }
 
     var imagesUri = newProductViewModel.images
+    var imageStream = newProductViewModel.imageStreamList
+
 
     categoryViewModel.getCategories()
     var primaryCategories = categoryViewModel.primaryCategories.collectAsState(initial = emptyList())
@@ -101,10 +103,16 @@ fun NewProductPage() {
                 .padding(start = 8.dp)
                 .weight(1f))
             if(imagesUri.size < 5) {
-                ImageSelectorComponent { imagesUri.add(it) }
+                ImageSelectorComponent {uri, stream ->
+                    imagesUri.add(uri)
+                    imageStream.add(stream!!)
+                }
             }
         }
-        ImagesContainer(imagesUri) { imagesUri.remove(it) }
+        ImagesContainer(imagesUri) {
+            imagesUri.remove(it)
+            // TODO: remove inputStream
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -232,7 +240,7 @@ fun NewProductPage() {
                     deliveryCost,
                     brandText.text,
                     ProductCreateDTO.Condition.valueOf(selectedCondition),
-                    null,
+                    ProductCreateDTO.ProductSize.MEDIUM,
                     ProductCreateDTO.Visibility.valueOf(selectedVisibility),
                     category,
                     null,

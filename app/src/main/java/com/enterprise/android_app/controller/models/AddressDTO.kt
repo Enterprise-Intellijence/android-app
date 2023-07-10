@@ -32,6 +32,6 @@ data class AddressDTO (
     val street: kotlin.String,
     val zipCode: kotlin.String,
     val phoneNumber: kotlin.String,
-    val default: kotlin.Boolean? = null
+    val default: kotlin.Boolean
 ) {
 }

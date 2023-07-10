@@ -1,10 +1,12 @@
 import android.content.Context
 import android.net.Uri
-import android.widget.Toast
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toFile
 import androidx.lifecycle.ViewModel
+import com.enterprise.android_app.controller.BasePath
+import com.enterprise.android_app.model.CurrentDataUtils
 import io.swagger.client.apis.ImageControllerApi
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.models.ProductCreateDTO
@@ -13,21 +15,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
 import java.io.File
-import java.io.IOException
+import java.io.InputStream
 
 class NewProductPageViewModel: ViewModel() {
 
@@ -35,10 +40,13 @@ class NewProductPageViewModel: ViewModel() {
     val productControllerApi = ProductControllerApi()
     val imageControllerApi = ImageControllerApi()
     val images = mutableStateListOf<Uri?>()
+    val imageStreamList = mutableStateListOf<InputStream>()
+
 
     var product = mutableStateOf(null)
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun saveNewProduct(product: ProductCreateDTO, context: Context, images: List<Uri?>) {
         println("product: " + product)
 
@@ -48,9 +56,10 @@ class NewProductPageViewModel: ViewModel() {
                     productControllerApi.createProduct(product)
                 }
                 println("proddddd: " + newProduct)
-                images.forEach { uri ->
-                    uploadImage(uri, context, newProduct)
+                for (i in images.indices) {
+                    uploadImage(images[i], imageStreamList[i], newProduct)
                 }
+
                 //Toast.makeText(context, "Product created", Toast.LENGTH_LONG).show()
 
             } catch (e: Exception) {
@@ -60,39 +69,78 @@ class NewProductPageViewModel: ViewModel() {
         }
     }
 
-    fun uploadImage(uri: Uri?, context: Context, newProduct: ProductDTO) {
+    //@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun uploadImage(uri: Uri?, img: InputStream, newProduct: ProductDTO) {
 
-        if (uri != null) {
-            var file: File = File(uri.path)
-            println("file:" + file)
-            println("id: " + newProduct.id)
+        var file: File? = null
+        if (uri != null)
+            file = File(uri.path!!)
 
-            val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-            val image: MultipartBody.Part = MultipartBody.Part.createFormData("file", file.name, requestBody)
+        println("file:" + file)
+        println("id: " + newProduct.id)
 
-            val retrofit = Retrofit.Builder().baseUrl("http://localhost:8080/api/v1/images/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(uploadService::class.java)
+        /*val part = MultipartBody.Part.createFormData(
+            "file", file?.name, RequestBody.create(
+                "multipart/form-data".toMediaTypeOrNull(),
+                img.readBytes()
+            )
+        )
 
-            CoroutineScope(Dispatchers.IO).launch {
-                newProduct.id?.let { newProduct.description?.let { it1 ->
-                    retrofit.uploadImg(image, it, it1) }
+        val part = MultipartBody.Builder().setType(MultipartBody.FORM)
+            .addFormDataPart(
+                "multipartFile",
+                file?.name,
+                RequestBody.create("image".toMediaTypeOrNull(), img.readBytes())
+            )
+            .build()*/
+
+        val client = OkHttpClient()
+
+        val urlBuilder =
+            (BasePath.BASE_PATH + "/api/v1/images/product").toHttpUrlOrNull()?.newBuilder()
+
+        urlBuilder!!.addQueryParameter("product_id", newProduct.id)
+        urlBuilder.addQueryParameter("description", newProduct.description)
+        val url = urlBuilder.build()
+
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(
+                "multipartFile",
+                file?.name,
+                RequestBody.create("image/*".toMediaTypeOrNull(), img.readAllBytes())
+            )
+            .build()
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .addHeader("Authorization", CurrentDataUtils.accessToken)
+            .build()
+
+        val response = client.newCall(request).execute()
+        println("response: " + response)
+
+    }
+
+}
+
+
+    /*coroutineScope.launch {
+            try {
+                val res = withContext(Dispatchers.IO) {
+                    imageControllerApi.saveImageProduct(
+                        part,
+                        newProduct.id!!,
+                        newProduct.description!!
+                    )
                 }
+                println("response: " + res)
+            } catch (e: Exception) {
+                println("ERROREEEEE")
+                e.printStackTrace()
             }
         }
     }
-}
-
-interface uploadService {
-
-    @Multipart
-    @POST("product")
-    suspend fun uploadImg(
-        @Part image: MultipartBody.Part,
-        @Query("product_id") productId: String,
-        @Query("description") description: String
-    ): ResponseBody
-}
-
-
+}*/

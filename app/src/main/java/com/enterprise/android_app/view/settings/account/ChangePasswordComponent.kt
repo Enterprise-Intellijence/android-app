@@ -43,6 +43,7 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
     val modifier = Modifier.fillMaxWidth()
     val oldPassword: MutableState<String> = remember {mutableStateOf("")}
     val newPassword: MutableState<String> = remember {mutableStateOf("")}
+    val repNewPassword: MutableState<String> = remember { mutableStateOf("")}
     val passChangeShow: MutableState<Boolean> = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -64,13 +65,15 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
         }
 
         if (passChangeShow.value){
-            Column(modifier = modifier.padding(start = 10.dp)) {
+            Column(modifier = modifier.padding(start = 10.dp, end = 20.dp)) {
                 Text(text = stringResource(id = R.string.oldPassword))
                 Row(modifier = modifier
-                    .focusRequester(focusRequester)) {
+                    .focusRequester(focusRequester)
+                    .padding(bottom = 10.dp)) {
                     TextField(
                         value = oldPassword.value,
                         onValueChange = { oldPassword.value = it },
+                        //label = { Text(text = stringResource(id = R.string.oldPassword))},
                         modifier = modifier
                             .fillMaxWidth()
                             .weight(1f),
@@ -81,20 +84,46 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                 }
                 Text(text = stringResource(id = R.string.newPassword))
                 Row(modifier = modifier
-                    .focusRequester(focusRequester)) {
+                    .focusRequester(focusRequester)
+                    .padding(bottom = 10.dp)) {
                     TextField(
                         value = newPassword.value,
                         onValueChange = { newPassword.value = it },
+                        //label = { Text(text = stringResource(id = R.string.newPassword))},
                         modifier = modifier
                             .fillMaxWidth()
                             .weight(1f),
                         textStyle = TextStyle(fontSize = 18.sp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         visualTransformation = PasswordVisualTransformation(),
+                        isError = newPassword.value.length<8 ,
+                        label = {if(newPassword.value.isNotEmpty() && newPassword.value.length<8) Text(text = stringResource(id = R.string.passwordTooShort)) else null}
+                    )
+                }
+                Text(text = stringResource(id = R.string.repeatNewPassword))
+
+                Row(modifier = modifier
+                    .focusRequester(focusRequester)
+                    .padding(bottom = 10.dp)) {
+                    TextField(
+                        value = repNewPassword.value,
+                        onValueChange = { repNewPassword.value = it },
+                        //label = { Text(text = stringResource(id = R.string.repeatNewPassword))},
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        textStyle = TextStyle(fontSize = 18.sp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        visualTransformation = PasswordVisualTransformation(),
+                        isError = repNewPassword.value.length<8 || repNewPassword.value!=newPassword.value,
+                        label = {if(repNewPassword.value.isNotEmpty() && newPassword.value.length>=8 && repNewPassword.value.length<8) Text(text = stringResource(id = R.string.passwordTooShort)) else if (repNewPassword.value!=newPassword.value) Text(
+                            text = stringResource(id = R.string.passwordMissmatch)) else null
+                         }
+
                     )
                 }
                 IconButton(
-                    enabled = (newPassword.value != "" && newPassword.value != oldPassword.value),
+                    enabled = (newPassword.value != "" && newPassword.value != oldPassword.value && newPassword.value == repNewPassword.value),
                     onClick = {
                         //userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()

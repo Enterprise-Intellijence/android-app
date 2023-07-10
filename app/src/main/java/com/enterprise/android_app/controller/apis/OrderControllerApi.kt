@@ -133,36 +133,10 @@ class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
      * @return OrderDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun replaceOrder(body: OrderDTO, id: kotlin.String): OrderDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/orders/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<OrderDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as OrderDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return OrderDTO
-     */
-    @Suppress("UNCHECKED_CAST")
     fun updateOrder(body: OrderDTO, id: kotlin.String): OrderDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
+                RequestMethod.PUT,
                 "/api/v1/orders/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<OrderDTO>(

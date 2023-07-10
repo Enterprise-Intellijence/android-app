@@ -22,10 +22,10 @@ package io.swagger.client.models
  */
 data class PaymentMethodDTO (
 
-    val id: kotlin.String? = null,
+    val id: kotlin.String,
     val creditCard: kotlin.String,
     val expiryDate: java.time.LocalDate,
     val owner: kotlin.String,
-    val default: kotlin.Boolean? = null
+    val isDefault: kotlin.Boolean
 ) {
 }

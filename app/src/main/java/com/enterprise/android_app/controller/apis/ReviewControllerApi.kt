@@ -139,32 +139,6 @@ class ReviewControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCli
     /**
      * 
      * 
-     * @param body  
-     * @param id  
-     * @return ReviewDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun replaceReview(body: ReviewDTO, id: kotlin.String): ReviewDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/reviews/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<ReviewDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ReviewDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
      * @param id  
      * @return ReviewDTO
      */
@@ -197,7 +171,7 @@ class ReviewControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCli
     fun updateReview(body: ReviewDTO, id: kotlin.String): ReviewDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
+                RequestMethod.PUT,
                 "/api/v1/reviews/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<ReviewDTO>(

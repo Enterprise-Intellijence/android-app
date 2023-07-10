@@ -24,22 +24,20 @@ import io.swagger.client.models.ProductCategoryDTO
  * @param condition 
  * @param productSize 
  * @param visibility 
- * @param productCategory 
- * @param productImages 
+ * @param productCategory
  * @param type 
  */
 data class ProductCreateDTO (
 
-    val title: kotlin.String? = null,
+    val title: kotlin.String,
     val description: kotlin.String? = null,
     val productCost: CustomMoneyDTO,
     val deliveryCost: CustomMoneyDTO,
     val brand: kotlin.String? = null,
-    val condition: Condition? = null,
-    val productSize: ProductSize? = null,
-    val visibility: Visibility? = null,
-    val productCategory: ProductCategoryDTO? = null,
-    val productImages: kotlin.Array<kotlin.Array<kotlin.Byte>>? = null,
+    val condition: Condition,
+    val productSize: ProductSize,
+    val visibility: Visibility,
+    val productCategory: ProductCategoryDTO,
     val type: kotlin.String
 ) {
     /**

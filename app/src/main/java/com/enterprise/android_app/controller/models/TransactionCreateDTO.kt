@@ -21,7 +21,7 @@ import io.swagger.client.models.PaymentMethodBasicDTO
  */
 data class TransactionCreateDTO (
 
-    val paymentMethod: PaymentMethodBasicDTO? = null,
-    val order: OrderBasicDTO? = null
+    val paymentMethod: PaymentMethodBasicDTO,
+    val order: OrderBasicDTO
 ) {
 }

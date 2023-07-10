@@ -131,6 +131,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
+
     /**
      * 
      * 
@@ -644,7 +645,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return ProductsIdBody
      */
     @Suppress("UNCHECKED_CAST")
-    fun replaceProduct(body: ProductsIdBody, id: kotlin.String): ProductsIdBody {
+    fun updateProduct(body: ProductsIdBody, id: kotlin.String): ProductsIdBody {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
                 RequestMethod.PUT,
@@ -656,32 +657,6 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
 
         return when (response.responseType) {
             ResponseType.Success -> (response as Success<*>).data as ProductsIdBody
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return ProductsIdBody1
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun updateProduct1(body: ProductsIdBody1, id: kotlin.String): ProductsIdBody1 {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
-                "/api/v1/products/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<ProductsIdBody1>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ProductsIdBody1
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

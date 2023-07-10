@@ -16,33 +16,33 @@ import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.OrderBasicDTO
 
 /**
- * 
- * @param order 
- * @param sendTime 
- * @param deliveredTime 
- * @param deliveryCost 
- * @param shipper 
- * @param deliveryStatus 
- * @param senderAddress 
- * @param receiverAddress 
- * @param id 
+ *
+ * @param order
+ * @param sendTime
+ * @param deliveredTime
+ * @param deliveryCost
+ * @param shipper
+ * @param deliveryStatus
+ * @param senderAddress
+ * @param receiverAddress
+ * @param id
  */
 data class DeliveryDTO (
 
-    val order: OrderBasicDTO? = null,
-    val sendTime: java.time.LocalDateTime? = null,
+    val order: OrderBasicDTO,
+    val sendTime: java.time.LocalDateTime,
     val deliveredTime: java.time.LocalDateTime? = null,
     val deliveryCost: CustomMoneyDTO? = null,
     val shipper: kotlin.String? = null,
-    val deliveryStatus: DeliveryStatus? = null,
-    val senderAddress: AddressDTO? = null,
-    val receiverAddress: AddressDTO? = null,
+    val deliveryStatus: DeliveryStatus,
+    val senderAddress: AddressDTO,
+    val receiverAddress: AddressDTO,
     val id: kotlin.String? = null
 ) {
     /**
-    * 
-    * Values: SHIPPED,DELIVERED
-    */
+     *
+     * Values: SHIPPED,DELIVERED
+     */
     enum class DeliveryStatus(val value: kotlin.String){
         SHIPPED("SHIPPED"),
         DELIVERED("DELIVERED");

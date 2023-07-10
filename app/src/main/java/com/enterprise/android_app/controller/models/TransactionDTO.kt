@@ -26,12 +26,13 @@ import io.swagger.client.models.PaymentMethodBasicDTO
  */
 data class TransactionDTO (
 
-    val id: kotlin.String? = null,
+    val id: kotlin.String,
     val creationTime: java.time.LocalDateTime? = null,
     val amount: CustomMoneyDTO,
-    val transactionState: TransactionState? = null,
-    val paymentMethod: PaymentMethodBasicDTO,
-    val order: OrderBasicDTO? = null
+    val transactionState: TransactionState,
+    val paymentMethod: kotlin.String,
+    val paymentMethodOwner: kotlin.String,
+    val order: OrderBasicDTO
 ) {
     /**
     * 

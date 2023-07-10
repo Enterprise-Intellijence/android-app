@@ -33,8 +33,8 @@ import io.swagger.client.models.UserBasicDTO
  */
 data class ProductBasicDTO (
 
-    val id: kotlin.String? = null,
-    val title: kotlin.String? = null,
+    val id: kotlin.String,
+    val title: kotlin.String,
     val description: kotlin.String? = null,
     val uploadDate: java.time.LocalDateTime? = null,
     val productCost: CustomMoneyDTO,

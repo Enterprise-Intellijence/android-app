@@ -24,7 +24,7 @@ data class FollowingFollowersDTO (
 
     val id: kotlin.String? = null,
     val followingFrom: java.time.LocalDateTime? = null,
-    val follower: UserBasicDTO? = null,
-    val following: UserBasicDTO? = null
+    val follower: UserBasicDTO,
+    val following: UserBasicDTO
 ) {
 }

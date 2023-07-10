@@ -28,13 +28,12 @@ import io.swagger.client.models.UserBasicDTO
  */
 data class OfferDTO (
 
-    val id: kotlin.String? = null,
-    val amount: CustomMoneyDTO? = null,
+    val id: kotlin.String,
+    val amount: CustomMoneyDTO,
     val creationTime: java.time.LocalDateTime? = null,
-    val state: State? = null,
-    val offerer: UserBasicDTO? = null,
-    val product: ProductBasicDTO? = null,
-    val order: OrderBasicDTO? = null
+    val state: State,
+    val offerer: UserBasicDTO,
+    val product: ProductBasicDTO
 ) {
     /**
     * 

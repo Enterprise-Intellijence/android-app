@@ -25,12 +25,12 @@ import io.swagger.client.models.UserBasicDTO
  */
 data class ReviewDTO (
 
-    val id: kotlin.String? = null,
+    val id: kotlin.String,
     val date: java.time.LocalDateTime? = null,
-    val title: kotlin.String? = null,
+    val title: kotlin.String,
     val description: kotlin.String? = null,
-    val vote: kotlin.Int? = null,
-    val reviewer: UserBasicDTO? = null,
-    val reviewed: UserBasicDTO? = null
+    val vote: kotlin.Int,
+    val reviewer: UserBasicDTO,
+    val reviewed: UserBasicDTO
 ) {
 }

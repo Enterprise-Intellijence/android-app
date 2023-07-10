@@ -29,7 +29,7 @@ data class OrderBasicDTO (
     val state: State,
     val orderDate: java.time.LocalDateTime? = null,
     val orderUpdateDate: java.time.LocalDateTime? = null,
-    val product: ProductBasicDTO? = null,
+    val product: ProductBasicDTO,
     val offer: OfferBasicDTO? = null
 ) {
     /**

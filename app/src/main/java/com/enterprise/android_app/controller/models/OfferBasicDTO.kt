@@ -22,9 +22,9 @@ import io.swagger.client.models.CustomMoneyDTO
  */
 data class OfferBasicDTO (
 
-    val id: kotlin.String? = null,
-    val amount: CustomMoneyDTO? = null,
-    val state: State? = null,
+    val id: kotlin.String,
+    val amount: CustomMoneyDTO,
+    val state: State,
     val creationTime: java.time.LocalDateTime? = null
 ) {
     /**

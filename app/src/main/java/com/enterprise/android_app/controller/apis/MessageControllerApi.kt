@@ -204,32 +204,7 @@ class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return MessageDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun replaceMessage(body: MessageDTO, id: kotlin.String): MessageDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/messages/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<MessageDTO>(
-                localVariableConfig, localVariableBody
-        )
 
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as MessageDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
     /**
      * 
      * 
@@ -254,30 +229,5 @@ class MessageControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return MessageDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun updateMessage(body: MessageDTO, id: kotlin.String): MessageDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
-                "/api/v1/messages/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<MessageDTO>(
-                localVariableConfig, localVariableBody
-        )
 
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as MessageDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
 }

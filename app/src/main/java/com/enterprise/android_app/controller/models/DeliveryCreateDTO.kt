@@ -20,7 +20,7 @@ import io.swagger.client.models.OrderBasicDTO
  */
 data class DeliveryCreateDTO (
 
-    val order: OrderBasicDTO? = null,
+    val order: OrderBasicDTO,
     val shipper: kotlin.String? = null
 ) {
 }

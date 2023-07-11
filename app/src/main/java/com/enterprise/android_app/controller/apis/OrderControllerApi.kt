@@ -103,6 +103,39 @@ class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
         }
     }
     /**
+     *
+     *
+     * @param page  (optional, default to 0)
+     * @param sizePage  (optional, default to 10)
+     * @return PageOrderBasicDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun getAllOrdersOfSeller(page: kotlin.Int? = null, sizePage: kotlin.Int? = null): PageOrderBasicDTO {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            if (page != null) {
+                put("page", listOf(page.toString()))
+            }
+            if (sizePage != null) {
+                put("sizePage", listOf(sizePage.toString()))
+            }
+        }
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/orders/me/seller", query = localVariableQuery
+        )
+        val response = request<PageOrderBasicDTO>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as PageOrderBasicDTO
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
      * 
      * 
      * @param id  

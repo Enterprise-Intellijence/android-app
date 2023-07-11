@@ -86,7 +86,7 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
                 }
             }
             when (tabIndex) {
-                0 -> Closet(profileViewModel)
+                0 -> Closet(profileViewModel, navController)
                 1 -> Reviews(profileViewModel)
             }
         }
@@ -188,7 +188,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
         }
     }
 
-    Row() {
+    Row(modifier = Modifier.fillMaxWidth()) {
         Text(
             stringResource(id = R.string.bio),
             Modifier.padding(top = 10.dp, start = 10.dp),

@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.controller.models.FilterOptions
 import com.enterprise.android_app.view.components.LazyGridProductsCard
@@ -51,7 +52,7 @@ import compose.icons.fontawesomeicons.solid.Filter
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun SearchPage(){
+fun SearchPage(navController: NavHostController){
 
     val searchPageViewModel: SearchPageViewModel = viewModel()
 
@@ -78,7 +79,7 @@ fun SearchPage(){
             Column(modifier = Modifier.padding(top = 10.dp).fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 if (products.isNotEmpty()) {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        LazyGridProductsCard(products = products, lazyGridState = lazyGridState) {
+                        LazyGridProductsCard(products = products, lazyGridState = lazyGridState, navController = navController) {
                             searchPageViewModel.search()
                         }
 

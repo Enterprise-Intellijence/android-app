@@ -1,8 +1,8 @@
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +11,6 @@ import com.enterprise.android_app.controller.BasePath
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.google.gson.Gson
 import io.swagger.client.apis.ProductControllerApi
-import io.swagger.client.infrastructure.isClientError
 import io.swagger.client.models.ProductCreateDTO
 import io.swagger.client.models.ProductDTO
 import kotlinx.coroutines.CoroutineScope
@@ -34,12 +33,31 @@ class NewProductPageViewModel: ViewModel() {
     private val client = OkHttpClient()
     private val gson = Gson()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    val productControllerApi = ProductControllerApi()
     val images = mutableStateListOf<Uri?>()
     val imageStreamList = mutableStateMapOf<Uri?, InputStream>()
+    private val productControllerApi: ProductControllerApi = ProductControllerApi()
 
+    var product: MutableState<ProductDTO?> = mutableStateOf(null)
 
-    var product = mutableStateOf(null)
+    var titleText = mutableStateOf( "")
+    var descriptionText = mutableStateOf("")
+    var brandText = mutableStateOf("")
+    var priceText = mutableStateOf( "")
+    var deliveryPriceText = mutableStateOf( "")
+    var selectedCondition = mutableStateOf( "")
+    var selectedVisibility = mutableStateOf( "")
+    var selectedCurrency = mutableStateOf( "")
+
+    var selectedPrimaryCategory = mutableStateOf( "")
+    var selectedSecondaryCategory = mutableStateOf( "")
+    var selectedTertiaryCategory = mutableStateOf("")
+    var selectedLanguage = mutableStateOf("")
+    var selectedColor = mutableStateOf("")
+    var selectedSize = mutableStateOf("")
+    var selectedMaterial = mutableStateOf("")
+    var selectedGender = mutableStateOf("")
+    var selectedDeliverySize = mutableStateOf("")
+
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -66,7 +84,6 @@ class NewProductPageViewModel: ViewModel() {
                 }
                 println("response: " + response)
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "Product created", Toast.LENGTH_LONG).show()
 
                     val responseBody = response.body?.string()
                     println("response: " + responseBody)
@@ -84,11 +101,35 @@ class NewProductPageViewModel: ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Error on product creation", Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
         return null
+    }
+
+    fun getProductById(productId: String) {
+        coroutineScope.launch {
+            try {
+                product.value = productControllerApi.productById(productId)
+                images.clear()
+                /*product.value!!.productImages?.forEach { img ->
+                    images.add(img.urlPhoto.toUri())
+                }*/
+                titleText.value =                product.value?.title?: ""
+                descriptionText.value =          product.value?.description?: ""
+                brandText.value =                product.value?.brand?: ""
+                priceText.value =                product.value?.productCost?.price?.toString()?: ""
+                deliveryPriceText.value =        product.value?.productCost?.price?.toString()?: ""
+                selectedCondition.value =        product.value?.condition?.value?: ""
+                selectedVisibility.value =       product.value?.visibility?.value?: ""
+                selectedCurrency.value =         product.value?.productCost?.currency?.value?: ""
+                selectedPrimaryCategory.value =  product.value?.productCategory?.primaryCat?: ""
+                selectedSecondaryCategory.value =product.value?.productCategory?.secondaryCat?: ""
+                selectedTertiaryCategory.value = product.value?.productCategory?.tertiaryCat?: ""
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

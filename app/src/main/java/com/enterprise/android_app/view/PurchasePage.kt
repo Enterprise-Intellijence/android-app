@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.DarkGreen
 import com.enterprise.android_app.view_models.ProductPageViewModel
 import compose.icons.FontAwesomeIcons
@@ -90,7 +91,7 @@ fun PurchasePage(navController: NavHostController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { /*MainRouter.changePage(Navigation.SelectAddressPage)*/ }) {
+        Button(onClick = { navController.navigate(Navigation.SelectAddressPage.route) }) {
             Text("Change address")
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -107,7 +108,7 @@ fun PurchasePage(navController: NavHostController){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { /*MainRouter.changePage(Navigation.SelectPaymentPage)*/ }) {
+        Button(onClick = { navController.navigate(Navigation.SelectPaymentMethodPage.route) }) {
             Text("Change payment method")
         }
         Row {
@@ -131,7 +132,7 @@ fun PurchasePage(navController: NavHostController){
                     }
                 orderViewModel.createOrder(order, context)
 
-                // TODO: routing a lista di ordini
+                navController.navigate(Navigation.OrdersPage.route)
             }) {
                 Text("Buy now")
             }
@@ -183,7 +184,7 @@ fun ProductView(product: ProductDTO) {
 }
 
 @Composable
-fun SelectAddressPage(){
+fun SelectAddressPage(navController: NavHostController){
     val addresses = CurrentDataUtils.addresses
 
     Column(modifier = Modifier
@@ -219,14 +220,14 @@ fun SelectAddressPage(){
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { /*MainRouter.changePage(Navigation.PurchasePage)*/ }) {
+        Button(onClick = { navController.navigate(Navigation.PurchasePage.route) }) {
             Text(text = "Confirm")
         }
     }
 }
 
 @Composable
-fun SelectPaymentMethodPage(){
+fun SelectPaymentMethodPage(navController: NavHostController){
     val payments = CurrentDataUtils.PaymentsMethod
 
     Column(modifier = Modifier
@@ -264,7 +265,7 @@ fun SelectPaymentMethodPage(){
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { /*MainRouter.changePage(Navigation.PurchasePage)*/ }) {
+        Button(onClick = { navController.navigate(Navigation.PurchasePage.route) }) {
             Text(text = "Confirm")
         }
     }

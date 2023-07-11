@@ -114,7 +114,9 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                 .height(110.dp)
                         ) {
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = {
+                                    navController.navigate(Navigation.EditProductPage.route + "?productId=${product.id}")
+                                },
                                 colors = ButtonDefaults.outlinedButtonColors(),
                                 modifier = Modifier
                                     .height(45.dp)
@@ -139,7 +141,9 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                 .height(110.dp)
                         ) {
                             Button(
-                                onClick = {},
+                                onClick = {
+                                    navController.navigate(Navigation.PurchasePage.route)
+                                },
                                 modifier = Modifier
                                     .height(45.dp)
                                     .fillMaxWidth()

@@ -1,5 +1,6 @@
 package com.enterprise.android_app.navigation
 
+import EditProductPage
 import NewProductPage
 import OrdersPage
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +17,10 @@ import com.enterprise.android_app.view.MainScreen
 import com.enterprise.android_app.view.MessagesPage
 import com.enterprise.android_app.view.ProfileMenuPage
 import com.enterprise.android_app.view.ProfilePage
+import com.enterprise.android_app.view.PurchasePage
 import com.enterprise.android_app.view.SearchPage
+import com.enterprise.android_app.view.SelectAddressPage
+import com.enterprise.android_app.view.SelectPaymentMethodPage
 import com.enterprise.android_app.view.SignUpPage
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import com.enterprise.android_app.view.screen.ProductScreen
@@ -72,6 +76,10 @@ fun MainPageGraph(navController: NavHostController) {
         composable(Navigation.FavouriteProductScreen.route) { FavouriteProductScreen(navController) }
         composable(Navigation.SettingsPage.route) { SettingsPage(navController) }
         composable(Navigation.OrdersPage.route) { OrdersPage(navController) }
+        composable(Navigation.PurchasePage.route) { PurchasePage(navController) }
+        composable(Navigation.SelectAddressPage.route) { SelectAddressPage(navController) }
+        composable(Navigation.SelectPaymentMethodPage.route) { SelectPaymentMethodPage(navController) }
+
         composable(Navigation.AboutPage.route) { AboutPage() }
         composable(
             Navigation.ProductScreen.route + "?productId={productId}",
@@ -79,7 +87,18 @@ fun MainPageGraph(navController: NavHostController) {
         ) { backStackEntry ->
             ProductScreen(navController = navController, productId = backStackEntry.arguments?.getString("productId")!!)
         }
-        composable(Navigation.NewProductPage.route) { NewProductPage(navController) }
+        composable(
+            Navigation.EditProductPage.route + "?productId={productId}",
+            arguments = listOf(navArgument("productId") {})
+        ) { backStackEntry ->
+            EditProductPage(navController, backStackEntry.arguments?.getString("productId")!!)
+        }
+        composable(
+            Navigation.NewProductPage.route + "?productId={productId}",
+            arguments = listOf(navArgument("productId") {defaultValue = ""})
+        ) { backStackEntry ->
+            NewProductPage(navController, backStackEntry.arguments?.getString("productId")!!)
+        }
         composable(Navigation.AccountSettingsPage.route) { AboutPage() }
         composable(Navigation.ShippingPage.route) { ShippingPage(navController) }
         composable(Navigation.PaymentsPage.route) { PaymentsPage(navController) }

@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -67,37 +68,40 @@ import java.util.stream.Stream
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProductPage(navController: NavHostController) {
-
+fun NewProductPage(navController: NavHostController, productId: String) {
     val context = LocalContext.current
 
-    val categoryViewModel = remember { ProductCategoryViewModel() }
-    val sizeViewModel = remember { SizeViewModel() }
+    val categoryViewModel: ProductCategoryViewModel = viewModel()
+    val sizeViewModel: SizeViewModel = viewModel()
     val newProductViewModel: NewProductPageViewModel = viewModel()
 
-    var titleText by remember { mutableStateOf("") }
-    var descriptionText by remember { mutableStateOf("") }
-    var brandText by remember { mutableStateOf("") }
-    var priceText by remember { mutableStateOf("") }
-    var deliveryPriceText by remember { mutableStateOf("") }
-    var selectedCondition by rememberSaveable { mutableStateOf("") }
-    var selectedVisibility by rememberSaveable { mutableStateOf("") }
-    var selectedCurrency by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(key1 = "new product page") {
+        if(productId != "") {
+            newProductViewModel.getProductById(productId)
+        }
+    }
 
-    var selectedPrimaryCategory by rememberSaveable { mutableStateOf("") }
-    var selectedSecondaryCategory by rememberSaveable { mutableStateOf("") }
-    var selectedTertiaryCategory by rememberSaveable { mutableStateOf("") }
-    var selectedLanguage by rememberSaveable { mutableStateOf("") }
-    var selectedColor by rememberSaveable { mutableStateOf("") }
-    var selectedSize by rememberSaveable { mutableStateOf("") }
-    var selectedMaterial by rememberSaveable { mutableStateOf("") }
-    var selectedGender by rememberSaveable { mutableStateOf("") }
-    var selectedDeliverySize by rememberSaveable { mutableStateOf("") }
+    val titleText = newProductViewModel.titleText
+    val descriptionText = newProductViewModel.descriptionText
+    val brandText = newProductViewModel.brandText
+    val priceText = newProductViewModel.priceText
+    val deliveryPriceText = newProductViewModel.deliveryPriceText
+    val selectedCondition = newProductViewModel.selectedCondition
+    val selectedVisibility = newProductViewModel.selectedVisibility
+    val selectedCurrency = newProductViewModel.selectedCurrency
+    val selectedDeliverySize = newProductViewModel.selectedDeliverySize
 
+    val selectedPrimaryCategory = newProductViewModel.selectedPrimaryCategory
+    val selectedSecondaryCategory = newProductViewModel.selectedSecondaryCategory
+    val selectedTertiaryCategory = newProductViewModel.selectedTertiaryCategory
+    val selectedLanguage = newProductViewModel.selectedLanguage
+    val selectedColor = newProductViewModel.selectedColor
+    val selectedSize = newProductViewModel.selectedSize
+    val selectedMaterial = newProductViewModel.selectedMaterial
+    val selectedGender = newProductViewModel.selectedGender
 
-    var imagesUri = newProductViewModel.images
-    var imageStream = newProductViewModel.imageStreamList
-
+    val imagesUri = newProductViewModel.images
+    val imageStream = newProductViewModel.imageStreamList
 
     categoryViewModel.getCategories()
     var primaryCategories = categoryViewModel.primaryCategories.collectAsState(initial = emptyList())
@@ -131,11 +135,11 @@ fun NewProductPage(navController: NavHostController) {
             Text(text = "Title")
             Spacer(modifier = Modifier.width(16.dp))
             OutlinedTextField(
-                value = titleText,
-                onValueChange = { titleText = it },
-                label = {
-                    Text(text = "Enter title")},
-                    modifier = Modifier.weight(1f)
+                value = titleText.value,
+                onValueChange = { titleText.value = it },
+                label = { Text(text = "Enter title") },
+                modifier = Modifier.weight(1f),
+                isError = titleText.value == ""
             )
         }
 
@@ -145,10 +149,11 @@ fun NewProductPage(navController: NavHostController) {
             Text(text = "Description")
             Spacer(modifier = Modifier.width(16.dp))
             OutlinedTextField(
-                value = descriptionText,
-                onValueChange = { descriptionText = it },
+                value = descriptionText.value,
+                onValueChange = { descriptionText.value = it },
                 label = { Text(text = "Enter description") },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                isError = descriptionText.value == ""
             )
         }
 
@@ -158,10 +163,11 @@ fun NewProductPage(navController: NavHostController) {
             Text(text = "Brand")
             Spacer(modifier = Modifier.width(16.dp))
             OutlinedTextField(
-                value = brandText,
-                onValueChange = { brandText = it },
+                value = brandText.value,
+                onValueChange = { brandText.value = it },
                 label = { Text(text = "Enter a brand") },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                isError = brandText.value == ""
             )
         }
 
@@ -170,7 +176,7 @@ fun NewProductPage(navController: NavHostController) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Condition")
             Spacer(modifier = Modifier.width(16.dp))
-            DropDown(selectedCondition, { selectedCondition = it }, ProductDTO.Condition.values().map { it.name }, "Condition")
+            DropDown(selectedCondition.value, { selectedCondition.value = it }, ProductDTO.Condition.values().map { it.name }, "Condition")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -178,23 +184,23 @@ fun NewProductPage(navController: NavHostController) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Visibility")
             Spacer(modifier = Modifier.width(16.dp))
-            DropDown(selectedVisibility, { selectedVisibility = it }, ProductDTO.Visibility.values().map { it.name }, "Visibility")
+            DropDown(selectedVisibility.value, { selectedVisibility.value = it }, ProductDTO.Visibility.values().map { it.name }, "Visibility")
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel, selectedPrimaryCategory, { selectedPrimaryCategory = it },
-            selectedSecondaryCategory, { selectedSecondaryCategory = it },
-            selectedTertiaryCategory, { selectedTertiaryCategory = it },
-            selectedMaterial, { selectedMaterial = it }, selectedColor, { selectedColor = it },
-            selectedSize, { selectedSize = it }, selectedGender, { selectedGender = it },
-            selectedLanguage, { selectedLanguage = it })
+        CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel, selectedPrimaryCategory.value, { selectedPrimaryCategory.value = it },
+            selectedSecondaryCategory.value, { selectedSecondaryCategory.value = it },
+            selectedTertiaryCategory.value, { selectedTertiaryCategory.value = it },
+            selectedMaterial.value, { selectedMaterial.value = it }, selectedColor.value, { selectedColor.value = it },
+            selectedSize.value, { selectedSize.value = it }, selectedGender.value, { selectedGender.value = it },
+            selectedLanguage.value, { selectedLanguage.value = it })
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Delivery size")
             Spacer(modifier = Modifier.width(16.dp))
-            DropDown(selectedDeliverySize, { selectedDeliverySize = it }, ProductDTO.ProductSize.values().map { it.name }, "Delivery size")
+            DropDown(selectedDeliverySize.value, { selectedDeliverySize.value = it }, ProductDTO.ProductSize.values().map { it.name }, "Delivery size")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -205,8 +211,8 @@ fun NewProductPage(navController: NavHostController) {
             CommonTextField(
                 title = "Enter a price",
                 placeholder = "Enter a price",
-                text = priceText,
-                onValueChange = { priceText = it },
+                text = priceText.value,
+                onValueChange = { priceText.value = it },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -219,8 +225,8 @@ fun NewProductPage(navController: NavHostController) {
             CommonTextField(
                 title = "Enter a price",
                 placeholder = "Enter a price",
-                text = deliveryPriceText,
-                onValueChange = { deliveryPriceText = it },
+                text = deliveryPriceText.value,
+                onValueChange = { deliveryPriceText.value = it },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -231,39 +237,45 @@ fun NewProductPage(navController: NavHostController) {
             Text(text = "Currency")
             Spacer(modifier = Modifier.width(16.dp))
 
-            DropDown(selectedCurrency, { selectedCurrency = it }, CustomMoneyDTO.Currency.values().map { it.name }, "Currency")
+            DropDown(selectedCurrency.value, { selectedCurrency.value = it }, CustomMoneyDTO.Currency.values().map { it.name }, "Currency")
         }
 
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
-                // TODO: validazione campi mancante.
+                if(titleText.value == "" || descriptionText.value == "" || brandText.value == "" || priceText.value == "" || priceText.value.toDoubleOrNull() == null || priceText.value.toDouble() < 0.0
+                    || deliveryPriceText.value == "" || deliveryPriceText.value.toDoubleOrNull() == null || deliveryPriceText.value.toDouble() < 0.0 || selectedCondition.value == ""
+                    || selectedVisibility.value == "" || selectedDeliverySize.value == "" || selectedPrimaryCategory.value == "" || selectedSecondaryCategory.value == ""
+                    || selectedTertiaryCategory.value == "" || selectedCurrency.value == "" || imagesUri.size == 0) {
+                    mToast(context, "Please fill all the fields correctly")
+                    return@Button
+                }
                 var category = ProductCategoryDTO(
                     null,
-                    selectedPrimaryCategory,
-                    selectedSecondaryCategory,
-                    selectedTertiaryCategory
+                    selectedPrimaryCategory.value,
+                    selectedSecondaryCategory.value,
+                    selectedTertiaryCategory.value
                 )
                 var productCost = CustomMoneyDTO(
-                    priceText.toDouble(),
-                    CustomMoneyDTO.Currency.valueOf(selectedCurrency)
+                    priceText.value.toDouble(),
+                    CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
                 )
                 var deliveryCost = CustomMoneyDTO(
-                    deliveryPriceText.toDouble(),
-                    CustomMoneyDTO.Currency.valueOf(selectedCurrency)
+                    deliveryPriceText.value.toDouble(),
+                    CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
                 )
                 var product = ProductCreateDTO(
-                    titleText,
-                    descriptionText,
+                    titleText.value,
+                    descriptionText.value,
                     productCost,
                     deliveryCost,
-                    brandText,
-                    ProductCreateDTO.Condition.valueOf(selectedCondition),
-                    ProductCreateDTO.ProductSize.valueOf(selectedDeliverySize),
-                    ProductCreateDTO.Visibility.valueOf(selectedVisibility),
+                    brandText.value,
+                    ProductCreateDTO.Condition.valueOf(selectedCondition.value),
+                    ProductCreateDTO.ProductSize.valueOf(selectedDeliverySize.value),
+                    ProductCreateDTO.Visibility.valueOf(selectedVisibility.value),
                     category,
                     null,
-                    selectedPrimaryCategory,
+                    selectedPrimaryCategory.value,
                     null,
                     null,
                     null,
@@ -272,24 +284,36 @@ fun NewProductPage(navController: NavHostController) {
                     null
                 )
 
-                when (selectedPrimaryCategory) {
+                when (selectedPrimaryCategory.value) {
                     "Home" -> {
-                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor)
-                        product.homeSize = SizeDTO(null, selectedSize, "Home")
-                        product.homeMaterial = HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial)
+                        if(selectedColor.value == "" || selectedSize.value == "" || selectedMaterial.value == "") {
+                            mToast(context, "Please fill all the fields")
+                            return@Button
+                        }
+                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
+                        product.homeSize = SizeDTO(null, selectedSize.value, "Home")
+                        product.homeMaterial = HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial.value)
                     }
                     "Entertainment" -> {
-                        product.entertainmentLanguage = EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage)
+                        if(selectedLanguage.value == "") {
+                            mToast(context, "Please fill all the fields")
+                            return@Button
+                        }
+                        product.entertainmentLanguage = EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage.value)
                     }
                     "Clothing" -> {
-                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor)
-                        product.clothingSize = SizeDTO(null, selectedSize, selectedSecondaryCategory)
-                        product.productGender = ClothingCreateDTO.ProductGender.valueOf(selectedGender)
+                        if(selectedColor.value == "" || selectedSize.value == "" || selectedGender.value == "") {
+                            mToast(context, "Please fill all the fields")
+                            return@Button
+                        }
+                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
+                        product.clothingSize = SizeDTO(null, selectedSize.value, selectedSecondaryCategory.value)
+                        product.productGender = ClothingCreateDTO.ProductGender.valueOf(selectedGender.value)
                     }
                 }
                 println("producti: " + product)
                 newProductViewModel.saveNewProduct(product, context, imagesUri)
-
+                mToast(context, "Product created")
             }) {
                 Text("Load product")
             }
@@ -379,9 +403,10 @@ fun DropDown(selectedOptionText: String, onChange: (String) -> Unit, options: Li
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text("$label") },
+            label = { Text(label) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            isError = selectedOptionText == ""
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -420,6 +445,7 @@ fun DropDownCategory(selectedOptionText: String, onChange: (String) -> Unit, lis
             label = { Text("$label") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            isError = selectedOptionText == ""
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -534,14 +560,18 @@ fun CommonTextField(
     TextField(
         value = text,
         onValueChange = onValueChange,
-        modifier = modifier,
+        modifier = modifier.width(150.dp),
         label = {
             Text(text = title)
         },
         placeholder = {
             Text(text = placeholder)
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        isError = text == "" || text.toDoubleOrNull() == null || text.toDouble() <= 0.0
     )
+}
 
+private fun mToast(context: Context, text: String){
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

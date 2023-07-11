@@ -106,7 +106,7 @@ fun MainBottomBar(navController: NavHostController) {
                         contentDescription = stringResource(id = R.string.search))}
             )
             NavigationBarItem(
-                selected = currentNavigation.value?.destination?.route == Navigation.NewProductPage.route,
+                selected = currentNavigation.value?.destination?.route != null && currentNavigation.value?.destination?.route?.contains(Navigation.NewProductPage.route)!!,
                 onClick = { navController.navigate(Navigation.NewProductPage.route) },
                 icon = {
                     Icon(

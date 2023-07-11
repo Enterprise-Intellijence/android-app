@@ -37,9 +37,15 @@ open class ProductCreateDTO(
     val productCategory: ProductCategoryDTO?,
     val productImages: Array<Array<Byte>>?,
     val type: String?,
+    var colour: HomeCreateDTO.Colour?,
+    var homeSize: SizeDTO?,
+    var homeMaterial: HomeCreateDTO.HomeMaterial?,
+    var productGender: ClothingCreateDTO.ProductGender?,
+    var clothingSize: SizeDTO?,
+    var entertainmentLanguage: EntertainmentCreateDTO.EntertainmentLanguage?
 ) {
 
-    constructor(
+    /*constructor(
         title: String?,
         description: String?,
         productCost: CustomMoneyDTO,
@@ -51,7 +57,9 @@ open class ProductCreateDTO(
         productCategory: ProductCategoryDTO?,
         productImages: Array<Array<Byte>>?,
         type: String?,
-        type1: String
+        colour: HomeCreateDTO.Colour,
+        homeSize: SizeDTO,
+        homeMaterial: HomeCreateDTO.HomeMaterial
     ) : this(
         title,
         description,
@@ -63,8 +71,11 @@ open class ProductCreateDTO(
         visibility,
         productCategory,
         productImages,
-        type
-    )
+        type,
+        colour,
+        homeSize,
+        homeMaterial
+    )*/
 
     /**
     * 

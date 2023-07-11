@@ -44,31 +44,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view.settings.updateUser
+import com.enterprise.android_app.view_models.ImageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
 fun ProfileDetailsPage(navController: NavHostController) {
+    // TODO: user null
     var user: MutableState<UserDTO?> = remember {
         mutableStateOf(CurrentDataUtils.currentUser)
     }
+    println("userrr: " + user.value)
     var modifier = Modifier.fillMaxWidth()
     val focusRequester = remember {FocusRequester()}
     val focusManager = LocalFocusManager.current
 
-
+    val imageViewModel: ImageViewModel = viewModel()
 
     Column(modifier = modifier ) {
-        ClickableBox(
-            onClick = { MainRouter.changePage(Navigation.ImageSelectorComponent) },
-            modifier = modifier,
-            contentAlignment = Alignment.CenterStart
-        ) {
+
             Row(modifier = Modifier.padding(8.dp)) {
                 Image(painter = rememberImagePainter(
                     data = user.value?.photoProfile?.urlPhoto,
@@ -83,7 +84,10 @@ fun ProfileDetailsPage(navController: NavHostController) {
                         .clip(CircleShape)
                         .padding(0.dp)
                 )
-                Row() {
+                ImageSelectorComponent(onChange = { uri, stream ->
+                    imageViewModel.saveChange(uri, stream!!)
+                })
+                /*Row() {
                     Column(modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(start = 10.dp))
@@ -92,9 +96,9 @@ fun ProfileDetailsPage(navController: NavHostController) {
                     }
                     Icon(Icons.Filled.KeyboardArrowRight,contentDescription = stringResource (R.string.changePhoto))
 
-                }
+                }*/
             }
-        }
+
         val currentTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?: "")) }
 
         val originalTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?:"")) }

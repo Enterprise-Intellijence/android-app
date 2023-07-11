@@ -1,9 +1,11 @@
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -32,12 +35,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,6 +61,8 @@ import io.swagger.client.models.ProductCategoryDTO
 import io.swagger.client.models.ProductCreateDTO
 import io.swagger.client.models.ProductDTO
 import io.swagger.client.models.SizeDTO
+import java.io.InputStream
+import java.util.stream.Stream
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,23 +75,25 @@ fun NewProductPage(navController: NavHostController) {
     val sizeViewModel = remember { SizeViewModel() }
     val newProductViewModel: NewProductPageViewModel = viewModel()
 
-    var titleText by remember { mutableStateOf(TextFieldValue("")) }
-    var descriptionText by remember { mutableStateOf(TextFieldValue("")) }
-    var brandText by remember { mutableStateOf(TextFieldValue("")) }
-    var priceText by remember { mutableStateOf(TextFieldValue("")) }
-    var deliveryPriceText by remember { mutableStateOf(TextFieldValue("")) }
-    var selectedCondition by remember { mutableStateOf("") }
-    var selectedVisibility by remember { mutableStateOf("") }
-    var selectedCurrency by remember { mutableStateOf("") }
+    var titleText by remember { mutableStateOf("") }
+    var descriptionText by remember { mutableStateOf("") }
+    var brandText by remember { mutableStateOf("") }
+    var priceText by remember { mutableStateOf("") }
+    var deliveryPriceText by remember { mutableStateOf("") }
+    var selectedCondition by rememberSaveable { mutableStateOf("") }
+    var selectedVisibility by rememberSaveable { mutableStateOf("") }
+    var selectedCurrency by rememberSaveable { mutableStateOf("") }
 
-    var selectedPrimaryCategory by remember { mutableStateOf("") }
-    var selectedSecondaryCategory by remember { mutableStateOf("") }
-    var selectedTertiaryCategory by remember { mutableStateOf("") }
-    var selectedLanguage by remember { mutableStateOf("") }
-    var selectedColor by remember { mutableStateOf("") }
-    var selectedSize by remember { mutableStateOf("") }
-    var selectedMaterial by remember { mutableStateOf("") }
-    var selectedGender by remember { mutableStateOf("") }
+    var selectedPrimaryCategory by rememberSaveable { mutableStateOf("") }
+    var selectedSecondaryCategory by rememberSaveable { mutableStateOf("") }
+    var selectedTertiaryCategory by rememberSaveable { mutableStateOf("") }
+    var selectedLanguage by rememberSaveable { mutableStateOf("") }
+    var selectedColor by rememberSaveable { mutableStateOf("") }
+    var selectedSize by rememberSaveable { mutableStateOf("") }
+    var selectedMaterial by rememberSaveable { mutableStateOf("") }
+    var selectedGender by rememberSaveable { mutableStateOf("") }
+    var selectedDeliverySize by rememberSaveable { mutableStateOf("") }
+
 
     var imagesUri = newProductViewModel.images
     var imageStream = newProductViewModel.imageStreamList
@@ -107,13 +116,13 @@ fun NewProductPage(navController: NavHostController) {
             if(imagesUri.size < 5) {
                 ImageSelectorComponent {uri, stream ->
                     imagesUri.add(uri)
-                    imageStream.add(stream!!)
+                    imageStream[uri] = stream!!
                 }
             }
         }
-        ImagesContainer(imagesUri) {
-            imagesUri.remove(it)
-            // TODO: remove inputStream
+        ImagesContainer(imagesUri) {uri ->
+            imagesUri.remove(uri)
+            imageStream.remove(uri)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -183,12 +192,21 @@ fun NewProductPage(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Delivery size")
+            Spacer(modifier = Modifier.width(16.dp))
+            DropDown(selectedDeliverySize, { selectedDeliverySize = it }, ProductDTO.ProductSize.values().map { it.name }, "Delivery size")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Price")
             Spacer(modifier = Modifier.width(16.dp))
-            OutlinedTextField(
-                value = priceText,
+            CommonTextField(
+                title = "Enter a price",
+                placeholder = "Enter a price",
+                text = priceText,
                 onValueChange = { priceText = it },
-                label = { Text(text = "Enter a price") },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -198,10 +216,11 @@ fun NewProductPage(navController: NavHostController) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Delivery price")
             Spacer(modifier = Modifier.width(16.dp))
-            OutlinedTextField(
-                value = deliveryPriceText,
+            CommonTextField(
+                title = "Enter a price",
+                placeholder = "Enter a price",
+                text = deliveryPriceText,
                 onValueChange = { deliveryPriceText = it },
-                label = { Text(text = "Enter a price") },
                 modifier = Modifier.weight(1f)
             )
         }
@@ -219,8 +238,6 @@ fun NewProductPage(navController: NavHostController) {
             modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
                 // TODO: validazione campi mancante.
-                // Errore moshi su serializzazione di ClothingCreateDTO, EntertainmentCreateDTO e HomeCreateDTO
-                // Errore nel caricamento di immagini
                 var category = ProductCategoryDTO(
                     null,
                     selectedPrimaryCategory,
@@ -228,43 +245,50 @@ fun NewProductPage(navController: NavHostController) {
                     selectedTertiaryCategory
                 )
                 var productCost = CustomMoneyDTO(
-                    priceText.text.toDouble(),
+                    priceText.toDouble(),
                     CustomMoneyDTO.Currency.valueOf(selectedCurrency)
                 )
                 var deliveryCost = CustomMoneyDTO(
-                    deliveryPriceText.text.toDouble(),
+                    deliveryPriceText.toDouble(),
                     CustomMoneyDTO.Currency.valueOf(selectedCurrency)
                 )
                 var product = ProductCreateDTO(
-                    titleText.text,
-                    descriptionText.text,
+                    titleText,
+                    descriptionText,
                     productCost,
                     deliveryCost,
-                    brandText.text,
+                    brandText,
                     ProductCreateDTO.Condition.valueOf(selectedCondition),
-                    ProductCreateDTO.ProductSize.MEDIUM,
+                    ProductCreateDTO.ProductSize.valueOf(selectedDeliverySize),
                     ProductCreateDTO.Visibility.valueOf(selectedVisibility),
                     category,
                     null,
                     selectedPrimaryCategory,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 )
-
-                var finalProduct: ProductCreateDTO = product
 
                 when (selectedPrimaryCategory) {
                     "Home" -> {
-                        finalProduct = HomeCreateDTO(product, HomeCreateDTO.Colour.valueOf(selectedColor),
-                            SizeDTO(null, selectedSize, "Home"), HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial))
+                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor)
+                        product.homeSize = SizeDTO(null, selectedSize, "Home")
+                        product.homeMaterial = HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial)
                     }
                     "Entertainment" -> {
-                        finalProduct = EntertainmentCreateDTO(product, EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage))
+                        product.entertainmentLanguage = EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage)
                     }
                     "Clothing" -> {
-                        finalProduct = ClothingCreateDTO(product, ClothingCreateDTO.Colour.valueOf(selectedColor),
-                            SizeDTO(null, selectedSize, selectedSecondaryCategory), ClothingCreateDTO.ProductGender.valueOf(selectedGender))
+                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor)
+                        product.clothingSize = SizeDTO(null, selectedSize, selectedSecondaryCategory)
+                        product.productGender = ClothingCreateDTO.ProductGender.valueOf(selectedGender)
                     }
                 }
-                newProductViewModel.saveNewProduct(finalProduct, context, imagesUri)
+                println("producti: " + product)
+                newProductViewModel.saveNewProduct(product, context, imagesUri)
 
             }) {
                 Text("Load product")
@@ -272,7 +296,6 @@ fun NewProductPage(navController: NavHostController) {
         }
     }
 }
-
 
 @Composable
 fun ImagesContainer(imageUri: List<Uri?>, onDelete: (Uri) -> Unit) {
@@ -498,11 +521,27 @@ fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductC
     }
 }
 
-
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProductPagePreview() {
-    AndroidappTheme {
-        NewProductPage(navController = rememberNavController())
-    }
+fun CommonTextField(
+    title: String,
+    placeholder: String,
+    text: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier
+) {
+
+    TextField(
+        value = text,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        label = {
+            Text(text = title)
+        },
+        placeholder = {
+            Text(text = placeholder)
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+    )
+
 }

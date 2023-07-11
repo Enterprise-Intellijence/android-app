@@ -17,7 +17,7 @@ package io.swagger.client.models
  * @param homeSize 
  * @param homeMaterial 
  */
-class HomeCreateDTO: ProductCreateDTO {
+class HomeCreateDTO {
     constructor (
         title: kotlin.String? = null,
         description: kotlin.String? = null,
@@ -32,37 +32,7 @@ class HomeCreateDTO: ProductCreateDTO {
         type: kotlin.String,
         colour: HomeCreateDTO.Colour,
         homeSize: SizeDTO,
-        homeMaterial: HomeCreateDTO.HomeMaterial) :
-            super(
-                title,
-                description,
-                productCost,
-                deliveryCost,
-                brand,
-                condition,
-                productSize,
-                visibility,
-                productCategory,
-                productImages,
-                type,
-            )
-
-    constructor(productCreateDTO: ProductCreateDTO,
-                colour: HomeCreateDTO.Colour,
-                homeSize: SizeDTO,
-                homeMaterial: HomeCreateDTO.HomeMaterial): super(
-        title = productCreateDTO.title,
-        description = productCreateDTO.description,
-        productCost = productCreateDTO.productCost,
-        deliveryCost = productCreateDTO.deliveryCost,
-        brand = productCreateDTO.brand,
-        condition = productCreateDTO.condition,
-        productSize = productCreateDTO.productSize,
-        visibility = productCreateDTO.visibility,
-        productCategory = productCreateDTO.productCategory,
-        productImages = productCreateDTO.productImages,
-        type = productCreateDTO.type,
-    )
+        homeMaterial: HomeCreateDTO.HomeMaterial)
     /**
     * 
     * Values: YELLOW,GREEN,BLUE,RED,BLACK,WHITE,MULTICOLOUR
@@ -81,23 +51,23 @@ class HomeCreateDTO: ProductCreateDTO {
     * Values: COTTON,LINEN,WOOL,ACRYLIC,CHIFFON,POLYAMIDENYLON,POLYESTER,SILK,CERAMIC,GLASS,STAINLESSSTEEL,PLASTIC,WOOD,STONE,PORCELAIN,SILVER,METAL,OTHER
     */
     enum class HomeMaterial(val value: kotlin.String){
-        COTTON("Cotton"),
-        LINEN("Linen"),
-        WOOL("Wool"),
-        ACRYLIC("Acrylic"),
-        CHIFFON("Chiffon"),
-        POLYAMIDENYLON("Polyamide_Nylon"),
-        POLYESTER("Polyester"),
-        SILK("Silk"),
-        CERAMIC("Ceramic"),
-        GLASS("Glass"),
-        STAINLESSSTEEL("Stainless_Steel"),
-        PLASTIC("Plastic"),
-        WOOD("Wood"),
-        STONE("Stone"),
-        PORCELAIN("Porcelain"),
-        SILVER("Silver"),
-        METAL("Metal"),
-        OTHER("Other");
+        Cotton("Cotton"),
+        Linen("Linen"),
+        Wool("Wool"),
+        Acrylic("Acrylic"),
+        Chiffon("Chiffon"),
+        Polyamide_Nylon("Polyamide_Nylon"),
+        Polyester("Polyester"),
+        Silk("Silk"),
+        Ceramic("Ceramic"),
+        Glass("Glass"),
+        Stainless_Steel("Stainless_Steel"),
+        Plastic("Plastic"),
+        Wood("Wood"),
+        Stone("Stone"),
+        Porcelain("Porcelain"),
+        Silver("Silver"),
+        Metal("Metal"),
+        Other("Other");
     }
 }

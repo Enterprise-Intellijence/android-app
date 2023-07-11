@@ -15,7 +15,7 @@ package io.swagger.client.models
  * 
  * @param entertainmentLanguage 
  */
-class EntertainmentCreateDTO: ProductCreateDTO {
+class EntertainmentCreateDTO {
     constructor(
         title: kotlin.String? = null,
         description: kotlin.String? = null,
@@ -29,35 +29,7 @@ class EntertainmentCreateDTO: ProductCreateDTO {
         productImages: kotlin.Array<kotlin.Array<kotlin.Byte>>? = null,
         type: kotlin.String,
         entertainmentLanguage: EntertainmentLanguage
-        ): super(
-        title,
-        description,
-        productCost,
-        deliveryCost,
-        brand,
-        condition,
-        productSize,
-        visibility,
-        productCategory,
-        productImages,
-        type,
-    )
-
-    constructor(productCreateDTO: ProductCreateDTO,
-                entertainmentLanguage: EntertainmentLanguage
-    ): super(
-        title = productCreateDTO.title,
-        description = productCreateDTO.description,
-        productCost = productCreateDTO.productCost,
-        deliveryCost = productCreateDTO.deliveryCost,
-        brand = productCreateDTO.brand,
-        condition = productCreateDTO.condition,
-        productSize = productCreateDTO.productSize,
-        visibility = productCreateDTO.visibility,
-        productCategory = productCreateDTO.productCategory,
-        productImages = productCreateDTO.productImages,
-        type = productCreateDTO.type,
-    )
+        )
     /**
     * 
     * Values: MULTILANGUAGE,ITALIAN,FRENCH,GERMAN,ENGLISH,SPANISH,OTHERS

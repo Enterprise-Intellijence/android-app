@@ -18,7 +18,7 @@ package io.swagger.client.models
  * @param colour 
  */
 
-class ClothingCreateDTO: ProductCreateDTO {
+class ClothingCreateDTO {
     constructor(
         title: kotlin.String? = null,
         description: kotlin.String? = null,
@@ -34,36 +34,7 @@ class ClothingCreateDTO: ProductCreateDTO {
         productGender: ProductGender,
         clothingSize: SizeDTO,
         colour: Colour
-        ) : super(
-        title,
-        description,
-        productCost,
-        deliveryCost,
-        brand,
-        condition,
-        productSize,
-        visibility,
-        productCategory,
-        productImages,
-        type,
-    )
-
-    constructor(productCreateDTO: ProductCreateDTO,
-                colour: ClothingCreateDTO.Colour,
-                homeSize: SizeDTO,
-                homeMaterial: ClothingCreateDTO.ProductGender): super(
-        title = productCreateDTO.title,
-        description = productCreateDTO.description,
-        productCost = productCreateDTO.productCost,
-        deliveryCost = productCreateDTO.deliveryCost,
-        brand = productCreateDTO.brand,
-        condition = productCreateDTO.condition,
-        productSize = productCreateDTO.productSize,
-        visibility = productCreateDTO.visibility,
-        productCategory = productCreateDTO.productCategory,
-        productImages = productCreateDTO.productImages,
-        type = productCreateDTO.type,
-    )
+        )
     /**
     * 
     * Values: MALE,FEMALE,UNISEX

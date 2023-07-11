@@ -17,6 +17,7 @@ import io.swagger.client.models.OrderDTO
 import io.swagger.client.models.PageOrderDTO
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.PageOrderBasicDTO
 
 class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
@@ -73,10 +74,10 @@ class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
      * 
      * @param page  (optional, default to 0)
      * @param sizePage  (optional, default to 10)
-     * @return PageOrderDTO
+     * @return PageOrderBasicDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun getAllOrdersOfUser(page: kotlin.Int? = null, sizePage: kotlin.Int? = null): PageOrderDTO {
+    fun getAllOrdersOfUser(page: kotlin.Int? = null, sizePage: kotlin.Int? = null): PageOrderBasicDTO {
         val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
             if (page != null) {
                 put("page", listOf(page.toString()))
@@ -89,12 +90,12 @@ class OrderControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
                 RequestMethod.GET,
                 "/api/v1/orders/me", query = localVariableQuery
         )
-        val response = request<PageOrderDTO>(
+        val response = request<PageOrderBasicDTO>(
                 localVariableConfig
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as PageOrderDTO
+            ResponseType.Success -> (response as Success<*>).data as PageOrderBasicDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

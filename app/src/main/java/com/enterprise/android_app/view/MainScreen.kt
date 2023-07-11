@@ -84,7 +84,7 @@ fun MainBottomBar(navController: NavHostController) {
         NavigationBar() {
             NavigationBarItem(
                 selected = currentNavigation.value?.destination?.route == Navigation.HomePage.route,
-                onClick = { navController.navigate(Screen.MainScreen.route) },
+                onClick = { navController.navigate(Navigation.HomePage.route) },
                 icon = {
                     Icon(
                         FontAwesomeIcons.Solid.Home,

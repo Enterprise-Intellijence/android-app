@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.view.components.LazyGridOrderCard
 import com.enterprise.android_app.view_models.OrdersViewModel
 

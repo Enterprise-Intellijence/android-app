@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -63,8 +64,12 @@ fun MainScreen() {
 @Composable
 fun SearchTopBar(navController: NavHostController) {
 
-    if (navController.currentDestination?.route == Navigation.HomePage.route ||
-        navController.currentDestination?.route == Navigation.SearchPage.route) {
+    val currentRoute = navController
+        .currentBackStackEntryFlow
+        .collectAsState(initial = navController.currentBackStackEntry)
+
+    if (currentRoute.value?.destination?.route == Navigation.HomePage.route ||
+        currentRoute.value?.destination?.route == Navigation.SearchPage.route) {
         TopBarSearch()
     } else {
         TopBarGeneric(navController)

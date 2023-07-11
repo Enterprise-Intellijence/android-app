@@ -357,7 +357,7 @@ class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClien
     fun logout(): Unit {
         val localVariableConfig = RequestConfig(
                 RequestMethod.POST,
-                "/api/v1/users/logout"
+            "/api/v1/users/logout"
         )
         val response = request<Any?>(
                 localVariableConfig

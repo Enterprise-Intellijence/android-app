@@ -65,9 +65,14 @@ fun StartScreen(navController: NavHostController) {
         clientId = stringResource(id = R.string.web_client_id),
         onTokenIdReceived = { tokenId ->
             Log.d("LoginPage", "tokenId: $tokenId")
-            authViewModel.authenticateGoogle(tokenId) {
-                Log.d("LoginPage", "authenticateGoogle error")
-            }
+            authViewModel.authenticateGoogle(tokenId, onError = {
+                Log.d(
+                    "LoginPage",
+                    "authenticateGoogle error"
+                )
+            }, onSuccess = {
+                CurrentDataUtils.goToHome.value = true
+            })
         },
         onDialogDismissed = { message ->
             Log.d("LoginPage", "dismissed, message: $message")

@@ -56,7 +56,7 @@ fun AddEditPaymentMethodScreen() {
     val creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
     val expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
     val ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
-    val isDefaultBoolean = remember { mutableStateOf((payment.value?.default ?: false) as Boolean) }
+    val isDefaultBoolean = remember { mutableStateOf((payment.value?.isDefault ?: false) as Boolean) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -116,7 +116,7 @@ fun AddEditPaymentMethodScreen() {
                             creditCard = creditCardText.value,
                             expiryDate = expireDate.value,
                             owner = ownerText.value,
-                            default = isDefaultBoolean.value)!!)
+                            isDefault = isDefaultBoolean.value)!!)
 
                         //MainRouter.changePage(Navigation.PaymentsPage)
 

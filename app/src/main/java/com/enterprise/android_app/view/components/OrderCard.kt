@@ -13,10 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.swagger.client.models.OrderBasicDTO
 import io.swagger.client.models.OrderDTO
 
 @Composable
-fun OrderCard(order: OrderDTO){
+fun OrderCard(order: OrderBasicDTO){
     Card(
         modifier = Modifier
             .size(width = 100.dp, height = 250.dp),

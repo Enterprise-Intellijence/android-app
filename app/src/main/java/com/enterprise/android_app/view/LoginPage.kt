@@ -110,19 +110,18 @@ fun LoginPage(navController: NavHostController) {
             ButtonComponent(value = stringResource(id = R.string.button_login),
                 onClickAction = {
                     authViewModel.authenticate(
-                        //"username2",
-                        //"password2",
                         textValueUsername,
                         textValuePassword,
                         onError = {
                             errorMessage.value =
                                 "Authentication failed. Please check your username and password."
                         },
-                    onSuccess = { isAuthenticated.value = true}
+                    onSuccess = { isAuthenticated.value = true }
                     )
                 })
 
             if (isAuthenticated.value) {
+                isAuthenticated.value = false
                 navController.navigate(Screen.MainScreen.route)
             }
 

@@ -56,6 +56,7 @@ import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalCoilApi::class)
@@ -67,8 +68,7 @@ fun ProfileMenuPage(navController: NavHostController){
     Column(modifier = modifier ) {
         ClickableBox(
             onClick = {
-                visitedUser = CurrentDataUtils.toUserBasicDTO(CurrentDataUtils.currentUser!!)
-                navController.navigate(Navigation.ProfilePage.route + "?visitedUserId=${visitedUser.id}")},
+                navController.navigate(Navigation.ProfilePage.route + "?visitedUserId=${CurrentDataUtils.currentUser?.id}")},
             modifier = modifier,
             contentAlignment = Alignment.CenterStart
         ) {
@@ -76,7 +76,7 @@ fun ProfileMenuPage(navController: NavHostController){
                 Image(painter = /*radius*/rememberAsyncImagePainter(
                     ImageRequest.Builder(
                         LocalContext.current
-                    ).data(data = user.value?.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
+                    ).data(data = CurrentDataUtils.currentUser?.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
                     }).build()
                 ),
@@ -114,7 +114,11 @@ fun ProfileMenuPage(navController: NavHostController){
         ), modifier = modifier, onClick =  {navController.navigate(Navigation.OrdersPage.route)})
         SingleRowTemplate(name = "About Svinted", icona = Icons.Filled.Info, icon_label = stringResource(
             id = R.string.about
-        ), modifier = modifier, onClick = {navController.navigate(Navigation.AboutPage.route)} )
+        ), modifier = modifier, onClick = {navController.navigate(Navigation.AboutPage.route)}
+        )
+        SingleRowTemplate(name = "Logout", icona = null, icon_label = null, modifier = modifier) {
+            CurrentDataUtils.logout()
+        }
     }
 }
 

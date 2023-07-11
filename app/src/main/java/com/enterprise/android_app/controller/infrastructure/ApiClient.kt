@@ -19,6 +19,7 @@ open class ApiClient(val baseUrl: String) {
         protected const val JsonMediaType = "application/json"
         protected const val FormDataMediaType = "multipart/form-data"
         protected const val XmlMediaType = "application/xml"
+        protected const val RefreshToken = "refresh-token"
 
         @JvmStatic
         val client: OkHttpClient = OkHttpClient()
@@ -85,6 +86,10 @@ open class ApiClient(val baseUrl: String) {
             mapOf(Authorization to CurrentDataUtils.accessToken)
         else
             mapOf(Authorization to CurrentDataUtils.refreshToken)
+
+        if (url.toString().contains("logout") || url.toString().contains("changePassword"))
+            customHeaders = customHeaders + mapOf(RefreshToken to CurrentDataUtils.refreshToken)
+
 
         val headers = requestConfig.headers + defaultHeaders + customHeaders
         /*

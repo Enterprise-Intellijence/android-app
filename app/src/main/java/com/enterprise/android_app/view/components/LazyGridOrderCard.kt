@@ -10,12 +10,13 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.unit.dp
+import io.swagger.client.models.OrderBasicDTO
 import io.swagger.client.models.OrderDTO
 
 
 @Composable
 fun LazyGridOrderCard(
-    orders: SnapshotStateList<OrderDTO>,
+    orders: SnapshotStateList<OrderBasicDTO>,
     lazyGridState: LazyGridState,
     onLoadMore: () -> Unit
 

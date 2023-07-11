@@ -119,7 +119,7 @@ fun PaymentsMethodCard(payment: MutableState<PaymentMethodDTO?> ){
                 Text(text = stringResource(id = R.string.owner)+" ${payment.value?.owner}")
 
             }
-            if(payment.value?.default==true){
+            if(payment.value?.isDefault==true){
                 Text(text = stringResource(id = R.string.defaultPaymentMethod), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
             /*else{

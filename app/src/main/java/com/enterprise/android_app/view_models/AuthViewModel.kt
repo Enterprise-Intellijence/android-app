@@ -31,9 +31,8 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
 
                     //set the refresh token to the DB
                     CurrentDataUtils.setRefresh(tokenMap["refreshToken"].toString())
-                    CurrentDataUtils.retrieveCurrentUser()
 
-                    UserServices.retriveLikedProducts()
+                    CurrentDataUtils.retrieveCurrentUser()
                     onSuccess()
                 } else {
                     onError()
@@ -45,7 +44,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
         }
     }
 
-    fun authenticateGoogle(idToken: String, onError: () -> Unit) {
+    fun authenticateGoogle(idToken: String, onError: () -> Unit, onSuccess: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val tokenMap = userController.googleAuth(idToken)
@@ -53,9 +52,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                     CurrentDataUtils.accessToken = tokenMap["accessToken"].toString()
                     CurrentDataUtils.setRefresh(tokenMap["refreshToken"].toString())
                     CurrentDataUtils.retrieveCurrentUser()
-
-                    UserServices.retriveLikedProducts()
-                    AppRouter.navigateTo(Screen.MainScreen)
+                    onSuccess()
                 } else {
                     onError()
                 }

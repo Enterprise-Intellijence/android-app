@@ -339,7 +339,7 @@ fun PaymentMethodCardReadOnly(payment: PaymentMethodDTO, modifier: Modifier){
                 Text(text = stringResource(id = R.string.owner) +" ${payment.owner}")
 
             }
-            if(payment.default==true){
+            if(payment.isDefault){
                 Text(text = stringResource(id = R.string.defaultPaymentMethod), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
         }

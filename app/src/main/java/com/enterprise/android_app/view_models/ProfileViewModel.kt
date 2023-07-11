@@ -32,7 +32,7 @@ class ProfileViewModel() : ViewModel() {
 
     val areProducts: MutableState<Boolean?> = mutableStateOf(false)
     val areReviews: MutableState<Boolean?> = mutableStateOf(false)
-    val isVisitedUserLoaded: MutableState<Boolean?> = mutableStateOf(false)
+    val isVisitedUserLoaded: MutableState<Boolean> = mutableStateOf(false)
     var visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     var isFollowing: MutableState<Boolean?> = mutableStateOf(null)
     private val visitedUserId: MutableState<String?> = mutableStateOf(null)
@@ -45,6 +45,7 @@ class ProfileViewModel() : ViewModel() {
     fun setUserId(userId: String) {
         visitedUserId.value = userId
         updateUser()
+        isVisitedUserLoaded.value = true
     }
 
     fun loadNextProductPage() {
@@ -133,7 +134,6 @@ class ProfileViewModel() : ViewModel() {
                 visitedUser.value = withContext(Dispatchers.IO) {
                     userControllerApi.userById(id = visitedUserId.value!!)
                 }
-                isVisitedUserLoaded.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
             }

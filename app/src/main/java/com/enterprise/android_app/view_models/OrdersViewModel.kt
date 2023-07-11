@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class OrdersViewModel: ViewModel() {
     private val orderControllerApi: OrderControllerApi = OrderControllerApi()
-    val orderList = mutableStateListOf<OrderDTO>()
+    val orderList = mutableStateListOf<OrderBasicDTO>()
     var currentPage: Int = 0
 
 

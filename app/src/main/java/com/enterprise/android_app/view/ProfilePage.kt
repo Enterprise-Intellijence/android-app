@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -51,31 +53,42 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
     val profileViewModel = ProfileViewModel()
     profileViewModel.setUserId(visitedUserId)
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
-        ProfileInfo(profileViewModel, navController)
-
-        TabRow(selectedTabIndex = tabIndex) {
-            tabs.forEachIndexed { index, title ->
-                Tab(text = { Text(title)},
-                    selected = tabIndex == index,
-                    onClick = { tabIndex = index },
-                    icon = {
-                        when (index) {
-                            0 -> Icon(imageVector = FontAwesomeIcons.Solid.Cubes,
-                                        contentDescription = stringResource(id = R.string.Closet),
-                                        modifier = Modifier.height(20.dp))
-                            1 -> Icon(imageVector = FontAwesomeIcons.Solid.PencilAlt,
-                                        contentDescription = stringResource(id = R.string.Reviews),
-                                        modifier = Modifier.height(20.dp))
-                        }
-                    }
-                )
-            }
+        if (!profileViewModel.isVisitedUserLoaded.value){
+            CircularProgressIndicator(Modifier.size(40.dp))
         }
-        when (tabIndex) {
-            0 -> Closet(profileViewModel)
-            1 -> Reviews(profileViewModel)
+        else {
+
+            ProfileInfo(profileViewModel, navController)
+
+            TabRow(selectedTabIndex = tabIndex) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(text = { Text(title) },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index },
+                        icon = {
+                            when (index) {
+                                0 -> Icon(
+                                    imageVector = FontAwesomeIcons.Solid.Cubes,
+                                    contentDescription = stringResource(id = R.string.Closet),
+                                    modifier = Modifier.height(20.dp)
+                                )
+
+                                1 -> Icon(
+                                    imageVector = FontAwesomeIcons.Solid.PencilAlt,
+                                    contentDescription = stringResource(id = R.string.Reviews),
+                                    modifier = Modifier.height(20.dp)
+                                )
+                            }
+                        }
+                    )
+                }
+            }
+            when (tabIndex) {
+                0 -> Closet(profileViewModel)
+                1 -> Reviews(profileViewModel)
+            }
         }
     }
 }

@@ -79,6 +79,7 @@ object CurrentDataUtils {
                 _currentUser.value = userControllerApi.me()
                 retrieveAddresses()
                 retrievePaymentsMethod()
+                UserServices.retriveLikedProducts()
 
             } catch (e: Exception) {
                 println(e)
@@ -159,7 +160,7 @@ object CurrentDataUtils {
         _PaymentsMethod.clear()
         _currentUser.value?.paymentMethods?.let { _PaymentsMethod.addAll(it.toList()) }
         _PaymentsMethod.forEach {p ->
-            if(p.default == true)
+            if(p.isDefault)
                 _defaultPaymentMethod.value = p
         }
     }
@@ -180,7 +181,7 @@ object CurrentDataUtils {
         }
     }
 
-        fun refreshToken(){
+    fun refreshToken(){
         CoroutineScope(Dispatchers.IO).launch{
             if( refreshToken != null){
                 val tokenMap: Map<String,String> = userControllerApi.refreshToken()
@@ -191,6 +192,17 @@ object CurrentDataUtils {
             }
         }
     }
+
+    fun logout(){
+        CoroutineScope(Dispatchers.IO).launch{
+            userControllerApi.logout()
+            _currentUser.value = null
+            _refreshToken.value = ""
+            _accessToken.value = ""
+            _goToHome.value = false
+        }
+    }
+
 
 
     fun checkRefreshToken(){
@@ -203,7 +215,6 @@ object CurrentDataUtils {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                     retrieveCurrentUser()
-                    UserServices.retriveLikedProducts()
                     _showLoadingScreen.value = false
                     _goToHome.value = true
                 }

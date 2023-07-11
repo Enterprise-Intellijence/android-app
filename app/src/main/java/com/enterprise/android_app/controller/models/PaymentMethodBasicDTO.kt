@@ -22,6 +22,6 @@ data class PaymentMethodBasicDTO (
 
     val id: kotlin.String,
     val creditCard: kotlin.String,
-    val default: kotlin.Boolean? = null
+    val isDefault: kotlin.Boolean? = null
 ) {
 }

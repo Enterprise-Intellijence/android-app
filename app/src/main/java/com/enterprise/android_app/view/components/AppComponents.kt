@@ -189,7 +189,7 @@ fun DividerTextComponent(){
         Text(modifier = Modifier.padding(8.dp),
             text = stringResource(id = R.string.or),
             fontSize = 18.sp,
-            color = colorResource(id = R.color.colorText))
+            color = MaterialTheme.colorScheme.onSurface)
 
         Divider(
             modifier = Modifier
@@ -224,7 +224,8 @@ fun ClickableLoginTextComponent(tryingToLogin:Boolean = true, onTextSelected: (S
             fontSize = 21.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
         ),
         text = annotatedString,
         onClick = {

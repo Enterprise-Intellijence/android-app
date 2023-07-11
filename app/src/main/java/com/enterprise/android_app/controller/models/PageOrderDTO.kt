@@ -42,5 +42,6 @@ data class PageOrderDTO (
     val numberOfElements: kotlin.Int? = null,
     val pageable: PageableObject? = null,
     val empty: kotlin.Boolean? = null
+
 ) {
 }

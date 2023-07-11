@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view_models.ProfileViewModel
 import compose.icons.FontAwesomeIcons
@@ -22,7 +23,7 @@ import compose.icons.fontawesomeicons.solid.Cubes
 
 
 @Composable
-fun Closet(viewModel: ProfileViewModel) {
+fun Closet(viewModel: ProfileViewModel, navController: NavHostController) {
     val productList = viewModel.productList
     val lazyGridState = rememberLazyGridState()
 
@@ -33,7 +34,8 @@ fun Closet(viewModel: ProfileViewModel) {
     if (!productList.isEmpty()) {
         LazyGridProductsCard(
             products = productList,
-            lazyGridState = lazyGridState
+            lazyGridState = lazyGridState,
+            navController = navController
         ) {
             viewModel.loadNextProductPage()
             productList.size

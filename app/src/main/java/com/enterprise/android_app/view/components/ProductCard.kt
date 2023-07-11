@@ -38,6 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
@@ -52,17 +54,16 @@ import com.enterprise.android_app.view_models.ProductPageViewModel
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
-fun ProductCard(product: ProductBasicDTO) {
+fun ProductCard(navController: NavHostController, product: ProductBasicDTO) {
     var likes by rememberSaveable { mutableStateOf(product.likesNumber) }
     var liked by rememberSaveable { mutableStateOf(UserServices.isProductLiked(product.id!!))}
+    var navController = navController
 
     Card(
         modifier = Modifier
             .size(width = 100.dp, height = 250.dp)
             .clickable {
-                CurrentDataUtils.currentProductId = product.id!!; MainRouter.changePage(
-                Navigation.ProductScreen
-            )
+                navController.navigate(Navigation.ProductScreen.route + "?productId=${product.id}")
             },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

@@ -16,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.LazyGridProductsCard
 import com.enterprise.android_app.view_models.HomePageViewModel
 
 
 @Composable
-fun HomePage(){
+fun HomePage(navController: NavHostController){
     val homePageViewModel: HomePageViewModel = viewModel()
 
     val productList = homePageViewModel.productList
@@ -39,7 +40,8 @@ fun HomePage(){
         } else {
             LazyGridProductsCard(
                 products = productList,
-                lazyGridState = lazyGridState
+                lazyGridState = lazyGridState,
+                navController = navController
             )
             {
                 homePageViewModel.loadNextPage()
@@ -49,12 +51,4 @@ fun HomePage(){
         }
     }
 
-}
-
-@Preview
-@Composable
-fun HomePagePreview() {
-    AndroidappTheme {
-        HomePage()
-    }
 }

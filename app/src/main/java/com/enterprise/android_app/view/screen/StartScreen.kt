@@ -90,7 +90,7 @@ fun StartScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(text = "Svinted", fontSize = 30.sp, )
+            Text(text = "Svinted", fontSize = 30.sp, color = MaterialTheme.colorScheme.primary)
             if (CurrentDataUtils.showLoadingScreen.value) {
                 Spacer(modifier = Modifier.height(20.dp))
                 CircularProgressIndicator(Modifier.size(40.dp))
@@ -144,7 +144,7 @@ fun StartScreen(navController: NavHostController) {
                         ),
                     shape = RoundedCornerShape(7.dp)
                 ) {
-                    Text(text = "continue with Google")
+                    Text(text = "Continue with Google")
                 }
             }
 

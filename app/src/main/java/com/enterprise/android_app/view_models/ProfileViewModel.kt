@@ -70,11 +70,10 @@ class ProfileViewModel() : ViewModel() {
                 val newReviews = withContext(Dispatchers.IO) {
                     reviewControllerApi.allReviewReceived(userId = visitedUser.value?.id!!, page = currentProductPage)
                 }
-                println(newReviews)
                 val reviewsToAdd = newReviews.content?.toList() ?: emptyList()
                 reviewList.addAll(reviewsToAdd)
-                currentReviewPage++
                 areReviews.value = true
+                currentReviewPage++
 
                 if (newReviews.last == true) {
                     coroutineScope.cancel()

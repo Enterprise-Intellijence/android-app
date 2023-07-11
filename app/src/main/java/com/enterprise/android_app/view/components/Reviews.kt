@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,8 +23,9 @@ import compose.icons.fontawesomeicons.solid.Bars
 
 @Composable
 fun Reviews(viewModel: ProfileViewModel) {
-    val reviewList = viewModel.reviewList
+    val reviewList = remember { viewModel.reviewList }
     val lazyGridState = rememberLazyGridState()
+    val areReviews = remember { viewModel.areReviews }
 
     LaunchedEffect(key1 = viewModel.currentReviewPage) {
         viewModel.loadNextReviewPage()
@@ -38,8 +40,7 @@ fun Reviews(viewModel: ProfileViewModel) {
             reviewList.size
         }
     } else {
-
-        if (viewModel.visitedUser.value?.reviewsNumber != 0) {
+        if (areReviews.value == true) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,

@@ -58,6 +58,7 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
         if (!profileViewModel.isVisitedUserLoaded.value){
             CircularProgressIndicator(Modifier.size(40.dp))
         }
+
         else {
 
             ProfileInfo(profileViewModel, navController)
@@ -96,13 +97,15 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController) {
-    val visitedUser = profileViewModel.visitedUser
-    val isFollowing = remember { profileViewModel.isFollowing }
+
 
     LaunchedEffect(key1 = profileViewModel.visitedUser.value?.id) {
         profileViewModel.updateUser()
         profileViewModel.checkFollowing()
     }
+
+    val visitedUser = remember { profileViewModel.visitedUser }
+    val isFollowing = remember { profileViewModel.isFollowing }
 
     Row(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -129,28 +132,31 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
             Row() {
                 Text(visitedUser.value?.username.toString(),
                     style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 5.dp),
                     fontWeight = FontWeight.Bold)
-
             }
 
             Row() {
                 Text(stringResource(id = R.string.followers_label), fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleSmall,)
-                Text(visitedUser.value?.followersNumber.toString())
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface)
+                Text(" ${visitedUser.value?.followersNumber.toString()}")
             }
 
             Row() {
                 Text(
                     stringResource(id = R.string.following_label), fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Text(visitedUser.value?.followingNumber.toString())
+                Text(" ${visitedUser.value?.followingNumber.toString()}")
             }
 
             Row() {
                 Text(stringResource(id = R.string.reviews_label), fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleSmall)
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,)
                 Text(visitedUser.value?.reviewsNumber.toString())
             }
         }
@@ -170,14 +176,16 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                         profileViewModel.unfollow()
                         isFollowing.value = false
                     }) {
-                        Text(stringResource(id = R.string.unfollow))
+                        Text(stringResource(id = R.string.unfollow),
+                            color = MaterialTheme.colorScheme.onSurface,)
                     }
                 } else {
                     Button(onClick = {
                         profileViewModel.follow()
                         isFollowing.value = true
                     }) {
-                        Text(stringResource(id = R.string.follow))
+                        Text(stringResource(id = R.string.follow),
+                        color = MaterialTheme.colorScheme.onSurface,)
                     }
                 }
             } else {
@@ -193,6 +201,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
             stringResource(id = R.string.bio),
             Modifier.padding(top = 10.dp, start = 10.dp),
             style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight . Bold,
         )
     }
@@ -205,6 +214,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
         ) {
             Text(visitedUser.value?.bio ?: stringResource(id = R.string.empty_bio),
                 style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(top = 5.dp, start = 10.dp, end= 10.dp))
         }
     }

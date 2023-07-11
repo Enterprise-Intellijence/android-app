@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.view_models.ProductPageViewModel
 import io.swagger.client.models.ProductDTO
@@ -29,7 +30,7 @@ import androidx.compose.foundation.layout.Column as Column
 
 
 @Composable
-fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
+fun TabProductComponent(productPageViewModel: ViewModel, navController: NavHostController) {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     var productPageViewModel = remember { productPageViewModel as ProductPageViewModel }
@@ -74,7 +75,8 @@ fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
                     Modifier.heightIn(max = 1300.dp)) {
                         LazyGridProductsCard(
                             products = sellerProducts,
-                            lazyGridState = lazyGridSellerState
+                            lazyGridState = lazyGridSellerState,
+                            navController = navController
                         ) {
                             productPageViewModel.loadNextRelatedProductPage()
                         }
@@ -86,7 +88,8 @@ fun TabProductComponent(productPageViewModel: ViewModel, product: ProductDTO) {
                     Modifier.heightIn(max = 1300.dp)) {
                     LazyGridProductsCard(
                         products = similarProducts,
-                        lazyGridState = lazyGridSimilarState
+                        lazyGridState = lazyGridSimilarState,
+                        navController = navController
                     ) {
                         productPageViewModel.loadNextRelatedProductPage()
                     }

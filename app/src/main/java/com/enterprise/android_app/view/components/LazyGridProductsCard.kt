@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import io.swagger.client.models.ProductBasicDTO
 
 @Composable
@@ -18,6 +19,7 @@ fun LazyGridProductsCard(
     products: SnapshotStateList<ProductBasicDTO>,
     lazyGridState: LazyGridState,
     modifier: Modifier = Modifier,
+    navController: NavHostController,
     onLoadMore: () -> Unit
 ) {
     LazyVerticalGrid(
@@ -29,7 +31,7 @@ fun LazyGridProductsCard(
         modifier = modifier
     ) {
         itemsIndexed(products) { index, product ->
-            ProductCard(product = product)
+            ProductCard(product = product, navController = navController)
 
             val contentSize = products.size
             if (index == contentSize - 1 && lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {

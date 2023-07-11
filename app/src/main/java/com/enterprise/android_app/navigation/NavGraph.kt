@@ -59,8 +59,8 @@ fun MainPageGraph(navController: NavHostController) {
         startDestination = Navigation.HomePage.route,
         route = Graph.main
     ) {
-        composable(Navigation.HomePage.route) { HomePage() }
-        composable(Navigation.SearchPage.route) { SearchPage() }
+        composable(Navigation.HomePage.route) { HomePage(navController) }
+        composable(Navigation.SearchPage.route) { SearchPage(navController) }
         composable(Navigation.MessagesPage.route) { MessagesPage(navController) }
         composable(Navigation.ProfileMenuPage.route) { ProfileMenuPage(navController) }
         composable(
@@ -77,7 +77,7 @@ fun MainPageGraph(navController: NavHostController) {
             Navigation.ProductScreen.route + "?productId={productId}",
             arguments = listOf(navArgument("productId") {})
         ) { backStackEntry ->
-            backStackEntry.arguments?.getString("productId")
+            ProductScreen(navController = navController, productId = backStackEntry.arguments?.getString("productId")!!)
         }
         composable(Navigation.NewProductPage.route) { NewProductPage(navController) }
         composable(Navigation.AccountSettingsPage.route) { AboutPage() }

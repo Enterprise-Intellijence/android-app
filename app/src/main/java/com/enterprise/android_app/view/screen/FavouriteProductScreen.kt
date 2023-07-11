@@ -27,8 +27,8 @@ fun FavouriteProductScreen(navController: NavHostController){
 
     LazyGridProductsCard(
         products = productList,
-        lazyGridState = lazyGridState
-
+        lazyGridState = lazyGridState,
+        navController = navController
     )
     {
         favouriteViewModel.loadNextPage()

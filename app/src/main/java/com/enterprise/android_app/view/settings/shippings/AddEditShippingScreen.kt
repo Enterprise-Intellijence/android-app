@@ -4,23 +4,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -28,21 +24,19 @@ import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
 import com.enterprise.android_app.view_models.DeliveryViewModel
 import io.swagger.client.models.AddressCreateDTO
-import io.swagger.client.models.AddressDTO
-import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditShippingScreen(){
+fun AddEditShippingScreen(navController: NavHostController) {
     var address = CurrentDataUtils.addressDTO
     val deliveryViewModel = DeliveryViewModel()
-    var headerText= remember {mutableStateOf(address.value?.header ?: "")}
-    var streetText= remember {mutableStateOf(address.value?.street ?: "")}
-    var zipCodeText= remember {mutableStateOf(address.value?.zipCode ?: "")}
-    var cityText= remember {mutableStateOf(address.value?.city ?: "")}
-    var countryText= remember {mutableStateOf(address.value?.country ?: "")}
-    var phoneNumber= remember {mutableStateOf(address.value?.phoneNumber ?: "")}
-    var isDefaultBoolean= remember {mutableStateOf(address.value?.default ?: false)}
+    val headerText= remember {mutableStateOf(address.value?.header ?: "")}
+    val streetText= remember {mutableStateOf(address.value?.street ?: "")}
+    val zipCodeText= remember {mutableStateOf(address.value?.zipCode ?: "")}
+    val cityText= remember {mutableStateOf(address.value?.city ?: "")}
+    val countryText= remember {mutableStateOf(address.value?.country ?: "")}
+    val phoneNumber= remember {mutableStateOf(address.value?.phoneNumber ?: "")}
+    val isDefaultBoolean= remember {mutableStateOf((address.value?.isDefault ?: false) as Boolean)}
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -130,7 +124,7 @@ fun AddEditShippingScreen(){
                             city = cityText.value,
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
-                            default = isDefaultBoolean.value)!!)
+                            isDefault = isDefaultBoolean.value)!!)
 
                         MainRouter.changePage(Navigation.ShippingPage)
 
@@ -142,7 +136,7 @@ fun AddEditShippingScreen(){
                             city = cityText.value,
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
-                            default = isDefaultBoolean.value))
+                            isDefault = isDefaultBoolean.value))
                     }
                           },
                 buttonName = if(address.value?.id!=null)"Edit" else "Create"

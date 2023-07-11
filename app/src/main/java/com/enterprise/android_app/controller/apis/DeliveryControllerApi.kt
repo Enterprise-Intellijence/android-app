@@ -94,29 +94,7 @@ class DeliveryControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiC
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
-    /**
-     * 
-     * 
-     * @param id  
-     * @return void
-     */
-    fun deleteDelivery(id: kotlin.String): Unit {
-        val localVariableConfig = RequestConfig(
-                RequestMethod.DELETE,
-                "/api/v1/deliveries/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<Any?>(
-                localVariableConfig
-        )
 
-        return when (response.responseType) {
-            ResponseType.Success -> Unit
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
     /**
      * 
      * 
@@ -196,62 +174,10 @@ class DeliveryControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiC
      * @return AddressDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun replaceAddress(body: AddressDTO, id: kotlin.String): AddressDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/deliveries/address/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<AddressDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as AddressDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return DeliveryDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun replaceDelivery(body: DeliveryDTO, id: kotlin.String): DeliveryDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/deliveries/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<DeliveryDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as DeliveryDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return AddressDTO
-     */
-    @Suppress("UNCHECKED_CAST")
     fun updateAddress(body: AddressDTO, id: kotlin.String): AddressDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
+                RequestMethod.PUT,
                 "/api/v1/deliveries/address/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<AddressDTO>(
@@ -277,7 +203,7 @@ class DeliveryControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiC
     fun updateDelivery(body: DeliveryDTO, id: kotlin.String): DeliveryDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
+                RequestMethod.PUT,
                 "/api/v1/deliveries/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<DeliveryDTO>(

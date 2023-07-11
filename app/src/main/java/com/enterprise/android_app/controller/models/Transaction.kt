@@ -30,7 +30,8 @@ data class Transaction (
     val creationTime: java.time.LocalDateTime? = null,
     val amount: CustomMoney? = null,
     val transactionState: TransactionState? = null,
-    val paymentMethod: PaymentMethod? = null,
+    val paymentMethod: kotlin.String? = null,
+    val paymentMethodOwner: kotlin.String? = null,
     val order: Order? = null
 ) {
     /**

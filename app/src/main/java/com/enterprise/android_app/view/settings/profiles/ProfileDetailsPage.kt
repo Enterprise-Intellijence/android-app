@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -52,7 +53,7 @@ import com.enterprise.android_app.view.settings.updateUser
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
-fun ProfileDetailsPage() {
+fun ProfileDetailsPage(navController: NavHostController) {
     var user: MutableState<UserDTO?> = remember {
         mutableStateOf(CurrentDataUtils.currentUser)
     }

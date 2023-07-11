@@ -49,6 +49,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view.ProductPage
@@ -63,7 +65,7 @@ import io.swagger.client.models.ProductDTO
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductScreen(productId: String) {
+fun ProductScreen(navController: NavHostController, productId: String) {
 
 
     val productPageViewModel: ProductPageViewModel = viewModel()
@@ -102,7 +104,7 @@ fun ProductScreen(productId: String) {
                     )
                 }) { contentPadding ->
 
-                ProductPage(productPageViewModel = productPageViewModel,
+                ProductPage(navController,productPageViewModel = productPageViewModel,
                     product = productPageViewModel.product!!,
                     lazyList_state = lazyList_state, padding = contentPadding)
             }

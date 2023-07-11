@@ -32,12 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.UserServices
@@ -70,11 +73,11 @@ fun ProductCard(product: ProductBasicDTO) {
         shape = RoundedCornerShape(8.dp)
     ) {
         Column {
-            Image(painter = rememberImagePainter(
-                data = product.productImages?.get(0)?.urlPhoto,
-                builder = {
-                    transformations(RoundedCornersTransformation(/*radius*/ 8f))
-                }
+            Image(painter = /*radius*/rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalContext.current)
+                    .data(data = product.productImages?.get(0)?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
+                        transformations(RoundedCornersTransformation(/*radius*/ 8f))
+                    }).build()
             ),
                 contentDescription = "avatar",
                 contentScale = ContentScale.Crop,

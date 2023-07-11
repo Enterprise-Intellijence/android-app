@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -19,7 +20,7 @@ import com.enterprise.android_app.view_models.UserViewModel
 import io.swagger.client.models.UserDTO
 
 @Composable
-fun SettingsPage(){
+fun SettingsPage(navController: NavController){
     var modifier = Modifier.fillMaxWidth()
     var user : UserDTO? = CurrentDataUtils.currentUser
 

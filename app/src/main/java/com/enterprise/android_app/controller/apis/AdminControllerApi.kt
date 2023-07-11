@@ -160,7 +160,7 @@ class AdminControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClie
     fun updateProduct(body: AdminProductsBody): AdminProductsBody {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.POST,
+                RequestMethod.PUT,
                 "/api/v1/admin/products/"
         )
         val response = request<AdminProductsBody>(

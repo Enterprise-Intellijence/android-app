@@ -15,15 +15,15 @@ import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
 class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()): ViewModel() {
     private val userController: UserControllerApi = userControllerApi
 
 
-    fun authenticate(username: String, password: String, onError: () -> Unit) {
+    fun authenticate(username: String, password: String, onError: () -> Unit, onSuccess: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-
             try {
                 val tokenMap = userController.authenticate(username, password)
                 if (tokenMap.isNotEmpty()) {
@@ -34,7 +34,7 @@ class AuthViewModel(userControllerApi: UserControllerApi = UserControllerApi()):
                     CurrentDataUtils.retrieveCurrentUser()
 
                     UserServices.retriveLikedProducts()
-                    AppRouter.navigateTo(Screen.MainScreen)
+                    onSuccess()
                 } else {
                     onError()
                 }

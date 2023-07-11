@@ -21,6 +21,7 @@ import io.swagger.client.models.UserBasicDTO
 import io.swagger.client.models.UserDTO
 
 import io.swagger.client.infrastructure.*
+import io.swagger.client.models.PageUserBasicDTO
 
 class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClient(basePath) {
 
@@ -449,32 +450,6 @@ class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClien
     /**
      * 
      * 
-     * @param body  
-     * @param id  
-     * @return UserDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun replaceUser(body: UserDTO, id: kotlin.String): UserDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/users/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<UserDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as UserDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
      * @param email  
      * @return void
      */
@@ -518,6 +493,37 @@ class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClien
 
         return when (response.responseType) {
             ResponseType.Success -> Unit
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
+    /**
+     *
+     *
+     * @param username
+     * @param page
+     * @param size
+     * @return PageUserBasicDTO
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun searchByUsername(username: kotlin.String, page: kotlin.Int, size: kotlin.Int): PageUserBasicDTO {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            put("username", listOf(username.toString()))
+            put("page", listOf(page.toString()))
+            put("size", listOf(size.toString()))
+        }
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/v1/users/search-by-username", query = localVariableQuery
+        )
+        val response = request<PageUserBasicDTO>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as PageUserBasicDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

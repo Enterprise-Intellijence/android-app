@@ -1,6 +1,6 @@
 package com.enterprise.android_app.view
 
-import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -39,8 +39,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.R
-import com.enterprise.android_app.navigation.AppRouter
 import com.enterprise.android_app.navigation.Screen
 import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view.components.ButtonComponent
@@ -58,13 +58,15 @@ import compose.icons.fontawesomeicons.solid.EyeSlash
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage() {
+fun LoginPage(navController: NavHostController) {
     var context = LocalContext.current
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val authViewModel: AuthViewModel = viewModel()
     var textValueUsername by rememberSaveable{ mutableStateOf("")}
     var textValuePassword by rememberSaveable { mutableStateOf("")}
     val errorMessage = rememberSaveable { mutableStateOf("") }
+
+    val isAuthenticated = rememberSaveable { mutableStateOf(false) }
 
 
     Surface(
@@ -115,9 +117,14 @@ fun LoginPage() {
                         onError = {
                             errorMessage.value =
                                 "Authentication failed. Please check your username and password."
-                        }
+                        },
+                    onSuccess = { isAuthenticated.value = true}
                     )
                 })
+
+            if (isAuthenticated.value) {
+                navController.navigate(Screen.MainScreen.route)
+            }
 
             if (errorMessage.value.isNotEmpty()) {
                 Text(text = errorMessage.value, color = Color.Red)
@@ -127,7 +134,7 @@ fun LoginPage() {
             DividerTextComponent()
 
             ClickableLoginTextComponent(tryingToLogin = false, onTextSelected = {
-                AppRouter.navigateTo(Screen.SignUpScreen)
+                navController.navigate(Screen.SignUpScreen.route)
             })
 
 
@@ -135,7 +142,7 @@ fun LoginPage() {
 
     }
     BackHandler() {
-        AppRouter.navigateTo(Screen.SignUpScreen)
+        navController.popBackStack()
     }
 }
 
@@ -218,7 +225,7 @@ fun CommonTextFieldPassword(
                 FontAwesomeIcons.Solid.EyeSlash
             }
 
-            var description = if (passwordVisible) {
+            val description = if (passwordVisible) {
                 stringResource(id = R.string.hide_password)
             } else {
                 stringResource(id = R.string.show_password)

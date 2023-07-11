@@ -11,12 +11,6 @@
  */
 package io.swagger.client.models
 
-import com.squareup.moshi.JsonClass
-import io.swagger.client.models.CustomMoneyDTO
-import io.swagger.client.models.ProductCategoryDTO
-import io.swagger.client.models.ProductCreateDTO
-import io.swagger.client.models.SizeDTO
-
 /**
  * 
  * @param productGender 
@@ -41,22 +35,24 @@ class ClothingCreateDTO: ProductCreateDTO {
         clothingSize: SizeDTO,
         colour: Colour
         ) : super(
-            title,
-            description,
-            productCost,
-            deliveryCost,
-            brand,
-            condition,
-            productSize,
-            visibility,
-            productCategory,
-            productImages,
-            type)
+        title,
+        description,
+        productCost,
+        deliveryCost,
+        brand,
+        condition,
+        productSize,
+        visibility,
+        productCategory,
+        productImages,
+        type,
+    )
 
     constructor(productCreateDTO: ProductCreateDTO,
                 colour: ClothingCreateDTO.Colour,
                 homeSize: SizeDTO,
-                homeMaterial: ClothingCreateDTO.ProductGender): super(title = productCreateDTO.title,
+                homeMaterial: ClothingCreateDTO.ProductGender): super(
+        title = productCreateDTO.title,
         description = productCreateDTO.description,
         productCost = productCreateDTO.productCost,
         deliveryCost = productCreateDTO.deliveryCost,
@@ -66,7 +62,8 @@ class ClothingCreateDTO: ProductCreateDTO {
         visibility = productCreateDTO.visibility,
         productCategory = productCreateDTO.productCategory,
         productImages = productCreateDTO.productImages,
-        type = productCreateDTO.type)
+        type = productCreateDTO.type,
+    )
     /**
     * 
     * Values: MALE,FEMALE,UNISEX

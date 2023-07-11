@@ -36,6 +36,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.view.components.ButtonComponent
 import com.enterprise.android_app.view.components.ClickableLoginTextComponent
@@ -54,7 +56,7 @@ import compose.icons.fontawesomeicons.solid.EyeSlash
 
 
 @Composable
-fun SignUpPage(){
+fun SignUpPage(navController: NavHostController){
 
     //only for password
     var passwordVisible by rememberSaveable { mutableStateOf(false)}
@@ -143,7 +145,7 @@ fun SignUpPage(){
             DividerTextComponent()
 
             ClickableLoginTextComponent(tryingToLogin = true,onTextSelected = {
-                    AppRouter.navigateTo(Screen.LoginScreen)
+                    navController.navigate(Screen.LoginScreen.route)
             })
         }
         

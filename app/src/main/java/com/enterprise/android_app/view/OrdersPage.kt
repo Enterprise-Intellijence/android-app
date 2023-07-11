@@ -10,9 +10,9 @@ import com.enterprise.android_app.view.components.LazyGridOrderCard
 import com.enterprise.android_app.view_models.OrdersViewModel
 
 @Composable
-fun OrdersPage() {
+fun OrdersPage(navigation: NavHostController){
+    
     val ordersViewModel = remember {OrdersViewModel()}
-
     val orderList = ordersViewModel.orderList
     val lazyGridState =  rememberLazyGridState()
 

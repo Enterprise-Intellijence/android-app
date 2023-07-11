@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.LazyGridProductsCard
 import com.enterprise.android_app.view_models.HomePageViewModel
@@ -22,16 +23,15 @@ import com.enterprise.android_app.view_models.HomePageViewModel
 
 @Composable
 fun HomePage(){
-    val homePageViewModel = remember { HomePageViewModel() }
+    val homePageViewModel: HomePageViewModel = viewModel()
 
     val productList = homePageViewModel.productList
     val lazyGridState = rememberLazyGridState()
 
-
     LaunchedEffect(key1 = homePageViewModel.currentPage) {
         homePageViewModel.loadNextPage()
-
     }
+
     Column(Modifier.padding(top = 10.dp).fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
 
         if (productList.isEmpty()) {

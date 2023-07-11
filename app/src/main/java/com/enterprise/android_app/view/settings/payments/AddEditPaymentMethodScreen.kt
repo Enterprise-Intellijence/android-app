@@ -1,6 +1,7 @@
 package com.enterprise.android_app.view.settings.payments
 
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
@@ -49,13 +50,13 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
-    var payment = CurrentDataUtils.currentPaymentMethodDTO
+fun AddEditPaymentMethodScreen() {
+    val payment = CurrentDataUtils.currentPaymentMethodDTO
     val paymentViewModel = PaymentViewModel()
-    var creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
-    var expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
-    var ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
-    var isDefaultBoolean= remember { mutableStateOf(payment.value?.default ?: false) }
+    val creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }
+    val expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
+    val ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
+    val isDefaultBoolean = remember { mutableStateOf((payment.value?.default ?: false) as Boolean) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -99,7 +100,7 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
 
 
             )
-            showDatePicker(context = mainActivity, date = expireDate)
+            showDatePicker(context = LocalContext.current as Activity, date = expireDate)
         }
 
         Row(modifier = Modifier
@@ -124,7 +125,8 @@ fun AddEditPaymentMethodScreen(mainActivity: MainActivity) {
                             creditCard = creditCardText.value,
                             expiryDate = expireDate.value,
                             owner = ownerText.value,
-                            default = isDefaultBoolean.value)
+                            isDefault = isDefaultBoolean.value as Boolean
+                        )
                         )
 
                     }

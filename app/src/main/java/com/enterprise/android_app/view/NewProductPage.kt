@@ -42,6 +42,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view_models.ProductCategoryViewModel
@@ -58,7 +60,7 @@ import io.swagger.client.models.SizeDTO
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewProductPage() {
+fun NewProductPage(navController: NavHostController) {
 
     val context = LocalContext.current
 
@@ -244,7 +246,7 @@ fun NewProductPage() {
                     ProductCreateDTO.Visibility.valueOf(selectedVisibility),
                     category,
                     null,
-                    selectedPrimaryCategory
+                    selectedPrimaryCategory,
                 )
 
                 var finalProduct: ProductCreateDTO = product
@@ -501,6 +503,6 @@ fun CategoriesRow(primaryCat: State<List<String>>, categoriesViewModel: ProductC
 @Composable
 fun NewProductPagePreview() {
     AndroidappTheme {
-        NewProductPage()
+        NewProductPage(navController = rememberNavController())
     }
 }

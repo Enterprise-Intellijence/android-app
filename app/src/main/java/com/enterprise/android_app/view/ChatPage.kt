@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +38,6 @@ import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.ui.theme.Primary
 import com.enterprise.android_app.ui.theme.Purple80
 import com.enterprise.android_app.ui.theme.PurpleGrey80
-import com.enterprise.android_app.ui.theme.componentShapes
 import com.enterprise.android_app.view_models.OfferViewModel
 import io.swagger.client.models.CustomMoneyDTO
 import io.swagger.client.models.MessageDTO

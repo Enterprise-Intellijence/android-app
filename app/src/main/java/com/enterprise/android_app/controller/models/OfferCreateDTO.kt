@@ -21,7 +21,7 @@ import io.swagger.client.models.ProductBasicDTO
  */
 data class OfferCreateDTO (
 
-    val amount: CustomMoneyDTO? = null,
-    val product: ProductBasicDTO? = null
+    val amount: CustomMoneyDTO,
+    val product: ProductBasicDTO
 ) {
 }

@@ -100,8 +100,8 @@ fun HeadingTextComponent(value:String){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextFieldComponent(labelValue: String, painterResource: Painter, textValue: TextFieldValue){
-    val textValue = remember { mutableStateOf(textValue)}
+fun TextFieldComponent(labelValue: String, painterResource: Painter, _textValue: TextFieldValue){
+    val textValue = remember { mutableStateOf(_textValue)}
 
 
     OutlinedTextField(

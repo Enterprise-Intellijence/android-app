@@ -129,36 +129,10 @@ class PaymentMethodControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) :
      * @return PaymentMethodDTO
      */
     @Suppress("UNCHECKED_CAST")
-    fun replacePaymentMethod(body: PaymentMethodDTO, id: kotlin.String): PaymentMethodDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/payment-methods/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<PaymentMethodDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as PaymentMethodDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return PaymentMethodDTO
-     */
-    @Suppress("UNCHECKED_CAST")
     fun updatePaymentMethod(body: PaymentMethodDTO, id: kotlin.String): PaymentMethodDTO {
         val localVariableBody: kotlin.Any? = body
         val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
+                RequestMethod.PUT,
                 "/api/v1/payment-methods/{id}".replace("{" + "id" + "}", "$id")
         )
         val response = request<PaymentMethodDTO>(

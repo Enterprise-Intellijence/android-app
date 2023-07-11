@@ -128,7 +128,7 @@ fun ShippingCard(address: MutableState<AddressDTO?>){
                 Text(text = address.value?.phoneNumber!!,modifier = Modifier.padding(start = 8.dp))
 
             }
-            if(address.value?.default==true){
+            if(address.value?.isDefault==true){
                 Text(text = stringResource(id = R.string.defaultAddress), style = TextStyle(color = DarkGreen, fontWeight = FontWeight.Bold))
             }
             /*else{

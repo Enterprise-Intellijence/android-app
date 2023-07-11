@@ -23,15 +23,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
-import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.view.components.Closet
 import com.enterprise.android_app.view.components.Reviews
@@ -40,19 +43,17 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cubes
 import compose.icons.fontawesomeicons.solid.PencilAlt
-import io.swagger.client.models.UserBasicDTO
 
 @Composable
-fun ProfilePage(visitedUser: UserBasicDTO?){
+fun ProfilePage(navController: NavHostController, visitedUserId: String){
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(id = R.string.Closet), stringResource(id = R.string.Reviews))
     val profileViewModel = ProfileViewModel()
-    profileViewModel.visitedUser.value = visitedUser
-    profileViewModel.setUserId(visitedUser?.id!!)
+    profileViewModel.setUserId(visitedUserId)
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        ProfileInfo(profileViewModel)
+        ProfileInfo(profileViewModel, navController)
 
         TabRow(selectedTabIndex = tabIndex) {
             tabs.forEachIndexed { index, title ->
@@ -81,7 +82,7 @@ fun ProfilePage(visitedUser: UserBasicDTO?){
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ProfileInfo(profileViewModel: ProfileViewModel) {
+fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController) {
     val visitedUser = profileViewModel.visitedUser
     val isFollowing = remember { profileViewModel.isFollowing }
 
@@ -94,11 +95,11 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
         Column(
             modifier = Modifier.padding(start = 10.dp, top = 2.dp)
         ) {
-            Image(painter = rememberImagePainter(
-                data = visitedUser.value?.photoProfile?.urlPhoto,
-                builder = {
-                    transformations(RoundedCornersTransformation(4f))
-                }
+            Image(painter = rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalContext.current)
+                    .data(data = visitedUser.value?.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
+                        transformations(RoundedCornersTransformation(4f))
+                    }).build()
             ),
                 contentDescription = stringResource(id = R.string.profile_picture),
                 modifier = Modifier
@@ -167,7 +168,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel) {
                     }
                 }
             } else {
-                Button(onClick = { MainRouter.changePage(Navigation.ProfileDetailsPage)}) {
+                Button(onClick = { navController.navigate(Navigation.ProfileDetailsPage.route)}) {
                     Text(stringResource(id = R.string.edit_profile))
                 }
             }

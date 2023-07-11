@@ -13,19 +13,19 @@ package io.swagger.client.models
 
 
 /**
- * 
- * @param price 
- * @param currency 
+ *
+ * @param price
+ * @param currency
  */
 data class CustomMoneyDTO (
 
-    val price: kotlin.Double? = null,
-    val currency: Currency? = null
+    val price: kotlin.Double,
+    val currency: Currency
 ) {
     /**
-    * 
-    * Values: EUR,USD
-    */
+     *
+     * Values: EUR,USD
+     */
     enum class Currency(val value: kotlin.String){
         EUR("EUR"),
         USD("USD");

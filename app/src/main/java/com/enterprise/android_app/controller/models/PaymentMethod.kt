@@ -31,7 +31,6 @@ data class PaymentMethod (
     val expiryDate: java.time.LocalDate? = null,
     val owner: kotlin.String? = null,
     val ownerUser: User? = null,
-    val transaction: kotlin.Array<Transaction>? = null,
     val default: kotlin.Boolean? = null
 ) {
 }

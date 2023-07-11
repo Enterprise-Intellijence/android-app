@@ -13,15 +13,15 @@ package io.swagger.client.models
 
 
 /**
- * 
- * @param id 
- * @param header 
- * @param country 
- * @param city 
- * @param street 
- * @param zipCode 
- * @param phoneNumber 
- * @param default 
+ *
+ * @param id
+ * @param header
+ * @param country
+ * @param city
+ * @param street
+ * @param zipCode
+ * @param phoneNumber
+ * @param isDefault
  */
 data class AddressDTO (
 
@@ -32,6 +32,6 @@ data class AddressDTO (
     val street: kotlin.String,
     val zipCode: kotlin.String,
     val phoneNumber: kotlin.String,
-    val default: kotlin.Boolean
+    val isDefault: kotlin.Boolean
 ) {
 }

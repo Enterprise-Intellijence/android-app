@@ -71,55 +71,6 @@ class TransactionControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : A
      * 
      * 
      * @param id  
-     * @return void
-     */
-    fun deleteTransaction(id: kotlin.String): Unit {
-        val localVariableConfig = RequestConfig(
-                RequestMethod.DELETE,
-                "/api/v1/transactions/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<Any?>(
-                localVariableConfig
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> Unit
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return TransactionDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun replaceTransaction(body: TransactionDTO, id: kotlin.String): TransactionDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PUT,
-                "/api/v1/transactions/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<TransactionDTO>(
-                localVariableConfig, localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as TransactionDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param id  
      * @return TransactionDTO
      */
     @Suppress("UNCHECKED_CAST")
@@ -130,32 +81,6 @@ class TransactionControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : A
         )
         val response = request<TransactionDTO>(
                 localVariableConfig
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as TransactionDTO
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-        }
-    }
-    /**
-     * 
-     * 
-     * @param body  
-     * @param id  
-     * @return TransactionDTO
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun updateTransaction(body: TransactionDTO, id: kotlin.String): TransactionDTO {
-        val localVariableBody: kotlin.Any? = body
-        val localVariableConfig = RequestConfig(
-                RequestMethod.PATCH,
-                "/api/v1/transactions/{id}".replace("{" + "id" + "}", "$id")
-        )
-        val response = request<TransactionDTO>(
-                localVariableConfig, localVariableBody
         )
 
         return when (response.responseType) {

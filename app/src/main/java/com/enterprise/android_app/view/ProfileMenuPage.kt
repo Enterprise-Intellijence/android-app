@@ -38,13 +38,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -55,7 +60,7 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ProfileMenuPage(){
+fun ProfileMenuPage(navController: NavHostController){
     val modifier = Modifier.fillMaxWidth()
     val user: MutableState<UserDTO?> = remember { mutableStateOf(CurrentDataUtils.currentUser) }
 
@@ -63,16 +68,17 @@ fun ProfileMenuPage(){
         ClickableBox(
             onClick = {
                 visitedUser = CurrentDataUtils.toUserBasicDTO(CurrentDataUtils.currentUser!!)
-                MainRouter.changePage(Navigation.ProfilePage)},
+                navController.navigate(Navigation.ProfilePage.route + "?visitedUserId=${visitedUser.id}")},
             modifier = modifier,
             contentAlignment = Alignment.CenterStart
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
-                Image(painter = rememberImagePainter(
-                    data = user.value?.photoProfile?.urlPhoto,
-                    builder = {
+                Image(painter = /*radius*/rememberAsyncImagePainter(
+                    ImageRequest.Builder(
+                        LocalContext.current
+                    ).data(data = user.value?.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
-                    }
+                    }).build()
                 ),
                     contentDescription = "avatar",
                     contentScale = ContentScale.Crop,
@@ -95,20 +101,20 @@ fun ProfileMenuPage(){
             }
         }
         SingleRowTemplate(name = "Favourite Items", icona = Icons.Filled.Favorite, icon_label = stringResource(id = R.string.favourite ), modifier= modifier,
-            onClick = { MainRouter.changePage(Navigation.FavouriteProductScreen) }
+            onClick = { navController.navigate(Navigation.FavouriteProductScreen.route) }
         )
         SingleRowTemplate(
             name = "Settings",
             icona = Icons.Filled.Settings,
             icon_label = stringResource( id = R.string.settings),
             modifier = modifier,
-            onClick = {MainRouter.changePage(Navigation.SettingsPage)})
+            onClick = {navController.navigate(Navigation.SettingsPage.route)})
         SingleRowTemplate(name = "My orders", icona = Icons.Filled.Menu, icon_label = stringResource(
             id = R.string.orders
-        ), modifier = modifier, onClick =  {MainRouter.changePage(Navigation.OrdersPage)})
+        ), modifier = modifier, onClick =  {navController.navigate(Navigation.OrdersPage.route)})
         SingleRowTemplate(name = "About Svinted", icona = Icons.Filled.Info, icon_label = stringResource(
             id = R.string.about
-        ), modifier = modifier, onClick = {MainRouter.changePage(Navigation.AboutPage)} )
+        ), modifier = modifier, onClick = {navController.navigate(Navigation.AboutPage.route)} )
     }
 }
 

@@ -3,65 +3,40 @@ package com.enterprise.android_app.navigation
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
-sealed class Screen() {
-    object SignUpScreen : Screen()
-    object LoginScreen : Screen()
-    object MainScreen: Screen()
-
-    object StartScreen: Screen()
+sealed class Screen(val route: String) {
+    object PageApp : Screen(route = "page_app")
+    object SignUpScreen : Screen(route = "sign_up_screen")
+    object LoginScreen : Screen(route = "login_screen")
+    object MainScreen: Screen(route = "main_screen")
+    object StartScreen: Screen(route = "start_screen")
 
 }
 
-sealed class Navigation() {
-
-
-    object HomePage : Navigation()
-
-    object SearchPage : Navigation()
-
-    object MessagesPage : Navigation()
-
-    object ProfileMenuPage : Navigation()
-    object ProfilePage : Navigation()
-    object FavouriteProductScreen : Navigation()
-    object SettingsPage : Navigation ()
-    object PurchasePage : Navigation()
-    object SelectAddressPage: Navigation()
-    object SelectPaymentPage: Navigation()
-
-    object OrdersPage : Navigation()
-
-    object AboutPage : Navigation()
-    object ProductScreen : Navigation()
-    object NewProductPage: Navigation()
-
-    object AccountSettingsPage : Navigation() {
-
-    }
-
-    object ShippingPage : Navigation() {
-
-    }
-
-    object PaymentsPage : Navigation() {
-
-    }
-    object ImageSelectorComponent: Navigation()
-    object ProfileDetailsPage : Navigation(){}
-    object AddEditShippingScreen : Navigation(){}
-
-    object AddEditPaymentMethodScreen : Navigation() {
-
-    }
-
-
+sealed class Navigation(val route: String) {
+    object HomePage : Navigation(route = "home_page")
+    object SearchPage : Navigation(route = "search_page")
+    object MessagesPage : Navigation(route = "messages_page")
+    object ProfileMenuPage : Navigation(route = "profile_menu_page")
+    object ProfilePage : Navigation(route = "profile_page")
+    object FavouriteProductScreen : Navigation(route = "favourite_product_screen")
+    object SettingsPage : Navigation (route = "settings_page")
+    object OrdersPage : Navigation(route = "orders_page")
+    object AboutPage : Navigation(route = "about_page")
+    object ProductScreen : Navigation(route = "product_screen")
+    object NewProductPage: Navigation(route = "new_product_page")
+    object AccountSettingsPage : Navigation(route = "account_settings_page")
+    object ShippingPage : Navigation(route = "shipping_page")
+    object PaymentsPage : Navigation(route = "payments_page")
+    object ImageSelectorComponent: Navigation(route = "image_selector_component")
+    object ProfileDetailsPage : Navigation(route = "profile_details_page")
+    object AddEditShippingScreen : Navigation(route = "add_edit_shipping_screen")
+    object AddEditPaymentMethodScreen : Navigation(route = "add_edit_payment_method_screen")
 }
 
 
 
 object AppRouter{
     val currentScreen: MutableState<Screen> = mutableStateOf(Screen.StartScreen)
-
     fun navigateTo(destination: Screen){
         currentScreen.value = destination
     }
@@ -70,7 +45,6 @@ object AppRouter{
 
 object MainRouter{
     val currentPage : MutableState<Navigation> = mutableStateOf(Navigation.HomePage)
-
     fun changePage(nextPage: Navigation){
         currentPage.value = nextPage
     }

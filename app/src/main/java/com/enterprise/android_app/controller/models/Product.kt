@@ -66,7 +66,7 @@ data class Product (
     val usersThatLiked: kotlin.Array<User>? = null,
     val offers: kotlin.Array<Offer>? = null,
     val messages: kotlin.Array<Message>? = null,
-    val order: Order? = null,
+    val order: kotlin.Array<Order>? = null,
     val productImages: kotlin.Array<ProductImage>? = null,
     val reports: kotlin.Array<Report>? = null
 ) {

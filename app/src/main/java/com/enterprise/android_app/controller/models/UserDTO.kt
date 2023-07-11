@@ -34,13 +34,13 @@ import io.swagger.client.models.UserImageDTO
  */
 data class UserDTO (
 
-    val id: kotlin.String? = null,
+    val id: kotlin.String,
     val username: kotlin.String,
-    val email: kotlin.String? = null,
+    val email: kotlin.String,
     val bio: kotlin.String? = null,
     val photoProfile: UserImageDTO? = null,
     val provider: Provider,
-    val status: Status? = null,
+    val status: Status,
     val addresses: kotlin.Array<AddressDTO>? = null,
     val paymentMethods: kotlin.Array<PaymentMethodDTO>? = null,
     val role: Role,

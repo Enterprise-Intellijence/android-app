@@ -41,6 +41,7 @@ object CurrentDataUtils {
 
 
     private var _showLoadingScreen: MutableState<Boolean> = mutableStateOf(true)
+    private var _goToHome: MutableState<Boolean> = mutableStateOf(false)
 
     val chatUserId = mutableStateOf(null as String?)
     val chatProductId = mutableStateOf(null as String?)
@@ -54,9 +55,12 @@ object CurrentDataUtils {
         set(newValue) { _accessToken.value = newValue }
 
 
-    var showLoadingScreen: MutableState<Boolean> = mutableStateOf(false)
+
+    val showLoadingScreen: MutableState<Boolean>
         get() = _showLoadingScreen
 
+    val goToHome: MutableState<Boolean>
+        get() = _goToHome
     var refreshToken: String
         get() = _refreshToken.value
         set(newValue) { _refreshToken.value = newValue }
@@ -66,7 +70,7 @@ object CurrentDataUtils {
         set(newValue) {
             _refreshToken.value = newValue}
 
-    var currentUser: UserDTO? = null
+    val currentUser: UserDTO?
         get() = _currentUser.value
 
     fun retrieveCurrentUser() {
@@ -117,7 +121,7 @@ object CurrentDataUtils {
                 productCost = p.productCost,
                 deliveryCost = p.deliveryCost,
                 brand = p.brand,
-                condition = ProductBasicDTO.Condition.valueOf(p.condition?.name!!),
+                condition = ProductBasicDTO.Condition.valueOf(p.condition.name),
                 likesNumber = p.likesNumber,
                 seller = p.seller,
                 productImages = p.productImages,
@@ -139,7 +143,7 @@ object CurrentDataUtils {
         _Addresses.clear()
         _currentUser.value?.addresses?.let { _Addresses.addAll(it.toList()) }
         _currentAddresses.forEach {a ->
-            if(a.default)
+            if(a.isDefault)
                 _defaultAddress.value = a
         }
     }
@@ -163,8 +167,8 @@ object CurrentDataUtils {
     fun setRefresh(refresh_token: String){
         _refreshToken.value = refresh_token
         CoroutineScope(Dispatchers.IO).launch{
-            var user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
-            var refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            val user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
+            val refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
             println(refresh_token2)
             if( refresh_token2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
@@ -179,7 +183,7 @@ object CurrentDataUtils {
         fun refreshToken(){
         CoroutineScope(Dispatchers.IO).launch{
             if( refreshToken != null){
-                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                val tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
@@ -194,14 +198,14 @@ object CurrentDataUtils {
             _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
 
             try {
-                var tokenMap: Map<String,String> = userControllerApi.refreshToken()
+                val tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                     retrieveCurrentUser()
                     UserServices.retriveLikedProducts()
                     _showLoadingScreen.value = false
-                    AppRouter.navigateTo(Screen.MainScreen)
+                    _goToHome.value = true
                 }
             }catch (e: Exception){
                 _showLoadingScreen.value = false

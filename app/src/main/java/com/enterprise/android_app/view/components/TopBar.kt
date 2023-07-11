@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -69,10 +71,13 @@ fun TopBarSearch() = TopAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarGeneric() {
+fun TopBarGeneric(navController: NavController) {
 
     val profileViewModel: ProfileViewModel = ProfileViewModel()
     val visitedUser = remember { profileViewModel.visitedUser }
+    val currentNavigation = navController
+        .currentBackStackEntryFlow
+        .collectAsState(initial = navController.currentBackStackEntry)
 
     Row(
         modifier = Modifier
@@ -87,55 +92,55 @@ fun TopBarGeneric() {
         ) {
             TopAppBar(
                 title = {
-                    when (MainRouter.currentPage.value) {
-                        Navigation.HomePage -> Text(
+                    when (currentNavigation.value?.destination?.route) {
+                        Navigation.HomePage.route -> Text(
                             text = stringResource(id = R.string.app_name),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.SearchPage -> Text(
+                        Navigation.SearchPage.route -> Text(
                             text = stringResource(id = R.string.search),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
-                        Navigation.ProfilePage -> Text(
+                        Navigation.ProfilePage.route -> Text(
                                 text = stringResource(id = R.string.not_my_profile),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                         )
 
-                        Navigation.SettingsPage -> Text(
+                        Navigation.SettingsPage.route -> Text(
                             text = stringResource(id = R.string.settings),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.ProfileDetailsPage -> Text(
+                        Navigation.ProfileDetailsPage.route -> Text(
                             text = stringResource(id = R.string.profile_details),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.AccountSettingsPage -> Text(
+                        Navigation.AccountSettingsPage.route -> Text(
                             text = stringResource(id = R.string.account_settings),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.ShippingPage -> Text(
+                        Navigation.ShippingPage.route -> Text(
                             text = stringResource(id = R.string.shipping_page),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.PaymentsPage -> Text(
+                        Navigation.PaymentsPage.route -> Text(
                             text = stringResource(id = R.string.payment_methods),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
                         )
 
-                        Navigation.AboutPage -> Text(
+                        Navigation.AboutPage.route -> Text(
                             text = stringResource(id = R.string.about),
                             style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                             textAlign = TextAlign.Center
@@ -150,7 +155,8 @@ fun TopBarGeneric() {
                 },
 
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(
+                        onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = FontAwesomeIcons.Solid.ArrowLeft,
                             contentDescription = stringResource(id = R.string.back),
@@ -162,11 +168,10 @@ fun TopBarGeneric() {
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth(0.5f),
+            modifier = Modifier.fillMaxWidth(0.5f),
             horizontalAlignment = Alignment.End
         ) {
-            if (MainRouter.currentPage.value == Navigation.ProfilePage) {
+            if (currentNavigation.value?.destination?.route == Navigation.ProfilePage.route) {
                 if (visitedUser.value != null) {
                     if (CurrentDataUtils.currentUser?.id != profileViewModel.visitedUser.value?.id) {
                         IconButton(onClick = {
@@ -183,6 +188,5 @@ fun TopBarGeneric() {
                 }
             }
         }
-
     }
 }

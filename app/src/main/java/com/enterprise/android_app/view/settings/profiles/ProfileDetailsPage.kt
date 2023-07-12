@@ -168,7 +168,7 @@ fun ProfileDetailsPage(navController: NavHostController) {
 }
 
 
-private fun mToast(context: Context, text: String){
+fun mToast(context: Context, text: String){
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }
 

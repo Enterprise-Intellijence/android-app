@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
@@ -37,13 +39,15 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailComponent(navController: NavController,user: MutableState<UserDTO?>){
+fun EmailComponent(navController: NavController){
+    var user: MutableState<UserDTO?> = remember {mutableStateOf(CurrentDataUtils.currentUser)}
+
     val modifier = Modifier.fillMaxWidth()
     val emailText: MutableState<String> = remember {
         mutableStateOf(user.value?.email ?: "email not found")
     }
-    val emailChangeShow: MutableState<Boolean> = remember { mutableStateOf(false) }
-    val currentEmail: MutableState<String> = remember { mutableStateOf(user.value?.email ?: "email not found") }
+    val emailChangeShow: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    val currentEmail: MutableState<String> = rememberSaveable { mutableStateOf(user.value?.email ?: "email not found") }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
@@ -86,7 +90,7 @@ fun EmailComponent(navController: NavController,user: MutableState<UserDTO?>){
                         focusManager.clearFocus()
                         emailChangeShow.value = false
                         emailText.value = currentEmail.value
-                        navController.navigate(Navigation.AccountSettingsPage.route)
+                        //navController.navigate(Navigation.AccountSettingsPage.route)
 
 
                     }

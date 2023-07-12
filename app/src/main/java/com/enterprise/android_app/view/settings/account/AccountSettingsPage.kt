@@ -19,16 +19,15 @@ import io.swagger.client.models.UserDTO
 
 @Composable
 fun AccountSettingsPage(navController: NavController){
-    var user: MutableState<UserDTO?> = remember {mutableStateOf(CurrentDataUtils.currentUser)}
     Column(modifier = Modifier.padding(bottom =  8.dp)) {
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            EmailComponent(navController,user)
+            EmailComponent(navController)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            UsernameComponent(navController,user)
+            UsernameComponent(navController)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            ChangePasswordComponent(navController,user)
+            ChangePasswordComponent(navController)
         }
 
     }

@@ -69,15 +69,12 @@ fun ChangePasswordComponent(navController: NavController){
 
     if(logoutRequired.value){
         logoutRequired.value = false
-        if(updated.value) {
-            CurrentDataUtils.logout()
             val packageManager: PackageManager = context.packageManager
             val intent: Intent = packageManager.getLaunchIntentForPackage(context.packageName)!!
             val componentName: ComponentName = intent.component!!
             val restartIntent: Intent = Intent.makeRestartActivityTask(componentName)
             context.startActivity(restartIntent)
             Runtime.getRuntime().exit(0)
-        }
     }
 
     Column(modifier = modifier) {
@@ -158,10 +155,6 @@ fun ChangePasswordComponent(navController: NavController){
                         userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
-
-
-
-
 
                     },
                     modifier = Modifier.align(Alignment.End)

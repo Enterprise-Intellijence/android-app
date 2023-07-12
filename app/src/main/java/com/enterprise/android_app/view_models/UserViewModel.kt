@@ -62,13 +62,11 @@ class UserViewModel(): ViewModel() {
                     userControllerApi.changePassword(oldPassword = oldPassword,newPassword = newPassword)
 
                 }
-                updated.value = true
 
             } catch (e: java.lang.Exception){
-                updated.value = false
-                e.printStackTrace()
             }
             logoutRequired.value = true
+
 
         }
     }

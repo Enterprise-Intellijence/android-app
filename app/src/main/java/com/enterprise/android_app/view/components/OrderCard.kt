@@ -2,6 +2,7 @@ package com.enterprise.android_app.view.components
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,7 +39,8 @@ fun OrderCard(order: OrderBasicDTO, navController: NavHostController) {
     Card(
         modifier = Modifier
             .size(width = 100.dp, height = 150.dp)
-            .clickable {
+            .background(color = Color.Transparent)
+            .clickable{
                 navController.navigate(Navigation.SingleOrderPage.route+"?orderId=${order.id}")},
         shape = RoundedCornerShape(8.dp),
     ) {

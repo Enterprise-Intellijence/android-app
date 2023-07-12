@@ -1,5 +1,10 @@
 package com.enterprise.android_app.view
 
+import android.app.Activity
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,6 +49,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat.recreate
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
@@ -52,6 +59,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.MainActivity
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
@@ -119,8 +127,15 @@ fun ProfileMenuPage(navController: NavHostController){
             id = R.string.about
         ), modifier = modifier, onClick = {navController.navigate(Navigation.AboutPage.route)}
         )
+        val context = LocalContext.current
         SingleRowTemplate(name = "Logout", icona = null, icon_label = null, modifier = modifier) {
             CurrentDataUtils.logout()
+            val packageManager: PackageManager = context.packageManager
+            val intent: Intent = packageManager.getLaunchIntentForPackage(context.packageName)!!
+            val componentName: ComponentName = intent.component!!
+            val restartIntent: Intent = Intent.makeRestartActivityTask(componentName)
+            context.startActivity(restartIntent)
+            Runtime.getRuntime().exit(0)
         }
     }
 }

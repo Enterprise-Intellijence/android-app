@@ -43,6 +43,8 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.stevdzasan.onetap.OneTapSignInWithGoogle
 import com.stevdzasan.onetap.rememberOneTapSignInState
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
 import java.lang.Thread.sleep
 
 @Composable
@@ -66,10 +68,6 @@ fun StartScreen(navController: NavHostController) {
         onTokenIdReceived = { tokenId ->
             Log.d("LoginPage", "tokenId: $tokenId")
             authViewModel.authenticateGoogle(tokenId, onError = {
-                Log.d(
-                    "LoginPage",
-                    "authenticateGoogle error"
-                )
             }, onSuccess = {
                 CurrentDataUtils.goToHome.value = true
             })

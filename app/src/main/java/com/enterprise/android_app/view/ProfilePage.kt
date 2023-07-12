@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
@@ -50,8 +52,11 @@ import compose.icons.fontawesomeicons.solid.PencilAlt
 fun ProfilePage(navController: NavHostController, visitedUserId: String){
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(id = R.string.Closet), stringResource(id = R.string.Reviews))
-    val profileViewModel = ProfileViewModel()
-    profileViewModel.setUserId(visitedUserId)
+    val profileViewModel: ProfileViewModel = viewModel()
+    LaunchedEffect(key1 = "ProfilePage")
+    {
+        profileViewModel.setUserId(visitedUserId)
+    }
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
@@ -98,12 +103,7 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
 @Composable
 fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController) {
 
-
-    LaunchedEffect(key1 = profileViewModel.visitedUser.value?.id) {
-        profileViewModel.updateUser()
-        profileViewModel.checkFollowing()
-    }
-
+    profileViewModel.updateUser()
     val visitedUser = remember { profileViewModel.visitedUser }
     val isFollowing = remember { profileViewModel.isFollowing }
 

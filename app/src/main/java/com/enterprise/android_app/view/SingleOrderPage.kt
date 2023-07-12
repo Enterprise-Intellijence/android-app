@@ -17,20 +17,16 @@ import io.swagger.client.models.OrderBasicDTO
 fun SingleOrderPage(navController: NavHostController, orderId: String){
 
     val orderViewModel: OrdersViewModel = viewModel()
-    val order = orderViewModel.orderDTO.value
-
+    val order = orderViewModel.orderDTO
 
     LaunchedEffect(Unit) {
         orderViewModel.loadSingleOrder(orderId)
     }
 
-
     Column() {
-        Text("Order ID: ${order?.id}")
-        Text("Order Date: ${order?.orderDate}")
+        Text("Order ID: ${order.value?.id}")
+        Text("Order Date: ${order.value?.orderDate}")
 
     }
-
-
 }
 

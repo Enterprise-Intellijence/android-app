@@ -23,7 +23,7 @@ class OrdersViewModel: ViewModel() {
                     orderControllerApi.getAllOrdersOfUser(page = currentPage)
                 }
                 val ordersToAdd = newOrders.content?.toList() ?: emptyList()
-                //orderList.addAll(ordersToAdd)
+                orderList.addAll(ordersToAdd)
                 currentPage++
             }catch (e: Exception){
                 e.printStackTrace()

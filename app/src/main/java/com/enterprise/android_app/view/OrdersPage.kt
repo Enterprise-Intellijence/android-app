@@ -21,10 +21,9 @@ fun OrdersPage(navigation: NavHostController){
         ordersViewModel.loadNextPage()
     }
 
-
     if(orderList.isEmpty()){
         CircularProgressIndicator(Modifier.size(40.dp))
-        //TODO: DA CAMBIARE CON UNA SCRITTA
+
     }else{
         LazyGridOrderCard(
             orders = orderList,

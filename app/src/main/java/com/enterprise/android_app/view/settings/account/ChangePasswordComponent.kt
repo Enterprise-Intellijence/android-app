@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.enterprise.android_app.R
+import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
@@ -40,12 +42,15 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangePasswordComponent(navController: NavController,user: MutableState<UserDTO?>){
+fun ChangePasswordComponent(navController: NavController){
+
+    var user: MutableState<UserDTO?> = remember {mutableStateOf(CurrentDataUtils.currentUser)}
+
     val modifier = Modifier.fillMaxWidth()
-    val oldPassword: MutableState<String> = remember {mutableStateOf("")}
-    val newPassword: MutableState<String> = remember {mutableStateOf("")}
-    val repNewPassword: MutableState<String> = remember { mutableStateOf("")}
-    val passChangeShow: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val oldPassword: MutableState<String> = rememberSaveable {mutableStateOf("")}
+    val newPassword: MutableState<String> = rememberSaveable {mutableStateOf("")}
+    val repNewPassword: MutableState<String> = rememberSaveable { mutableStateOf("")}
+    val passChangeShow: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     //val userViewModel = UserViewModel()
@@ -129,7 +134,7 @@ fun ChangePasswordComponent(navController: NavController,user: MutableState<User
                         //userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
-                        navController.navigate(Navigation.AccountSettingsPage.route)
+                        //navController.navigate(Navigation.AccountSettingsPage.route)
 
 
 

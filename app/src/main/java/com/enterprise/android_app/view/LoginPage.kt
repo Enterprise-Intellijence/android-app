@@ -3,6 +3,7 @@ package com.enterprise.android_app.view
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -104,7 +105,9 @@ fun LoginPage(navController: NavHostController) {
 
 
             Spacer(modifier = Modifier.height(40.dp))
-            UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password))
+            UnderLinedTextComponent(value = stringResource(id = R.string.forgot_password), modifier = Modifier.clickable {
+                navController.navigate(Screen.ForgotPasswordScreen.route)
+            })
             Spacer(modifier = Modifier.height(40.dp))
 
             ButtonComponent(value = stringResource(id = R.string.button_login),

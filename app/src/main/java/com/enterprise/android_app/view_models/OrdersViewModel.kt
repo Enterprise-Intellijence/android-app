@@ -46,7 +46,6 @@ class OrdersViewModel: ViewModel() {
             try{
                 val order = orderControllerApi.getOrder(orderId)
                 orderDTO.value = order
-                println(orderDTO.value!!.id)
             }catch (e: Exception){
                 e.printStackTrace()
             }

@@ -64,8 +64,8 @@ fun AddEditPaymentMethodScreen(navController: NavHostController) {
     val mContext = LocalContext.current
     val mText = stringResource(id = R.string.paymentUpdated)
     val notUpdated = stringResource(id = R.string.paymentNotUpdated)
-    val updated = paymentViewModel.updated
 
+    val updated = paymentViewModel.updated
     val localUpdate = paymentViewModel.localUpdated
 
     if(localUpdate.value){

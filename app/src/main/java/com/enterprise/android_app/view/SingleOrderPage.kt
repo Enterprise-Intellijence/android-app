@@ -23,7 +23,7 @@ import io.swagger.client.models.OrderBasicDTO
 @Composable
 fun SingleOrderPage(navController: NavHostController, orderId: String){
 
-    val orderViewModel: OrdersViewModel = OrdersViewModel()
+    val orderViewModel: OrdersViewModel = viewModel()
     val order = orderViewModel.orderDTO
 
     LaunchedEffect( "singleOrderPage" ) {
@@ -41,7 +41,6 @@ fun SingleOrderPage(navController: NavHostController, orderId: String){
 
         }
     }
-
 
 }
 

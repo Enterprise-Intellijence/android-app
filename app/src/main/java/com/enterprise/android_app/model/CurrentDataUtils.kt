@@ -41,10 +41,6 @@ object CurrentDataUtils {
     var inChat: MutableState<Boolean> = mutableStateOf(false)
     val chatUser = mutableStateOf(null as UserBasicDTO?)
 
-    var mainGraphId: Int
-        get() = _mainGraphId.value
-        set(newValue) { _mainGraphId.value = newValue }
-
 
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")

@@ -35,6 +35,8 @@ object CurrentDataUtils {
     private var _defaultAddress: MutableState<AddressDTO?> = mutableStateOf(null)
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
+    var inChat: MutableState<Boolean> = mutableStateOf(false)
+    val chatUser = mutableStateOf(null as UserBasicDTO?)
 
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
@@ -170,14 +172,12 @@ object CurrentDataUtils {
         CoroutineScope(Dispatchers.IO).launch{
             val user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
             val refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
-            println(refresh_token2)
             if( refresh_token2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
             }
             else{
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(refresh_token)
             }
-
         }
     }
 
@@ -202,7 +202,6 @@ object CurrentDataUtils {
             _goToHome.value = false
         }
     }
-
 
 
     fun checkRefreshToken(){

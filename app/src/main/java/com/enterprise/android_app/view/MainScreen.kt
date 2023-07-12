@@ -75,8 +75,6 @@ fun SearchTopBar(navController: NavHostController) {
     } else {
         TopBarGeneric(navController)
     }
-
-
 }
 
 @Composable

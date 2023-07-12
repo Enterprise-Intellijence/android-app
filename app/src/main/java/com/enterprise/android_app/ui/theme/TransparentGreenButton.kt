@@ -24,7 +24,7 @@ fun TransparentGreenButton(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = DarkGreen
+            contentColor = MaterialTheme.colorScheme.onSurface
         ),
         elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp) ,
         shape = MaterialTheme.shapes.small.copy(
@@ -34,7 +34,7 @@ fun TransparentGreenButton(
             bottomEnd = CornerSize(8.dp)
         ),
         contentPadding = ButtonDefaults.ContentPadding,
-        border = BorderStroke(1.dp, DarkGreen)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
     ){
         Text(text = buttonName)
     }

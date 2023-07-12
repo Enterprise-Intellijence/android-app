@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.CurrentDataUtils.chatUser
@@ -98,17 +99,14 @@ fun TopBarSearch(navController: NavHostController) = TopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarGeneric(navController: NavHostController) {
-
-    val profileViewModel: ProfileViewModel = viewModel()
-    val visitedUser = remember { profileViewModel.visitedUser }
-    val currentNavigation = navController
-        .currentBackStackEntryFlow
-        .collectAsState(initial = navController.currentBackStackEntry)
     val messagePageViewModel: MessagePageViewModel = viewModel()
+    val currentPage =
+        navController.currentBackStackEntryFlow.collectAsState(initial = navController.currentBackStackEntry)
+    val route = currentPage.value?.destination?.route
+
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -119,88 +117,122 @@ fun TopBarGeneric(navController: NavHostController) {
         ) {
             TopAppBar(
                 title = {
-                    if (currentNavigation.value?.destination?.route != Navigation.MessagesPage.route) {
-                        when (currentNavigation.value?.destination?.route) {
-                            Navigation.HomePage.route -> Text(
+                    when {
+                        route != null && route.contains(Navigation.HomePage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.app_name),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.SearchPage.route -> Text(
+                        route != null && route.contains(Navigation.SearchPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.search),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.ProfilePage.route -> Text(
+                        route != null && route.contains(Navigation.ProfilePage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.not_my_profile),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.SettingsPage.route -> Text(
+                        route != null && route.contains(Navigation.SettingsPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.settings),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.ProfileDetailsPage.route -> Text(
+                        route != null && route.contains(Navigation.ProfileDetailsPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.profile_details),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.AccountSettingsPage.route -> Text(
+                        route != null && route.contains(Navigation.AccountSettingsPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.account_settings),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.ShippingPage.route -> Text(
+                        route != null && route.contains(Navigation.ShippingPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.shipping_page),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
+                        }
 
-                            Navigation.PaymentsPage.route -> Text(
-                                text = stringResource(id = R.string.payment_methods),
-                                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                                textAlign = TextAlign.Center
-                            )
+                        route != null && route.contains(Navigation.PaymentsPage.route) -> Text(
+                            text = stringResource(id = R.string.payment_methods),
+                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
 
-                            Navigation.AboutPage.route -> Text(
+                        route != null && route.contains(Navigation.AboutPage.route) -> {
+                            Text(
                                 text = stringResource(id = R.string.about),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
-
-                            else -> Text(
-                                text = stringResource(id = R.string.app_name),
-                                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                                textAlign = TextAlign.Center
-                            )
                         }
-                    } else {
-                        if (inChat.value) {
-                            chatUser.value?.let {
-                                UserPictureAndName(user = chatUser.value!!)
-                            }
 
-                        } else {
+                        route != null && route.contains(Navigation.NewProductPage.route) -> {
                             Text(
-                                text = stringResource(id = R.string.conversations),
+                                text = stringResource(id = R.string.new_product),
                                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                                 textAlign = TextAlign.Center
                             )
                         }
+
+                        route != null && route.contains(Navigation.ReportUserPage.route) -> {
+                            Text(
+                                text = stringResource(id = R.string.report_user),
+                                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        route != null && route.contains(Navigation.MessagesPage.route) -> {
+                            if (inChat.value) {
+                                chatUser.value?.let {
+                                    UserPictureAndName(user = chatUser.value!!)
+                                }
+                            } else {
+                                Text(
+                                    text = stringResource(id = R.string.conversations),
+                                    style = TextStyle(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+
+                        else -> Text(
+                            text = stringResource(id = R.string.app_name),
+                            style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 },
 
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            if(inChat.value) {
+                            if (inChat.value) {
                                 messagePageViewModel.clearCurrentConversation()
                             } else {
                                 navController.popBackStack()
@@ -210,31 +242,12 @@ fun TopBarGeneric(navController: NavHostController) {
                         Icon(
                             imageVector = FontAwesomeIcons.Solid.ArrowLeft,
                             contentDescription = stringResource(id = R.string.back),
-                            modifier = Modifier.height(20.dp))
+                            modifier = Modifier.height(20.dp)
+                        )
                     }
-            })
+                })
         }
-
-        /*if ((CurrentDataUtils.visitedUser.id != CurrentDataUtils.currentUser?.id &&
-            currentNavigation.value?.destination?.route == Navigation.ProfilePage.route) ||
-            (currentNavigation.value?.destination?.route == Navigation.MessagesPage.route && inChat.value) ||
-                (currentNavigation.value?.destination?.route == Navigation.ProductScreen.route )) {
-            Column(
-                modifier = Modifier.fillMaxWidth(0.5f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                IconButton(onClick = {
-
-                }) {
-                    Icon(
-                        imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
-                        contentDescription = "report",
-                        tint = Secondary,
-                        modifier = Modifier.height(20.dp)
-                    )
-                }
-            }
-        }*/
     }
 }
+
 

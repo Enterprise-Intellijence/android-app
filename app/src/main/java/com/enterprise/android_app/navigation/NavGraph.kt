@@ -24,6 +24,7 @@ import com.enterprise.android_app.view.SelectPaymentMethodPage
 import com.enterprise.android_app.view.SignUpPage
 import com.enterprise.android_app.view.SingleOrderPage
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
+import com.enterprise.android_app.view.screen.ForgotPasswordScreen
 import com.enterprise.android_app.view.screen.ProductScreen
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
@@ -56,6 +57,7 @@ fun NavGraphBuilder.startGraph(navController: NavHostController) {
         composable(Screen.StartScreen.route) { StartScreen(navController) }
         composable(Screen.LoginScreen.route) { LoginPage(navController) }
         composable(Screen.SignUpScreen.route) { SignUpPage(navController) }
+        composable(Screen.ForgotPasswordScreen.route) { ForgotPasswordScreen(navController) }
     }
 
 }

@@ -10,6 +10,8 @@ sealed class Screen(val route: String) {
     object MainScreen: Screen(route = "main_screen")
     object StartScreen: Screen(route = "start_screen")
 
+    object ForgotPasswordScreen: Screen(route = "forgot_password_screen")
+
 }
 
 sealed class Navigation(val route: String) {

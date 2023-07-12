@@ -72,7 +72,8 @@ class ProfileViewModel() : ViewModel() {
                 }
                 val reviewsToAdd = newReviews.content?.toList() ?: emptyList()
                 reviewList.addAll(reviewsToAdd)
-                areReviews.value = true
+                if(reviewsToAdd.isNotEmpty())
+                    areReviews.value = true
                 currentReviewPage++
 
                 if (newReviews.last == true) {

@@ -96,7 +96,7 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
             }
             when (tabIndex) {
                 0 -> Closet(profileViewModel, navController)
-                1 -> Reviews(profileViewModel)
+                1 -> Reviews(profileViewModel, navController)
             }
         }
     }

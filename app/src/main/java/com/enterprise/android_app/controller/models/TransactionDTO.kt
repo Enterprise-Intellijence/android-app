@@ -32,7 +32,6 @@ data class TransactionDTO (
     val transactionState: TransactionState,
     val paymentMethod: kotlin.String,
     val paymentMethodOwner: kotlin.String,
-    val order: OrderBasicDTO
 ) {
     /**
     * 

@@ -11,23 +11,26 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import io.swagger.client.models.ReviewDTO
 
 @Composable
 fun LazyGridReviewsCard(
     reviews: SnapshotStateList<ReviewDTO>,
     lazyGridState: LazyGridState,
+    navController: NavController,
     onLoadMore: () -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         state = lazyGridState,
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
+        contentPadding = PaddingValues(vertical = 16.dp,
+        horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(reviews) { index, review ->
-            ReviewCard(review = review)
+            ReviewCard(review = review, navController = navController)
 
             val contentSize = reviews.size
             if (index == contentSize - 1 && lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize) {

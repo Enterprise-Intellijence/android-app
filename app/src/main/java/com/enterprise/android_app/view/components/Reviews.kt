@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view_models.ProfileViewModel
 import compose.icons.FontAwesomeIcons
@@ -22,7 +23,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Bars
 
 @Composable
-fun Reviews(viewModel: ProfileViewModel) {
+fun Reviews(viewModel: ProfileViewModel, navController: NavController) {
     val reviewList = remember { viewModel.reviewList }
     val lazyGridState = rememberLazyGridState()
     val areReviews = remember { viewModel.areReviews }
@@ -34,13 +35,14 @@ fun Reviews(viewModel: ProfileViewModel) {
     if (!reviewList.isEmpty()) {
         LazyGridReviewsCard(
             reviews = reviewList,
-            lazyGridState = lazyGridState
+            lazyGridState = lazyGridState,
+            navController = navController,
         ) {
             viewModel.loadNextReviewPage()
             reviewList.size
         }
     } else {
-        if (areReviews.value == true) {
+        if (areReviews.value == true ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,

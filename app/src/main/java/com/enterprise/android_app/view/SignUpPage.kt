@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,10 +60,9 @@ import compose.icons.fontawesomeicons.solid.EyeSlash
 @Composable
 fun SignUpPage(navController: NavHostController){
 
-    //only for password
     var passwordVisible by rememberSaveable { mutableStateOf(false)}
 
-    //state check
+    val showToast = remember { mutableStateOf(false) }
     var textValueUsername by rememberSaveable{ mutableStateOf("")}
     var textValueEmail by rememberSaveable{ mutableStateOf("")}
     var textValuePassword by rememberSaveable { mutableStateOf("")}
@@ -70,8 +71,14 @@ fun SignUpPage(navController: NavHostController){
     val registerViewModel : RegistrationViewModel = viewModel()
 
     val errorMessage = rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
 
 
+    if (showToast.value) {
+        showToast.value = false
+        Toast.makeText(context, "Registration completed!", Toast.LENGTH_SHORT).show()
+        navController.navigate(Screen.LoginScreen.route)
+    }
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -136,6 +143,7 @@ fun SignUpPage(navController: NavHostController){
                     textValueUsername,
                     textValueEmail,
                     textValuePassword,
+                    showToast,
                     errorMessage
                 )
             })

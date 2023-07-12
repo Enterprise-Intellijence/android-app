@@ -5,12 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.navigation.NavHostController
 import com.enterprise.android_app.model.persistence.AppDatabase
-import com.enterprise.android_app.navigation.AppRouter
-import com.enterprise.android_app.navigation.Graph
-import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.AddressDTO
 import io.swagger.client.models.PaymentMethodDTO
@@ -40,7 +35,6 @@ object CurrentDataUtils {
     private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
     var inChat: MutableState<Boolean> = mutableStateOf(false)
     val chatUser = mutableStateOf(null as UserBasicDTO?)
-
 
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")
@@ -175,8 +169,8 @@ object CurrentDataUtils {
         _refreshToken.value = refresh_token
         CoroutineScope(Dispatchers.IO).launch{
             val user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
-            val refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
-            if( refresh_token2 == null){
+            val refreshToken2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            if(refreshToken2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
             }
             else{
@@ -187,7 +181,7 @@ object CurrentDataUtils {
 
     fun refreshToken(){
         CoroutineScope(Dispatchers.IO).launch{
-            if( refreshToken != null){
+            if( _refreshToken.value != ""){
                 val tokenMap: Map<String,String> = userControllerApi.refreshToken()
                 if (tokenMap.isNotEmpty()) {
                     _accessToken.value = tokenMap["accessToken"]!!
@@ -210,7 +204,7 @@ object CurrentDataUtils {
 
     fun checkRefreshToken(){
         CoroutineScope(Dispatchers.IO).launch {
-            _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
+            _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()?: ""
 
             try {
                 val tokenMap: Map<String,String> = userControllerApi.refreshToken()

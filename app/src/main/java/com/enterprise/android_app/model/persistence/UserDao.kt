@@ -10,7 +10,7 @@ import androidx.room.Query
 @Dao
 interface UserDao {
     @Query("SELECT refresh_token FROM user where uid=7")
-    fun getRefreshToken(): String
+    fun getRefreshToken(): String?
 
     @Insert
     fun insert(vararg users: User)

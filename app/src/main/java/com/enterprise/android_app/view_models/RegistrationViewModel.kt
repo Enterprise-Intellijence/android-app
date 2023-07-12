@@ -16,9 +16,8 @@ class RegistrationViewModel(userControllerApi: UserControllerApi = UserControlle
 
     private val userController: UserControllerApi = userControllerApi
 
-    fun registerUser(username: String, email: String, password: String, errorMessage: MutableState<String>){
+    fun registerUser(username: String, email: String, password: String, showToast: MutableState<Boolean>,errorMessage: MutableState<String>){
         CoroutineScope(Dispatchers.IO).launch {
-
             try {
                 val response = userController.register(username,email,password)
             }
@@ -30,10 +29,9 @@ class RegistrationViewModel(userControllerApi: UserControllerApi = UserControlle
                     resultMap[key] = jsonObject.getString(key)
                 }
                 errorMessage.value = (resultMap["detail"]?:"")
-
-        }
-
-
+                return@launch
+            }
+            showToast.value = true
         }
     }
 

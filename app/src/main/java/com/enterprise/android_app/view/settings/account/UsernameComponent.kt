@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
@@ -36,7 +37,7 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UsernameComponent(user: MutableState<UserDTO?>){
+fun UsernameComponent(navController: NavController,user: MutableState<UserDTO?>){
     val modifier = Modifier.fillMaxWidth()
     val usernameText: MutableState<String> = remember {
         mutableStateOf(user.value?.username ?: "username not found")
@@ -77,7 +78,7 @@ fun UsernameComponent(user: MutableState<UserDTO?>){
                         focusManager.clearFocus()
                         usernameChangeShow.value = false
                         usernameText.value = currentUsername.value
-                        MainRouter.changePage(Navigation.AccountSettingsPage)
+                        navController.navigate(Navigation.AccountSettingsPage.route)
 
                     }
                 ) {

@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -57,7 +58,7 @@ import io.swagger.client.models.AddressDTO
 import kotlinx.coroutines.coroutineScope
 
 @Composable
-fun ShippingCard(address: MutableState<AddressDTO?>){
+fun ShippingCard(navController: NavController, address: MutableState<AddressDTO?>){
     val deliveryViewModel = DeliveryViewModel()
 
     val mContext = LocalContext.current
@@ -84,7 +85,7 @@ fun ShippingCard(address: MutableState<AddressDTO?>){
                         IconButton(
                             onClick = {
                                 EditAddress(address = address)
-                                MainRouter.changePage(Navigation.AddEditShippingScreen)
+                                navController.navigate(Navigation.AddEditShippingScreen.route)
                             },
                             /*                        modifier = Modifier
                                                         .border(BorderStroke(1.dp,Color.Green))

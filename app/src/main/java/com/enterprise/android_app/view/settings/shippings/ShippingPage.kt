@@ -58,7 +58,7 @@ fun ShippingPage(navController: NavHostController) {
             TransparentGreenButton(
                 onClick = {
                     CurrentDataUtils.addressDTO.value = null
-                    MainRouter.changePage(Navigation.AddEditShippingScreen)
+                    navController.navigate(Navigation.AddEditShippingScreen.route)
                 },
                 modifier = Modifier.height(35.dp),
                 buttonName = "Add new"
@@ -75,7 +75,7 @@ fun ShippingPage(navController: NavHostController) {
                 val address: MutableState<AddressDTO?> = remember {
                     mutableStateOf(item)
                 }
-                ShippingCard(address = address)
+                ShippingCard(navController = navController,address = address)
             }
         }
     }

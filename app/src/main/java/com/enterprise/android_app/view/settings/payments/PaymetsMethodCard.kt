@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
@@ -46,7 +47,7 @@ import compose.icons.fontawesomeicons.solid.Trash
 import io.swagger.client.models.PaymentMethodDTO
 
 @Composable
-fun PaymentsMethodCard(payment: MutableState<PaymentMethodDTO?> ){
+fun PaymentsMethodCard(navController: NavController,payment: MutableState<PaymentMethodDTO?> ){
     val paymentViewModel = PaymentViewModel()
 
     val mContext = LocalContext.current
@@ -73,7 +74,7 @@ fun PaymentsMethodCard(payment: MutableState<PaymentMethodDTO?> ){
                         IconButton(
                             onClick = {
                                 EditPayment(payment = payment)
-                                MainRouter.changePage(Navigation.AddEditPaymentMethodScreen)
+                                navController.navigate(Navigation.AddEditPaymentMethodScreen.route)
                             },
                         ) {
                             Icon(

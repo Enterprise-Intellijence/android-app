@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
@@ -36,7 +37,7 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailComponent(user: MutableState<UserDTO?>){
+fun EmailComponent(navController: NavController,user: MutableState<UserDTO?>){
     val modifier = Modifier.fillMaxWidth()
     val emailText: MutableState<String> = remember {
         mutableStateOf(user.value?.email ?: "email not found")
@@ -85,7 +86,7 @@ fun EmailComponent(user: MutableState<UserDTO?>){
                         focusManager.clearFocus()
                         emailChangeShow.value = false
                         emailText.value = currentEmail.value
-                        MainRouter.changePage(Navigation.AccountSettingsPage)
+                        navController.navigate(Navigation.AccountSettingsPage.route)
 
 
                     }

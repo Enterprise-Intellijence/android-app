@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.view.settings.account.ChangePasswordComponent
 import com.enterprise.android_app.view.settings.account.EmailComponent
@@ -17,17 +18,17 @@ import com.enterprise.android_app.view.settings.account.UsernameComponent
 import io.swagger.client.models.UserDTO
 
 @Composable
-fun AccountSettingsPage(){
+fun AccountSettingsPage(navController: NavController){
     var user: MutableState<UserDTO?> = remember {mutableStateOf(CurrentDataUtils.currentUser)}
     Column(modifier = Modifier.padding(bottom =  8.dp)) {
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            EmailComponent(user)
+            EmailComponent(navController,user)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            UsernameComponent(user)
+            UsernameComponent(navController,user)
         }
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            ChangePasswordComponent(user)
+            ChangePasswordComponent(navController,user)
         }
 
     }

@@ -17,6 +17,9 @@ import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.view.SingleRowTemplate
 import com.enterprise.android_app.view_models.UserViewModel
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.CreditCard
 import io.swagger.client.models.UserDTO
 
 @Composable
@@ -30,25 +33,25 @@ fun SettingsPage(navController: NavController){
             icona = Icons.Filled.Person,
             icon_label = stringResource(id = R.string.profile ),
             modifier= modifier,
-            onClick = { MainRouter.changePage(Navigation.ProfileDetailsPage) }
+            onClick = { navController.navigate(Navigation.ProfileDetailsPage.route) }
         )
         SingleRowTemplate(
             name = "Account",
             icona = Icons.Filled.List,
             icon_label = stringResource( id = R.string.settings),
             modifier = modifier,
-            onClick = { MainRouter.changePage(Navigation.AccountSettingsPage)})
+            onClick = { navController.navigate(Navigation.AccountSettingsPage.route)})
         SingleRowTemplate(
             name = "Shipping",
             icona = Icons.Filled.LocationOn,
             icon_label = stringResource(id = R.string.shipping_page),
-            modifier = modifier, onClick =  { MainRouter.changePage(Navigation.ShippingPage)})
+            modifier = modifier, onClick =  { navController.navigate(Navigation.ShippingPage.route)})
         SingleRowTemplate(
             name = "Payments",
-            icona = Icons.Filled.Notifications,
+            icona = FontAwesomeIcons.Solid.CreditCard,
             icon_label = stringResource(
             id = R.string.payment_methods
-        ), modifier = modifier, onClick = { MainRouter.changePage(Navigation.PaymentsPage)} )
+        ), modifier = modifier, onClick = { navController.navigate(Navigation.PaymentsPage.route)} )
     }
 }
 

@@ -57,7 +57,7 @@ fun PaymentsPage(navController: NavHostController) {
             TransparentGreenButton(
                 onClick = {
                     CurrentDataUtils.currentPaymentMethodDTO.value = null
-                    MainRouter.changePage(Navigation.AddEditPaymentMethodScreen)
+                    navController.navigate(Navigation.AddEditPaymentMethodScreen.route)
                 },
                 modifier = Modifier.height(35.dp),
                 buttonName = "Add new"
@@ -72,7 +72,7 @@ fun PaymentsPage(navController: NavHostController) {
         ) {
             items(payments) { item ->
                 val payment: MutableState<PaymentMethodDTO?> = remember { mutableStateOf(item) }
-                PaymentsMethodCard(payment = payment)
+                PaymentsMethodCard(navController = navController,payment = payment)
             }
         }
     }

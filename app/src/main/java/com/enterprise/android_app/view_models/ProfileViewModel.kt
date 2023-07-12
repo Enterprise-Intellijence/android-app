@@ -35,15 +35,16 @@ class ProfileViewModel() : ViewModel() {
     val isVisitedUserLoaded: MutableState<Boolean> = mutableStateOf(false)
     var visitedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     var isFollowing: MutableState<Boolean?> = mutableStateOf(null)
-    private val visitedUserId: MutableState<String?> = mutableStateOf(null)
+    val visitedUserId: MutableState<String?> = mutableStateOf(null)
 
     var currentReviewPage: Int = 0
-    var currentProductPage: Int = 0
+    var currentProductPage: MutableState<Int> = mutableStateOf(0)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun setUserId(userId: String) {
         visitedUserId.value = userId
+        currentReviewPage = 0
         updateUser()
         isVisitedUserLoaded.value = true
     }
@@ -52,11 +53,18 @@ class ProfileViewModel() : ViewModel() {
         coroutineScope.launch {
             try {
                 val newProducts = withContext(Dispatchers.IO) {
-                    productControllerApi.getMyProducts(page = currentProductPage)
+                    if (visitedUserId.value == CurrentDataUtils.currentUser?.id)
+                        productControllerApi.getMyProducts(page = currentProductPage.value)
+                    else
+                        productControllerApi.getFilteredProducts(userId = visitedUserId.value!!, page = currentProductPage.value)
                 }
+
                 val productsToAdd = newProducts.content?.toList() ?: emptyList()
                 productList.addAll(productsToAdd)
-                currentProductPage++
+                currentProductPage.value++
+                if (newProducts.last == true) {
+                    coroutineScope.cancel()
+                }
                 areProducts.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -64,28 +72,14 @@ class ProfileViewModel() : ViewModel() {
         }
     }
 
-    fun loadNextProductPageForVisitedUser() {
-        coroutineScope.launch {
-            try {
-                val newProducts = withContext(Dispatchers.IO) {
-                    productControllerApi.getFilteredProducts(userId = visitedUser.value?.id!!, page = currentProductPage)
-                }
-                val productsToAdd = newProducts.content?.toList() ?: emptyList()
-                productList.addAll(productsToAdd)
-                currentProductPage++
-                areProducts.value = true
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     fun loadNextReviewPage() {
         coroutineScope.launch {
             try {
                 val newReviews = withContext(Dispatchers.IO) {
-                    reviewControllerApi.allReviewReceived(userId = visitedUser.value?.id!!, page = currentProductPage)
+                    reviewControllerApi.allReviewReceived(userId = visitedUser.value?.id!!, page = currentReviewPage)
                 }
+
                 val reviewsToAdd = newReviews.content?.toList() ?: emptyList()
                 reviewList.addAll(reviewsToAdd)
                 if(reviewsToAdd.isNotEmpty())

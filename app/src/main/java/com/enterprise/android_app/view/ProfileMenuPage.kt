@@ -68,6 +68,9 @@ import com.enterprise.android_app.navigation.MainPageGraph
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.DoorOpen
 import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalCoilApi::class)
@@ -128,7 +131,7 @@ fun ProfileMenuPage(navController: NavHostController){
         ), modifier = modifier, onClick = {navController.navigate(Navigation.AboutPage.route)}
         )
         val context = LocalContext.current
-        SingleRowTemplate(name = "Logout", icona = null, icon_label = null, modifier = modifier) {
+        SingleRowTemplate(name = "Logout", icona = FontAwesomeIcons.Solid.DoorOpen, icon_label = "logout", modifier = modifier) {
             CurrentDataUtils.logout()
             val packageManager: PackageManager = context.packageManager
             val intent: Intent = packageManager.getLaunchIntentForPackage(context.packageName)!!

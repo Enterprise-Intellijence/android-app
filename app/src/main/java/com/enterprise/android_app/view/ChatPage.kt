@@ -244,14 +244,15 @@ fun ChatMessage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = if (isMyMessage) PurpleGrey80 else Purple80
+                        color = if (isMyMessage) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.inversePrimary
                     )
                     .padding(8.dp)
             ) {
                 Text(
                     text = message.text,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 if (message.offer != null) {
@@ -351,83 +352,7 @@ fun OfferMessage(message: MessageDTO, isMyMessage: Boolean) {
     }
 }
 
-@Preview
-@Composable
-fun ChatMessagePreview() {
-    val user1 = UserBasicDTO(
-        id = "1",
-        username = "John Doe",
-        photoProfile = UserImageDTO(
-            id = "1",
-            urlPhoto = "https://www.w3schools.com/howto/img_avatar.png"
-        ),
-    )
-    val user2 = UserBasicDTO(
-        id = "2",
-        username = "Jane Smith",
-        photoProfile = UserImageDTO(
-            id = "2",
-            urlPhoto = "https://www.w3schools.com/howto/img_avatar2.png"
-        ),
-    )
 
-    val product = ProductBasicDTO(
-        id = "1",
-        title = "Cat",
-        productCost = CustomMoneyDTO(
-            price = 100.0,
-            currency = CustomMoneyDTO.Currency.EUR
-        ),
-        productCategory = ProductCategoryDTO(
-            id = "1", primaryCat = "A", secondaryCat = "B", tertiaryCat = "C"
-        ),
-        deliveryCost = CustomMoneyDTO(
-            price = 10.0,
-            currency = CustomMoneyDTO.Currency.EUR
-        ),
-    )
-
-
-    Column() {
-
-
-        ChatMessage(
-            message = MessageDTO(
-                id = "1",
-                text = "Hello how are you?",
-                sendUser = user1,
-                messageDate = LocalDateTime.now().minusHours(2),
-                messageStatus = MessageDTO.MessageStatus.READ,
-                conversationId = "1",
-                receivedUser = user2,
-                product = product,
-                offer = OfferBasicDTO(
-                    id = "1",
-                    amount = CustomMoneyDTO(
-                        price = 90.0,
-                        currency = CustomMoneyDTO.Currency.EUR
-                    ),
-                    state = OfferBasicDTO.State.PENDING,
-                    creationTime = LocalDateTime.now().minusHours(1)
-                )
-            ),
-            true
-        )
-        ChatMessage(
-            message = MessageDTO(
-                id = "1",
-                text = "Hello, My name is Jane, my cat is sick, can you help me?\npretty please?",
-                sendUser = user2,
-                messageDate = LocalDateTime.now().minusHours(1),
-                messageStatus = MessageDTO.MessageStatus.READ,
-                conversationId = "1",
-                receivedUser = user1,
-                product = product
-            ),
-            false
-        )
-    }
-}
 
 @Preview
 @Composable
@@ -445,7 +370,7 @@ fun ChatInput(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Purple80)
+            .background(MaterialTheme.colorScheme.onPrimary)
             .padding(8.dp)
 
     ) {

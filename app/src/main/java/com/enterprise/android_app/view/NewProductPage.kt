@@ -381,7 +381,7 @@ fun ImagesContainer(imageUri: List<Uri?>, onDelete: (Uri) -> Unit) {
             .height(150.dp)
             .fillMaxWidth()
             .padding(2.dp)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
             .border(
                 BorderStroke(2.dp, Color.Black),
                 shape = MaterialTheme.shapes.small

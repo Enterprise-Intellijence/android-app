@@ -29,28 +29,8 @@ import java.io.InputStream
 
 class ImageViewModel: ViewModel() {
 
-    private var imageControllerApi: ImageControllerApi = ImageControllerApi()
     private val client = OkHttpClient()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-
-
-    fun save(image: UsersPhotoprofileBody) {
-
-        coroutineScope.launch {
-            try {
-                withContext(Dispatchers.IO) {
-                    if (CurrentDataUtils.currentUser?.id != null) {
-
-                        imageControllerApi.savePhotoUser(image, "")
-                    }
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            CurrentDataUtils.retrieveCurrentUser()
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun updateUserImage(uri: Uri?, img: InputStream): Boolean {

@@ -58,7 +58,13 @@ data class ProductDTO (
     val productCategory: ProductCategoryDTO,
     val usersThatLiked: kotlin.Array<UserBasicDTO>? = null,
     val productImages: kotlin.Array<ProductImageDTO>? = null,
-    val type: kotlin.String
+    val type: kotlin.String,
+    var colour: HomeCreateDTO.Colour?,
+    var homeSize: SizeDTO?,
+    var homeMaterial: HomeCreateDTO.HomeMaterial?,
+    var productGender: ClothingCreateDTO.ProductGender?,
+    var clothingSize: SizeDTO?,
+    var entertainmentLanguage: EntertainmentCreateDTO.EntertainmentLanguage?
 ) {
     /**
     * 

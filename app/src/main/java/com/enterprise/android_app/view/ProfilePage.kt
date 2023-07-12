@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
@@ -50,10 +51,13 @@ import compose.icons.fontawesomeicons.solid.PencilAlt
 fun ProfilePage(navController: NavHostController, visitedUserId: String){
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(stringResource(id = R.string.Closet), stringResource(id = R.string.Reviews))
-    val profileViewModel = ProfileViewModel()
+    val profileViewModel: ProfileViewModel = viewModel()
     profileViewModel.setUserId(visitedUserId)
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
 
         if (!profileViewModel.isVisitedUserLoaded.value){
             CircularProgressIndicator(Modifier.size(40.dp))
@@ -97,7 +101,6 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController) {
-
 
     LaunchedEffect(key1 = profileViewModel.visitedUser.value?.id) {
         profileViewModel.updateUser()

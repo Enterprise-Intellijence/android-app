@@ -1,10 +1,12 @@
 package com.enterprise.android_app.view_models
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.enterprise.android_app.model.CurrentDataUtils
+import com.enterprise.android_app.model.CurrentDataUtils.chatUser
 import io.swagger.client.apis.MessageControllerApi
 import io.swagger.client.apis.ProductControllerApi
 import io.swagger.client.apis.UserControllerApi
@@ -22,8 +24,8 @@ import kotlin.math.log
 class MessagePageViewModel : ViewModel() {
 
     private val TAG = "MessagePageViewModel"
-
     private val messageControllerApi: MessageControllerApi = MessageControllerApi()
+
     private val userControllerApi: UserControllerApi = UserControllerApi()
     private val productControllerApi: ProductControllerApi = ProductControllerApi()
 
@@ -32,10 +34,7 @@ class MessagePageViewModel : ViewModel() {
     var chatMessages = mutableStateListOf<MessageDTO>()
 
     var chatConversation = mutableStateOf<ConversationDTO?>(null)
-    val chatUser = mutableStateOf(null as UserBasicDTO?)
     var chatProduct = mutableStateOf(null as ProductBasicDTO?)
-
-    val inChat = mutableStateOf(false)
     val isMakingOffer = mutableStateOf(false)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -101,7 +100,7 @@ class MessagePageViewModel : ViewModel() {
 
     fun sendMessage(message: String, otherUser: UserBasicDTO, product: ProductBasicDTO?) {
 
-        val conversation = findConversationWith(otherUser.id!!, product?.id)
+        val conversation = findConversationWith(otherUser.id, product?.id)
         if (conversation != null) {
             sendMessage(message, conversation)
             return
@@ -124,7 +123,7 @@ class MessagePageViewModel : ViewModel() {
                 // add message at the start of the list
                 chatMessages.add(0, sentMessage)
                 loadConversations()
-                openChat(otherUser.id!!, product?.id)
+                openChat(otherUser.id, product?.id)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -182,7 +181,7 @@ class MessagePageViewModel : ViewModel() {
         }
 
 
-        inChat.value = true
+        CurrentDataUtils.inChat.value = true
         chatUser.value = conversationDTO?.otherUser
         chatProduct.value = conversationDTO?.productBasicDTO
     }
@@ -205,7 +204,7 @@ class MessagePageViewModel : ViewModel() {
                 else null
             }
             chatConversation.value = null
-            inChat.value = true
+            CurrentDataUtils.inChat.value = true
             chatUser.value = otherUser
             chatProduct.value = product
         }
@@ -219,7 +218,7 @@ class MessagePageViewModel : ViewModel() {
             return
         }
         chatConversation.value = null
-        inChat.value = true
+        CurrentDataUtils.inChat.value = true
         chatUser.value = otherUser
         chatProduct.value = product
     }
@@ -230,7 +229,7 @@ class MessagePageViewModel : ViewModel() {
         chatUser.value = null
         chatProduct.value = null
 
-        inChat.value = false
+        CurrentDataUtils.inChat.value = false
         isMakingOffer.value = false
         chatMessages.clear()
     }

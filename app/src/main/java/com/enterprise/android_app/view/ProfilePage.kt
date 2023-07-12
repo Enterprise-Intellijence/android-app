@@ -58,7 +58,10 @@ fun ProfilePage(navController: NavHostController, visitedUserId: String){
         profileViewModel.setUserId(visitedUserId)
     }
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
 
         if (!profileViewModel.isVisitedUserLoaded.value){
             CircularProgressIndicator(Modifier.size(40.dp))

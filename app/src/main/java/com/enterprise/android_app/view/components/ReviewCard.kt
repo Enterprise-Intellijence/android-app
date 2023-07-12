@@ -15,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
 import com.gowtham.ratingbar.RatingBar
@@ -41,11 +44,11 @@ fun ReviewCard(review: ReviewDTO) {
             ) {
                 Column() {
                     Row() {
-                        Image(painter = rememberImagePainter(
-                            data = visitedUser?.photoProfile?.urlPhoto,
-                            builder = {
-                                transformations(RoundedCornersTransformation(4f))
-                            }
+                        Image(painter = rememberAsyncImagePainter(
+                            ImageRequest.Builder(LocalContext.current)
+                                .data(data = review.reviewer.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
+                                    transformations(RoundedCornersTransformation(4f))
+                                }).build()
                         ),
                             contentDescription = "profile picture",
                             modifier = Modifier
@@ -53,24 +56,22 @@ fun ReviewCard(review: ReviewDTO) {
                                 .aspectRatio(1f)
                                 .clip(CircleShape))
 
-                        Text(text = review.reviewer?.username!!,
+                        Text(text = review.reviewer.username,
                             textAlign = TextAlign.End,
                             modifier = Modifier.padding(start = 10.dp))
                     }
                 }
 
                 Column() {
-                    if (review.vote != null) {
-                        RatingBar(
-                            modifier = Modifier.padding(bottom = 8.dp),
-                            value = review.vote.toFloat(),
-                            style = RatingBarStyle.Fill(),
-                            numOfStars = 5,
-                            size = 13.dp,
-                            spaceBetween = 3.dp,
-                            onRatingChanged = { },
-                            onValueChange = { })
-                    }
+                    RatingBar(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        value = review.vote.toFloat(),
+                        style = RatingBarStyle.Fill(),
+                        numOfStars = 5,
+                        size = 13.dp,
+                        spaceBetween = 3.dp,
+                        onRatingChanged = { },
+                        onValueChange = { })
                 }
             }
 

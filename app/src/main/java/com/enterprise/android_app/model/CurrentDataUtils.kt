@@ -38,7 +38,8 @@ object CurrentDataUtils {
     private var _defaultAddress: MutableState<AddressDTO?> = mutableStateOf(null)
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
-    private var _mainGraphId = mutableStateOf(0)
+    var inChat: MutableState<Boolean> = mutableStateOf(false)
+    val chatUser = mutableStateOf(null as UserBasicDTO?)
 
     var mainGraphId: Int
         get() = _mainGraphId.value

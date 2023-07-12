@@ -42,8 +42,7 @@ fun HomePage(navController: NavHostController){
                 products = productList,
                 lazyGridState = lazyGridState,
                 navController = navController
-            )
-            {
+            ) {
                 homePageViewModel.loadNextPage()
                 val contentSize = productList.size
                 Log.d("HomePage", "Content size: $contentSize")

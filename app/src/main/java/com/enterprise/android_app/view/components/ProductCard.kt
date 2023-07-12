@@ -47,7 +47,7 @@ import io.swagger.client.models.ProductBasicDTO
 @Composable
 fun ProductCard(navController: NavHostController, product: ProductBasicDTO) {
     var likes by rememberSaveable { mutableStateOf(product.likesNumber) }
-    var liked by rememberSaveable { mutableStateOf(UserServices.isProductLiked(product.id!!))}
+    var liked by rememberSaveable { mutableStateOf(UserServices.isProductLiked(product.id))}
 
     Card(
         modifier = Modifier
@@ -101,11 +101,11 @@ fun ProductCard(navController: NavHostController, product: ProductBasicDTO) {
                     .clickable {
                         liked = !liked
                         if (liked) {
-                            product.id?.let { UserServices.addLikedProduct(it) }
+                            product.id.let { UserServices.addLikedProduct(it) }
                             likes = likes!! + 1
                         }
                         else {
-                            product.id?.let { UserServices.removeLikedProduct(it) }
+                            product.id.let { UserServices.removeLikedProduct(it) }
                             likes = likes!! - 1
                         }
                     })
@@ -117,7 +117,7 @@ fun ProductCard(navController: NavHostController, product: ProductBasicDTO) {
             )
         }
         Text(
-            "${product.title}",
+            product.title,
             modifier = Modifier.padding(start = 2.dp)
         )
 

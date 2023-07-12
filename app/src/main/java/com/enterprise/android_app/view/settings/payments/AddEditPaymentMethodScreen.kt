@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.MainActivity
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
@@ -50,7 +52,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditPaymentMethodScreen() {
+fun AddEditPaymentMethodScreen(navController: NavHostController) {
     val payment = CurrentDataUtils.currentPaymentMethodDTO
     val paymentViewModel = PaymentViewModel()
     val creditCardText= remember { mutableStateOf(payment.value?.creditCard ?: "") }

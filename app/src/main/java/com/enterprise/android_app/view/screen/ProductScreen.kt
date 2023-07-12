@@ -90,7 +90,9 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                     Divider(Modifier.fillMaxWidth(), color = Color.Gray)
                 }
                 item {
-                    SellerRow(product?.seller!!) {
+                    SellerRow(product?.seller!!, onClick = {
+                        navController.navigate(Navigation.ProfilePage.route + "?visitedUserId=${product.seller.id}")
+                    }) {
                         CurrentDataUtils.chatUserId.value = product.seller.id
                         CurrentDataUtils.chatProductId.value = product.id
                         navController.navigate(Navigation.MessagesPage.route)

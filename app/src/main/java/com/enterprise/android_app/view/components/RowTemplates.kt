@@ -29,14 +29,11 @@ import com.gowtham.ratingbar.RatingBarStyle
 import io.swagger.client.models.UserBasicDTO
 
 @Composable
-fun SellerRow(user: UserBasicDTO, onAskSellerClick: () -> Unit) {
+fun SellerRow(user: UserBasicDTO, onClick: () -> Unit ,onAskSellerClick: () -> Unit) {
 
     val rating: Float? = if (user.reviewsNumber != 0) user.reviewsTotalSum?.toFloat()
         ?.div(user.reviewsNumber?.toFloat()!!) else 0f
-    ClickableBox(onClick = {
-        CurrentDataUtils.visitedUser = user
-        MainRouter.changePage(Navigation.ProfilePage)
-    }, Modifier.height(85.dp)) {
+    ClickableBox(onClick = onClick, Modifier.height(85.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
             LoadImageFromUrl(

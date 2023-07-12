@@ -172,14 +172,12 @@ object CurrentDataUtils {
         CoroutineScope(Dispatchers.IO).launch{
             val user = com.enterprise.android_app.model.persistence.User(null, refresh_token)
             val refresh_token2 = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
-            println(refresh_token2)
             if( refresh_token2 == null){
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().insert(user)
             }
             else{
                 AppDatabase.getInstance(_application?.applicationContext!!).userDao().update(refresh_token)
             }
-
         }
     }
 
@@ -206,7 +204,6 @@ object CurrentDataUtils {
     }
 
 
-
     fun checkRefreshToken(){
         CoroutineScope(Dispatchers.IO).launch {
             _refreshToken.value = AppDatabase.getInstance(_application?.applicationContext!!).userDao().getRefreshToken()
@@ -217,8 +214,8 @@ object CurrentDataUtils {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                     retrieveCurrentUser()
-                    _showLoadingScreen.value = false
                     _goToHome.value = true
+                    _showLoadingScreen.value = false
                 }
             }catch (e: Exception){
                 _showLoadingScreen.value = false

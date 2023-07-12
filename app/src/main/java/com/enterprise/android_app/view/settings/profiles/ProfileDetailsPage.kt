@@ -47,21 +47,53 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view.settings.updateUser
 import com.enterprise.android_app.view_models.ImageViewModel
+import com.enterprise.android_app.view_models.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
 fun ProfileDetailsPage(navController: NavHostController) {
-    // TODO: user null
+
+
+    val context = LocalContext.current
+    val userViewModel = remember {
+        UserViewModel()
+    }
+    val updated = userViewModel.updated
     var user: MutableState<UserDTO?> = remember {
         mutableStateOf(CurrentDataUtils.currentUser)
     }
-    println("userrr: " + user.value)
+
+    val currentTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?: "")) }
+    val originalTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?:"")) }
+
+    val mContext = LocalContext.current
+    val mText = stringResource(id = R.string.bioUpdated)
+    val notUpdated = stringResource(id = R.string.bioNotUpdated)
+
+    val localUpdate = userViewModel.localUpdated
+
+    if(localUpdate.value){
+        localUpdate.value = false
+        if(updated.value){
+            mToast(mContext, mText )
+            originalTextState.value = currentTextState.value
+
+        }
+        else{
+            mToast(mContext,notUpdated)
+            currentTextState.value = originalTextState.value
+        }
+    }
+
+
     var modifier = Modifier.fillMaxWidth()
     val focusRequester = remember {FocusRequester()}
     val focusManager = LocalFocusManager.current
@@ -71,11 +103,12 @@ fun ProfileDetailsPage(navController: NavHostController) {
     Column(modifier = modifier ) {
 
             Row(modifier = Modifier.padding(8.dp)) {
-                Image(painter = rememberImagePainter(
-                    data = user.value?.photoProfile?.urlPhoto,
-                    builder = {
+                Image(painter = /*radius*/rememberAsyncImagePainter(
+                    ImageRequest.Builder(
+                        LocalContext.current
+                    ).data(data = user.value?.photoProfile?.urlPhoto).apply(block = fun ImageRequest.Builder.() {
                         transformations(RoundedCornersTransformation(/*radius*/ 8f))
-                    }
+                    }).build()
                 ),
                     contentDescription = "avatar",
                     contentScale = ContentScale.Crop,
@@ -85,7 +118,22 @@ fun ProfileDetailsPage(navController: NavHostController) {
                         .padding(0.dp)
                 )
                 ImageSelectorComponent(onChange = { uri, stream ->
-                    imageViewModel.saveChange(uri, stream!!)
+                    if(user.value?.photoProfile != null && user.value?.photoProfile?.urlPhoto!= "") {
+                        val updated = imageViewModel.updateUserImage(uri, stream!!)
+                        if(updated) {
+                            mToast(context, "User image updated")
+                            // TODO: prendere la nuova immagine e mostrarla
+                        }
+                        else mToast(context, "Error on update of user image")
+                    }
+                    else {
+                        val saved = imageViewModel.saveImage(uri, stream!!)
+                        if(saved) {
+                            mToast(context, "User image saved")
+                            // TODO: prendere la nuova immagine e mostrarla
+                        }
+                        else mToast(context, "Error on save of user image")
+                    }
                 })
                 /*Row() {
                     Column(modifier = Modifier
@@ -99,9 +147,7 @@ fun ProfileDetailsPage(navController: NavHostController) {
                 }*/
             }
 
-        val currentTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?: "")) }
 
-        val originalTextState = remember { mutableStateOf(TextFieldValue(user.value?.bio ?:"")) }
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -124,28 +170,16 @@ fun ProfileDetailsPage(navController: NavHostController) {
             )
         }
         if(currentTextState.value.text != originalTextState.value.text){
-            val mContext = LocalContext.current
-            val mText = stringResource(id = R.string.bioUpdated)
-
             IconButton(
                 onClick = {
-                    user.value?.copy(bio = currentTextState.value.text)?.let { updateUser(it) }
-                    mToast(mContext, mText )
+                    user.value?.let { userViewModel.saveChange(userDTO = it.copy(bio = currentTextState.value.text))}
                     focusManager.clearFocus()
-                    originalTextState.value = currentTextState.value
-                    MainRouter.changePage(Navigation.ProfileDetailsPage)
-
                 },
                 modifier = Modifier.align(Alignment.End)
-
-
-
             ) {
                 Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.apply))
-
             }
         }
-
     }
 }
 

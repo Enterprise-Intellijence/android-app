@@ -126,7 +126,7 @@ fun AddEditShippingScreen(navController: NavHostController) {
                             phoneNumber = phoneNumber.value,
                             isDefault = isDefaultBoolean.value)!!)
 
-                        MainRouter.changePage(Navigation.ShippingPage)
+                        navController.navigate(Navigation.ShippingPage.route)
 
                     } else {
                         deliveryViewModel.createAddress(createAddressDTO = AddressCreateDTO(

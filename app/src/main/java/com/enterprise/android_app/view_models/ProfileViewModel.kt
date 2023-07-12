@@ -118,7 +118,7 @@ class ProfileViewModel() : ViewModel() {
         coroutineScope.launch {
             try {
                 val following = withContext(Dispatchers.IO) {
-                    followingControllerApi.imFollowingThisUser(userId = visitedUser.value?.id!!)
+                    followingControllerApi.imFollowingThisUser(userId = visitedUserId.value!!)
                 }
                 isFollowing.value = following
             } catch (e: Exception) {
@@ -137,6 +137,7 @@ class ProfileViewModel() : ViewModel() {
                 e.printStackTrace()
             }
         }
+        checkFollowing()
     }
 
     fun report(description: String) {

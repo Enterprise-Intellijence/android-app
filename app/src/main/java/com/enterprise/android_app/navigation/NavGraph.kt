@@ -22,11 +22,14 @@ import com.enterprise.android_app.view.SearchPage
 import com.enterprise.android_app.view.SelectAddressPage
 import com.enterprise.android_app.view.SelectPaymentMethodPage
 import com.enterprise.android_app.view.SignUpPage
+import com.enterprise.android_app.view.SingleOrderPage
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import com.enterprise.android_app.view.screen.ProductScreen
 import com.enterprise.android_app.view.screen.StartScreen
 import com.enterprise.android_app.view.settings.SettingsPage
 import com.enterprise.android_app.view.settings.about.AboutPage
+import com.enterprise.android_app.view.settings.account.AccountSettingsPage
+import com.enterprise.android_app.view.settings.payments.AddEditPaymentMethodScreen
 import com.enterprise.android_app.view.settings.payments.PaymentsPage
 import com.enterprise.android_app.view.settings.profiles.ProfileDetailsPage
 import com.enterprise.android_app.view.settings.shippings.AddEditShippingScreen
@@ -101,13 +104,19 @@ fun MainPageGraph(navController: NavHostController) {
         ) { backStackEntry ->
             NewProductPage(navController, backStackEntry.arguments?.getString("productId")!!)
         }
-        composable(Navigation.AccountSettingsPage.route) { AboutPage() }
+        composable(Navigation.AccountSettingsPage.route) { AccountSettingsPage(navController) }
         composable(Navigation.ShippingPage.route) { ShippingPage(navController) }
         composable(Navigation.PaymentsPage.route) { PaymentsPage(navController) }
         // composable(Navigation.ImageSelectorComponent.route) { ImageSelectorComponent(navController) }
         composable(Navigation.ProfileDetailsPage.route) { ProfileDetailsPage(navController) }
         composable(Navigation.AddEditShippingScreen.route) { AddEditShippingScreen(navController) }
-        composable(Navigation.ProfileDetailsPage.route) { AddEditShippingScreen(navController) }
+        composable(Navigation.AddEditPaymentMethodScreen.route){ AddEditPaymentMethodScreen(navController)}
+        composable(
+            Navigation.SingleOrderPage.route + "?orderId={orderId}",
+            arguments = listOf(navArgument("orderId") {})
+        ) { backStackEntry ->
+            SingleOrderPage(navController = navController, orderId = backStackEntry.arguments?.getString("orderId")!!)
+        }
     }
 }
 

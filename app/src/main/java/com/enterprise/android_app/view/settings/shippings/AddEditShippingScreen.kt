@@ -137,6 +137,9 @@ fun AddEditShippingScreen(navController: NavHostController) {
                             country = countryText.value,
                             phoneNumber = phoneNumber.value,
                             isDefault = isDefaultBoolean.value))
+
+                        navController.navigate(Navigation.ShippingPage.route)
+
                     }
                           },
                 buttonName = if(address.value?.id!=null)"Edit" else "Create"

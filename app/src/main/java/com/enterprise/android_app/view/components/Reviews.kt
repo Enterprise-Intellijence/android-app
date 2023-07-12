@@ -42,7 +42,7 @@ fun Reviews(viewModel: ProfileViewModel, navController: NavController) {
             reviewList.size
         }
     } else {
-        if (areReviews.value == true) {
+        if (areReviews.value == true ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,

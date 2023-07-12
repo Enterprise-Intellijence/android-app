@@ -27,7 +27,7 @@ fun Closet(viewModel: ProfileViewModel, navController: NavHostController) {
     val productList = viewModel.productList
     val lazyGridState = rememberLazyGridState()
 
-    LaunchedEffect(key1 = viewModel.currentProductPage) {
+    LaunchedEffect(key1 = "Closet") {
         viewModel.loadNextProductPage()
     }
 
@@ -38,6 +38,7 @@ fun Closet(viewModel: ProfileViewModel, navController: NavHostController) {
             navController = navController
         ) {
             viewModel.loadNextProductPage()
+
             productList.size
         }
     } else {

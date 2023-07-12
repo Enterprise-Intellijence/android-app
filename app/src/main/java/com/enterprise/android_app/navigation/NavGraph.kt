@@ -136,9 +136,7 @@ fun MainPageGraph(navController: NavHostController) {
                 orderId = backStackEntry.arguments?.getString("orderId")!!
             )
         }
-
     }
-
 }
 
 object Graph {

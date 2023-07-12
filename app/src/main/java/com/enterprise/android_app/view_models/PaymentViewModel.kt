@@ -30,7 +30,7 @@ class PaymentViewModel {
                 }
                 CurrentDataUtils.retrieveCurrentUser()
                 CurrentDataUtils.retrievePaymentsMethod()
-                MainRouter.changePage(Navigation.PaymentsPage)
+                //MainRouter.changePage(Navigation.PaymentsPage)
 
             } catch (e: Exception) {
 
@@ -58,7 +58,7 @@ class PaymentViewModel {
             CurrentDataUtils.retrieveCurrentUser()
             CurrentDataUtils.retrievePaymentsMethod()
 
-            MainRouter.changePage(Navigation.PaymentsPage)
+            //MainRouter.changePage(Navigation.PaymentsPage)
 
         }
 
@@ -74,7 +74,7 @@ class PaymentViewModel {
 
                 CurrentDataUtils.retrieveCurrentUser()
                 CurrentDataUtils.retrievePaymentsMethod()
-                MainRouter.changePage(Navigation.PaymentsPage)
+                //MainRouter.changePage(Navigation.PaymentsPage)
             } catch (e: Exception) {
 
                 e.printStackTrace()

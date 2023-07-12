@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.enterprise.android_app.R
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
@@ -39,7 +40,7 @@ import io.swagger.client.models.UserDTO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChangePasswordComponent(user: MutableState<UserDTO?>){
+fun ChangePasswordComponent(navController: NavController,user: MutableState<UserDTO?>){
     val modifier = Modifier.fillMaxWidth()
     val oldPassword: MutableState<String> = remember {mutableStateOf("")}
     val newPassword: MutableState<String> = remember {mutableStateOf("")}
@@ -128,7 +129,7 @@ fun ChangePasswordComponent(user: MutableState<UserDTO?>){
                         //userViewModel.changePassword(oldPassword = oldPassword.value, newPassword = newPassword.value)
                         focusManager.clearFocus()
                         passChangeShow.value = false
-                        MainRouter.changePage(Navigation.AccountSettingsPage)
+                        navController.navigate(Navigation.AccountSettingsPage.route)
 
 
 

@@ -47,7 +47,7 @@ class DeliveryViewModel {
                 }
                 CurrentDataUtils.retrieveCurrentUser()
                 CurrentDataUtils.retrieveAddresses()
-                MainRouter.changePage(Navigation.ShippingPage)
+                //MainRouter.changePage(Navigation.ShippingPage)
             } catch (e: Exception) {
 
                 e.printStackTrace()
@@ -71,7 +71,7 @@ class DeliveryViewModel {
             CurrentDataUtils.retrieveCurrentUser()
             CurrentDataUtils.retrieveAddresses()
 
-            MainRouter.changePage(Navigation.ShippingPage)
+            //MainRouter.changePage(Navigation.ShippingPage)
 
         }
 
@@ -92,7 +92,7 @@ class DeliveryViewModel {
                 CurrentDataUtils.retrieveCurrentUser()
                 CurrentDataUtils.retrieveAddresses()
 
-                MainRouter.changePage(Navigation.ShippingPage)
+                //MainRouter.changePage(Navigation.ShippingPage)
             } catch (e: Exception){
                 e.printStackTrace()
             }

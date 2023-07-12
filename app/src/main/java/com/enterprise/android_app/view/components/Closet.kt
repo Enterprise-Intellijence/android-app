@@ -28,7 +28,10 @@ fun Closet(viewModel: ProfileViewModel, navController: NavHostController) {
     val lazyGridState = rememberLazyGridState()
 
     LaunchedEffect(key1 = viewModel.currentProductPage) {
-        viewModel.loadNextProductPage()
+        if (viewModel.visitedUser.value?.id == CurrentDataUtils.currentUser?.id) {
+            viewModel.loadNextProductPage()
+        }else
+            viewModel.loadNextProductPageForVisitedUser()
     }
 
     if (!productList.isEmpty()) {

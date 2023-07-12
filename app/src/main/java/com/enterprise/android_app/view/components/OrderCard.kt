@@ -20,12 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
+import com.enterprise.android_app.view_models.OrdersViewModel
 
 import io.swagger.client.models.OrderBasicDTO
 
@@ -36,7 +36,8 @@ fun OrderCard(order: OrderBasicDTO, navController: NavHostController) {
     Card(
         modifier = Modifier
             .size(width = 100.dp, height = 150.dp)
-            .clickable { navController.navigate(com.enterprise.android_app.navigation.Navigation.SingleOrderPage.route+"?orderId=${order.id}")},
+            .clickable {
+                navController.navigate(com.enterprise.android_app.navigation.Navigation.SingleOrderPage.route+"?orderId=${order.id}")},
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(

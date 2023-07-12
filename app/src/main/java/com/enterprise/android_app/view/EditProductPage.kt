@@ -38,7 +38,6 @@ fun EditProductPage(navController: NavHostController, productId: String) {
         }
         NewProductPage(navController = navController, productId = productId)
     }
-
 }
 
 private fun mToast(context: Context, text: String){

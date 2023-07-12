@@ -243,10 +243,10 @@ fun ClickableLoginTextComponent(tryingToLogin:Boolean = true, onTextSelected: (S
 
 
 @Composable
-fun UnderLinedTextComponent(value:String){
+fun UnderLinedTextComponent(value:String, modifier: Modifier = Modifier){
     Text(
         text = value,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp),
         style = TextStyle(

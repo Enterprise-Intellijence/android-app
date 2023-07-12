@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.AndroidappTheme
 import com.enterprise.android_app.view.components.ImageSelectorComponent
 import com.enterprise.android_app.view_models.ProductCategoryViewModel
@@ -74,6 +75,8 @@ fun NewProductPage(navController: NavHostController, productId: String) {
     val categoryViewModel: ProductCategoryViewModel = viewModel()
     val sizeViewModel: SizeViewModel = viewModel()
     val newProductViewModel: NewProductPageViewModel = viewModel()
+    val editProductViewModel: EditProductPageViewModel = viewModel()
+
 
     LaunchedEffect(key1 = "new product page") {
         if(productId != "") {
@@ -112,24 +115,26 @@ fun NewProductPage(navController: NavHostController, productId: String) {
         .padding(16.dp)
         .verticalScroll(rememberScrollState())) {
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Upload up to 5 photos",
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .weight(1f))
-            if(imagesUri.size < 5) {
-                ImageSelectorComponent {uri, stream ->
-                    imagesUri.add(uri)
-                    imageStream[uri] = stream!!
+        if(productId == "") {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Upload up to 5 photos",
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .weight(1f))
+                if(imagesUri.size < 5) {
+                    ImageSelectorComponent {uri, stream ->
+                        imagesUri.add(uri)
+                        imageStream[uri] = stream!!
+                    }
                 }
             }
-        }
-        ImagesContainer(imagesUri) {uri ->
-            imagesUri.remove(uri)
-            imageStream.remove(uri)
-        }
+            ImagesContainer(imagesUri) {uri ->
+                imagesUri.remove(uri)
+                imageStream.remove(uri)
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Title")
@@ -188,14 +193,17 @@ fun NewProductPage(navController: NavHostController, productId: String) {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel, selectedPrimaryCategory.value, { selectedPrimaryCategory.value = it },
-            selectedSecondaryCategory.value, { selectedSecondaryCategory.value = it },
-            selectedTertiaryCategory.value, { selectedTertiaryCategory.value = it },
-            selectedMaterial.value, { selectedMaterial.value = it }, selectedColor.value, { selectedColor.value = it },
-            selectedSize.value, { selectedSize.value = it }, selectedGender.value, { selectedGender.value = it },
-            selectedLanguage.value, { selectedLanguage.value = it })
+        if(productId == "") {
+            CategoriesRow(primaryCategories, categoryViewModel, sizeViewModel, selectedPrimaryCategory.value, { selectedPrimaryCategory.value = it },
+                selectedSecondaryCategory.value, { selectedSecondaryCategory.value = it },
+                selectedTertiaryCategory.value, { selectedTertiaryCategory.value = it },
+                selectedMaterial.value, { selectedMaterial.value = it }, selectedColor.value, { selectedColor.value = it },
+                selectedSize.value, { selectedSize.value = it }, selectedGender.value, { selectedGender.value = it },
+                selectedLanguage.value, { selectedLanguage.value = it })
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+        }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Delivery size")
@@ -243,79 +251,124 @@ fun NewProductPage(navController: NavHostController, productId: String) {
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
-                if(titleText.value == "" || descriptionText.value == "" || brandText.value == "" || priceText.value == "" || priceText.value.toDoubleOrNull() == null || priceText.value.toDouble() < 0.0
-                    || deliveryPriceText.value == "" || deliveryPriceText.value.toDoubleOrNull() == null || deliveryPriceText.value.toDouble() < 0.0 || selectedCondition.value == ""
-                    || selectedVisibility.value == "" || selectedDeliverySize.value == "" || selectedPrimaryCategory.value == "" || selectedSecondaryCategory.value == ""
-                    || selectedTertiaryCategory.value == "" || selectedCurrency.value == "" || imagesUri.size == 0) {
-                    mToast(context, "Please fill all the fields correctly")
-                    return@Button
-                }
-                var category = ProductCategoryDTO(
-                    null,
-                    selectedPrimaryCategory.value,
-                    selectedSecondaryCategory.value,
-                    selectedTertiaryCategory.value
-                )
-                var productCost = CustomMoneyDTO(
-                    priceText.value.toDouble(),
-                    CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
-                )
-                var deliveryCost = CustomMoneyDTO(
-                    deliveryPriceText.value.toDouble(),
-                    CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
-                )
-                var product = ProductCreateDTO(
-                    titleText.value,
-                    descriptionText.value,
-                    productCost,
-                    deliveryCost,
-                    brandText.value,
-                    ProductCreateDTO.Condition.valueOf(selectedCondition.value),
-                    ProductCreateDTO.ProductSize.valueOf(selectedDeliverySize.value),
-                    ProductCreateDTO.Visibility.valueOf(selectedVisibility.value),
-                    category,
-                    null,
-                    selectedPrimaryCategory.value,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                )
+                if(productId != "") {
+                    if(titleText.value == "" || descriptionText.value == "" || brandText.value == "" || priceText.value == "" || priceText.value.toDoubleOrNull() == null || priceText.value.toDouble() < 0.0
+                        || deliveryPriceText.value == "" || deliveryPriceText.value.toDoubleOrNull() == null || deliveryPriceText.value.toDouble() < 0.0 || selectedCondition.value == ""
+                        || selectedVisibility.value == "" || selectedDeliverySize.value == ""
+                        || selectedCurrency.value == "") {
+                        mToast(context, "Please fill all the fields correctly")
+                        return@Button
+                    }
 
-                when (selectedPrimaryCategory.value) {
-                    "Home" -> {
-                        if(selectedColor.value == "" || selectedSize.value == "" || selectedMaterial.value == "") {
-                            mToast(context, "Please fill all the fields")
-                            return@Button
-                        }
-                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
-                        product.homeSize = SizeDTO(null, selectedSize.value, "Home")
-                        product.homeMaterial = HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial.value)
+                    var productCost = CustomMoneyDTO(
+                        priceText.value.toDouble(),
+                        CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
+                    )
+                    var deliveryCost = CustomMoneyDTO(
+                        deliveryPriceText.value.toDouble(),
+                        CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
+                    )
+
+                    val product: ProductDTO = newProductViewModel.product.value!!.copy(
+                        id = productId,
+                        title = titleText.value,
+                        description = descriptionText.value,
+                        brand = brandText.value,
+                        productCost = productCost,
+                        deliveryCost = deliveryCost,
+                        condition = ProductDTO.Condition.valueOf(selectedCondition.value),
+                        productSize =  ProductDTO.ProductSize.valueOf(selectedDeliverySize.value),
+                        visibility = ProductDTO.Visibility.valueOf(selectedVisibility.value)
+                        )
+
+                    val updated = editProductViewModel.updateProduct(productId, product)
+                    if(updated) {
+                        mToast(context, "Product updated correctly")
+                        navController.navigate(Navigation.HomePage.route)
                     }
-                    "Entertainment" -> {
-                        if(selectedLanguage.value == "") {
-                            mToast(context, "Please fill all the fields")
-                            return@Button
-                        }
-                        product.entertainmentLanguage = EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage.value)
-                    }
-                    "Clothing" -> {
-                        if(selectedColor.value == "" || selectedSize.value == "" || selectedGender.value == "") {
-                            mToast(context, "Please fill all the fields")
-                            return@Button
-                        }
-                        product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
-                        product.clothingSize = SizeDTO(null, selectedSize.value, selectedSecondaryCategory.value)
-                        product.productGender = ClothingCreateDTO.ProductGender.valueOf(selectedGender.value)
-                    }
+                    else mToast(context, "Error updating the product")
                 }
-                println("producti: " + product)
-                newProductViewModel.saveNewProduct(product, context, imagesUri)
-                mToast(context, "Product created")
+                else {
+                    if(titleText.value == "" || descriptionText.value == "" || brandText.value == "" || priceText.value == "" || priceText.value.toDoubleOrNull() == null || priceText.value.toDouble() < 0.0
+                        || deliveryPriceText.value == "" || deliveryPriceText.value.toDoubleOrNull() == null || deliveryPriceText.value.toDouble() < 0.0 || selectedCondition.value == ""
+                        || selectedVisibility.value == "" || selectedDeliverySize.value == "" || selectedPrimaryCategory.value == "" || selectedSecondaryCategory.value == ""
+                        || selectedTertiaryCategory.value == "" || selectedCurrency.value == "" || imagesUri.size == 0) {
+                        mToast(context, "Please fill all the fields correctly")
+                        return@Button
+                    }
+
+                    var category = ProductCategoryDTO(
+                        null,
+                        selectedPrimaryCategory.value,
+                        selectedSecondaryCategory.value,
+                        selectedTertiaryCategory.value
+                    )
+                    var productCost = CustomMoneyDTO(
+                        priceText.value.toDouble(),
+                        CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
+                    )
+                    var deliveryCost = CustomMoneyDTO(
+                        deliveryPriceText.value.toDouble(),
+                        CustomMoneyDTO.Currency.valueOf(selectedCurrency.value)
+                    )
+                    var product = ProductCreateDTO(
+                        titleText.value,
+                        descriptionText.value,
+                        productCost,
+                        deliveryCost,
+                        brandText.value,
+                        ProductCreateDTO.Condition.valueOf(selectedCondition.value),
+                        ProductCreateDTO.ProductSize.valueOf(selectedDeliverySize.value),
+                        ProductCreateDTO.Visibility.valueOf(selectedVisibility.value),
+                        category,
+                        null,
+                        selectedPrimaryCategory.value,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
+
+                    when (selectedPrimaryCategory.value) {
+                        "Home" -> {
+                            if(selectedColor.value == "" || selectedSize.value == "" || selectedMaterial.value == "") {
+                                mToast(context, "Please fill all the fields")
+                                return@Button
+                            }
+                            product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
+                            product.homeSize = SizeDTO(null, selectedSize.value, "Home")
+                            product.homeMaterial = HomeCreateDTO.HomeMaterial.valueOf(selectedMaterial.value)
+                        }
+                        "Entertainment" -> {
+                            if(selectedLanguage.value == "") {
+                                mToast(context, "Please fill all the fields")
+                                return@Button
+                            }
+                            product.entertainmentLanguage = EntertainmentCreateDTO.EntertainmentLanguage.valueOf(selectedLanguage.value)
+                        }
+                        "Clothing" -> {
+                            if(selectedColor.value == "" || selectedSize.value == "" || selectedGender.value == "") {
+                                mToast(context, "Please fill all the fields")
+                                return@Button
+                            }
+                            product.colour = HomeCreateDTO.Colour.valueOf(selectedColor.value)
+                            product.clothingSize = SizeDTO(null, selectedSize.value, selectedSecondaryCategory.value)
+                            product.productGender = ClothingCreateDTO.ProductGender.valueOf(selectedGender.value)
+                        }
+                    }
+                    println("producti: " + product)
+
+                    val created = newProductViewModel.saveNewProduct(product, context, imagesUri)
+                    if(created) {
+                        mToast(context, "Product created")
+                        navController.navigate(Navigation.HomePage.route)
+                    }
+                    else mToast(context, "Error creating the product")
+                }
             }) {
-                Text("Load product")
+                Text(if (productId != "") "Update product" else "Load product")
             }
         }
     }

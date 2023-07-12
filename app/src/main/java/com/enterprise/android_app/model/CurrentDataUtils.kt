@@ -215,8 +215,8 @@ object CurrentDataUtils {
                     _accessToken.value = tokenMap["accessToken"]!!
                     _refreshToken.value = tokenMap["refreshToken"]!!
                     retrieveCurrentUser()
-                    _showLoadingScreen.value = false
                     _goToHome.value = true
+                    _showLoadingScreen.value = false
                 }
             }catch (e: Exception){
                 _showLoadingScreen.value = false

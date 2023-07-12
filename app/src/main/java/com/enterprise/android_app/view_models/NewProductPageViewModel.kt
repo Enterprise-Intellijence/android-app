@@ -61,12 +61,12 @@ class NewProductPageViewModel: ViewModel() {
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    fun saveNewProduct(product: ProductCreateDTO, context: Context, images: List<Uri?>): ProductDTO? {
+    fun saveNewProduct(product: ProductCreateDTO, context: Context, images: List<Uri?>): Boolean {
 
+        var created = true
         println("produc: " + product.toString())
         coroutineScope.launch {
             try {
-
                 val urlBuilder = (BasePath.BASE_PATH + "/api/v1/products").toHttpUrlOrNull()?.newBuilder()
 
                 val url = urlBuilder!!.build()
@@ -101,30 +101,28 @@ class NewProductPageViewModel: ViewModel() {
                     }
                 }
             } catch (e: Exception) {
+                created = false
                 e.printStackTrace()
             }
         }
-        return null
+        return created
     }
 
     fun getProductById(productId: String) {
         coroutineScope.launch {
             try {
                 product.value = productControllerApi.productById(productId)
-                images.clear()
-                /*product.value!!.productImages?.forEach { img ->
-                    images.add(img.urlPhoto.toUri())
-                }*/
-                titleText.value =                product.value?.title?: ""
-                descriptionText.value =          product.value?.description?: ""
-                brandText.value =                product.value?.brand?: ""
-                priceText.value =                product.value?.productCost?.price?.toString()?: ""
-                deliveryPriceText.value =        product.value?.productCost?.price?.toString()?: ""
-                selectedCondition.value =        product.value?.condition?.value?: ""
-                selectedVisibility.value =       product.value?.visibility?.value?: ""
-                selectedCurrency.value =         product.value?.productCost?.currency?.value?: ""
-                selectedPrimaryCategory.value =  product.value?.productCategory?.primaryCat?: ""
-                selectedSecondaryCategory.value =product.value?.productCategory?.secondaryCat?: ""
+
+                titleText.value = product.value?.title?: ""
+                descriptionText.value = product.value?.description?: ""
+                brandText.value = product.value?.brand?: ""
+                priceText.value = product.value?.productCost?.price?.toString()?: ""
+                deliveryPriceText.value = product.value?.productCost?.price?.toString()?: ""
+                selectedCondition.value = product.value?.condition?.name?: ""
+                selectedVisibility.value = product.value?.visibility?.name?: ""
+                selectedCurrency.value = product.value?.productCost?.currency?.name?: ""
+                selectedPrimaryCategory.value = product.value?.productCategory?.primaryCat?: ""
+                selectedSecondaryCategory.value = product.value?.productCategory?.secondaryCat?: ""
                 selectedTertiaryCategory.value = product.value?.productCategory?.tertiaryCat?: ""
             } catch (e: Exception) {
                 e.printStackTrace()

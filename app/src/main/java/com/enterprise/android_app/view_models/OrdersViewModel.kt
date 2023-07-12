@@ -3,6 +3,7 @@ package com.enterprise.android_app.view_models
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import io.swagger.client.apis.OrderControllerApi
+import io.swagger.client.models.Order
 import io.swagger.client.models.OrderBasicDTO
 import io.swagger.client.models.OrderDTO
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +24,7 @@ class OrdersViewModel: ViewModel() {
                     orderControllerApi.getAllOrdersOfUser(page = currentPage)
                 }
                 val ordersToAdd = newOrders.content?.toList() ?: emptyList()
-                //orderList.addAll(ordersToAdd)
+                orderList.addAll(ordersToAdd)
                 currentPage++
             }catch (e: Exception){
                 e.printStackTrace()
@@ -32,6 +33,7 @@ class OrdersViewModel: ViewModel() {
     }
 
 
+    fun openPage(order: OrderBasicDTO){
 
-
+    }
 }

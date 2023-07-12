@@ -22,6 +22,7 @@ import com.enterprise.android_app.view.SearchPage
 import com.enterprise.android_app.view.SelectAddressPage
 import com.enterprise.android_app.view.SelectPaymentMethodPage
 import com.enterprise.android_app.view.SignUpPage
+import com.enterprise.android_app.view.SingleOrderPage
 import com.enterprise.android_app.view.screen.FavouriteProductScreen
 import com.enterprise.android_app.view.screen.ProductScreen
 import com.enterprise.android_app.view.screen.StartScreen
@@ -110,6 +111,12 @@ fun MainPageGraph(navController: NavHostController) {
         composable(Navigation.ProfileDetailsPage.route) { ProfileDetailsPage(navController) }
         composable(Navigation.AddEditShippingScreen.route) { AddEditShippingScreen(navController) }
         composable(Navigation.AddEditPaymentMethodScreen.route){ AddEditPaymentMethodScreen(navController)}
+        composable(
+            Navigation.SingleOrderPage.route + "?orderId={orderId}",
+            arguments = listOf(navArgument("orderId") {})
+        ) { backStackEntry ->
+            SingleOrderPage(navController = navController, orderId = backStackEntry.arguments?.getString("orderId")!!)
+        }
     }
 }
 

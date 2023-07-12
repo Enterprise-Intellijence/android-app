@@ -11,7 +11,7 @@ import com.enterprise.android_app.view.components.LazyGridOrderCard
 import com.enterprise.android_app.view_models.OrdersViewModel
 
 @Composable
-fun OrdersPage(navigation: NavHostController){
+fun OrdersPage(navController: NavHostController){
     
     val ordersViewModel = remember {OrdersViewModel()}
     val orderList = ordersViewModel.orderList
@@ -21,16 +21,18 @@ fun OrdersPage(navigation: NavHostController){
         ordersViewModel.loadNextPage()
     }
 
-
     if(orderList.isEmpty()){
         CircularProgressIndicator(Modifier.size(40.dp))
-        //TODO: DA CAMBIARE CON UNA SCRITTA
+
     }else{
         LazyGridOrderCard(
             orders = orderList,
-            lazyGridState = lazyGridState
-        ) {
+            lazyGridState = lazyGridState,
+            onLoadMore = {},
+            navController = navController
+        ){
             ordersViewModel.loadNextPage()
         }
+
     }
 }

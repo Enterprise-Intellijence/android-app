@@ -35,6 +35,7 @@ sealed class Navigation(val route: String) {
     object ProfileDetailsPage : Navigation(route = "profile_details_page")
     object AddEditShippingScreen : Navigation(route = "add_edit_shipping_screen")
     object AddEditPaymentMethodScreen : Navigation(route = "add_edit_payment_method_screen")
+    object SingleOrderPage: Navigation(route = "single_order_page")
 }
 
 

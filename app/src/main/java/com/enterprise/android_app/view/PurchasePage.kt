@@ -39,6 +39,7 @@ import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.DarkGreen
+import com.enterprise.android_app.view.settings.profiles.mToast
 import com.enterprise.android_app.view_models.ProductPageViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -54,22 +55,22 @@ import io.swagger.client.models.OrderCreateDTO
 import io.swagger.client.models.OrderDTO
 import io.swagger.client.models.PaymentMethodDTO
 import io.swagger.client.models.ProductDTO
+import io.swagger.client.models.TransactionCreateDTO
+import io.swagger.client.models.TransactionDTO
 import java.time.LocalDateTime
 
 @Composable
-fun PurchasePage(navController: NavHostController){
+fun PurchasePage(navController: NavHostController, productId: String){
 
     val context = LocalContext.current
     val productViewModel: ProductPageViewModel = viewModel()
     val orderViewModel: PurchasePageViewModel = viewModel()
-    productViewModel.getProductById(CurrentDataUtils.currentProductId)
+    productViewModel.getProductById(productId)
 
     val product = productViewModel.product
 
     if(CurrentDataUtils.addressDTO.value == null)
         CurrentDataUtils.addressDTO = CurrentDataUtils.defaultAddress
-
-    println("addressessss: " + CurrentDataUtils.addresses.toList())
 
     if(CurrentDataUtils.currentPaymentMethodDTO.value == null)
         CurrentDataUtils.currentPaymentMethodDTO = CurrentDataUtils.defaultPaymentMethod
@@ -116,23 +117,32 @@ fun PurchasePage(navController: NavHostController){
                 .weight(1f)
                 .padding(top = 8.dp, end = 8.dp))
             Button(onClick = {
-                val offer: OfferBasicDTO? = product?.deliveryCost?.price?.let {
-                    product.productCost.price?.plus(it)
-                }?.let {
-                    product?.productCost?.currency?.let { it1 ->
-                        CustomMoneyDTO(
-                            it, it1
-                        )
-                    }
-                }?.let { OfferBasicDTO(null, it, null, LocalDateTime.now()) }
+                if(CurrentDataUtils.addressDTO.value == null || CurrentDataUtils.currentPaymentMethodDTO.value == null) {
+                    mToast(context, "Choose a payment method and an address")
+                    return@Button
+                }
+                val money = CustomMoneyDTO(product?.productCost?.price!!.plus(product.deliveryCost.price), product.productCost.currency)
+                val offer = OfferBasicDTO(null, money, null, LocalDateTime.now())
+                val order = OrderCreateDTO(CurrentDataUtils.toProductBasicDTO(product), offer, CurrentDataUtils.addressDTO.value!!)
 
-                val order: OrderCreateDTO? = product?.let {
-                    CurrentDataUtils.toProductBasicDTO(it) }?.let { CurrentDataUtils.addressDTO.value?.let { it1 ->
-                    OrderCreateDTO(it, offer, it1) }
-                    }
-                orderViewModel.createOrder(order, context)
+                val orderResult: OrderDTO? = orderViewModel.createOrder(order, context)
 
-                navController.navigate(Navigation.OrdersPage.route)
+                if(orderResult != null) {
+
+                    var transaction = TransactionCreateDTO(
+                        orderViewModel.toPaymentBasicDTO(CurrentDataUtils.currentPaymentMethodDTO.value!!),
+                        orderViewModel.toOrderBasicDTO(orderResult))
+
+                    val transactionResult: TransactionDTO? = orderViewModel.createTransaction(transaction)
+
+                    if(transactionResult != null) {
+                        mToast(context, "Order created")
+                        navController.navigate(Navigation.OrdersPage.route)
+                    }
+                    else mToast(context, "Error on transaction creation")
+
+                }
+                else mToast(context, "Error on order creation")
             }) {
                 Text("Buy now")
             }
@@ -184,7 +194,7 @@ fun ProductView(product: ProductDTO) {
 }
 
 @Composable
-fun SelectAddressPage(navController: NavHostController){
+fun SelectAddressPage(navController: NavHostController, productId: String){
     val addresses = CurrentDataUtils.addresses
 
     Column(modifier = Modifier
@@ -220,14 +230,14 @@ fun SelectAddressPage(navController: NavHostController){
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { navController.navigate(Navigation.PurchasePage.route) }) {
+        Button(onClick = { navController.navigate(Navigation.PurchasePage.route + "?productId={productId}") }) {
             Text(text = "Confirm")
         }
     }
 }
 
 @Composable
-fun SelectPaymentMethodPage(navController: NavHostController){
+fun SelectPaymentMethodPage(navController: NavHostController, productId: String){
     val payments = CurrentDataUtils.PaymentsMethod
 
     Column(modifier = Modifier
@@ -265,7 +275,7 @@ fun SelectPaymentMethodPage(navController: NavHostController){
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { navController.navigate(Navigation.PurchasePage.route) }) {
+        Button(onClick = { navController.navigate(Navigation.PurchasePage.route + "?productId={productId}") }) {
             Text(text = "Confirm")
         }
     }

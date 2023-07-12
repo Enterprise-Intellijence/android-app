@@ -90,9 +90,22 @@ fun MainPageGraph(navController: NavHostController) {
         composable(Navigation.FavouriteProductScreen.route) { FavouriteProductScreen(navController) }
         composable(Navigation.SettingsPage.route) { SettingsPage(navController) }
         composable(Navigation.OrdersPage.route) { OrdersPage(navController) }
-        composable(Navigation.PurchasePage.route) { PurchasePage(navController) }
-        composable(Navigation.SelectAddressPage.route) { SelectAddressPage(navController) }
-        composable(Navigation.SelectPaymentMethodPage.route) { SelectPaymentMethodPage(navController) }
+        composable(
+            Navigation.PurchasePage.route + "?productId={productId}",
+            arguments = listOf(navArgument("productId") {})
+        ) { backStackEntry ->
+            PurchasePage(navController, backStackEntry.arguments?.getString("productId")!!)
+        }
+        composable(Navigation.SelectAddressPage.route + "?productId={productId}",
+            arguments = listOf(navArgument("productId") {})
+        ) { backStackEntry ->
+            SelectAddressPage(navController, backStackEntry.arguments?.getString("productId")!!)
+        }
+        composable(Navigation.SelectPaymentMethodPage.route + "?productId={productId}",
+            arguments = listOf(navArgument("productId") {})
+        ) { backStackEntry ->
+            SelectPaymentMethodPage(navController, backStackEntry.arguments?.getString("productId")!!)
+        }
 
         composable(Navigation.AboutPage.route) { AboutPage() }
         composable(

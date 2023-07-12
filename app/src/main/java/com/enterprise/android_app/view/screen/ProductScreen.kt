@@ -144,7 +144,7 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                         ) {
                             Button(
                                 onClick = {
-                                    navController.navigate(Navigation.PurchasePage.route)
+                                    navController.navigate(Navigation.PurchasePage.route + "?productId=${product.id}")
                                 },
                                 modifier = Modifier
                                     .height(45.dp)

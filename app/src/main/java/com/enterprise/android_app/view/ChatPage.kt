@@ -96,7 +96,7 @@ fun ChatHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Purple80)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(8.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

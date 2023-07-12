@@ -27,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -52,13 +53,20 @@ import compose.icons.fontawesomeicons.solid.Filter
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun SearchPage(navController: NavHostController){
+fun SearchPage(navController: NavHostController, query: String? = null) {
 
     val searchPageViewModel: SearchPageViewModel = viewModel()
 
     val search = remember { searchPageViewModel.search }
     val filterPage: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = "search_page") {
+        if (query != null){
+            searchPageViewModel.filter.value.title = query
+            searchPageViewModel.filter.value.description = query
+            searchPageViewModel.search.value = true
+        }
+    }
     val products = searchPageViewModel.searchResults
 
     val lazyColumnState = rememberLazyListState()
@@ -76,7 +84,9 @@ fun SearchPage(navController: NavHostController){
     else {
         if (search.value) {
             searchPageViewModel.search()
-            Column(modifier = Modifier.padding(top = 10.dp).fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier = Modifier
+                .padding(top = 10.dp)
+                .fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 if (products.isNotEmpty()) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         LazyGridProductsCard(products = products, lazyGridState = lazyGridState, navController = navController) {
@@ -120,7 +130,10 @@ fun CategorySelection(searchPageViewModel: SearchPageViewModel, onApply: () -> U
     Box(modifier = Modifier.fillMaxSize())
     {
         Column(Modifier) {
-            Column(Modifier.padding(top = 10.dp).fillMaxWidth()) {
+            Column(
+                Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth()) {
                 LazyColumn(state = lazyColumnState) {
                     item {
                         SingleRowTemplate(name = "All", icona = null, icon_label = null,

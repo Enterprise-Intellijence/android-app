@@ -64,7 +64,9 @@ fun MainPageGraph(navController: NavHostController) {
         route = Graph.main
     ) {
         composable(Navigation.HomePage.route) { HomePage(navController) }
-        composable(Navigation.SearchPage.route) { SearchPage(navController) }
+        composable(Navigation.SearchPage.route + "?query={query}",
+            arguments = listOf(navArgument("query") { nullable = true; defaultValue = null} )
+        ) { backStackEntry ->  SearchPage(navController, backStackEntry.arguments?.getString("query")) }
         composable(Navigation.MessagesPage.route) { MessagesPage(navController) }
         composable(Navigation.ProfileMenuPage.route) { ProfileMenuPage(navController) }
         composable(

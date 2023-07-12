@@ -69,8 +69,9 @@ fun SearchTopBar(navController: NavHostController) {
         .collectAsState(initial = navController.currentBackStackEntry)
 
     if (currentRoute.value?.destination?.route == Navigation.HomePage.route ||
-        currentRoute.value?.destination?.route == Navigation.SearchPage.route) {
-        TopBarSearch()
+        (currentRoute.value?.destination?.route != null &&
+                currentRoute.value?.destination?.route?.contains(Navigation.SearchPage.route)!!)) {
+        TopBarSearch(navController)
     } else {
         TopBarGeneric(navController)
     }
@@ -97,7 +98,8 @@ fun MainBottomBar(navController: NavHostController) {
                         contentDescription = stringResource(id = R.string.home))}
             )
             NavigationBarItem(
-                selected = currentNavigation.value?.destination?.route == Navigation.SearchPage.route,
+                selected = currentNavigation.value?.destination?.route != null &&
+                        currentNavigation.value?.destination?.route?.contains(Navigation.SearchPage.route)!!,
                 onClick = { navController.navigate(Navigation.SearchPage.route) },
                 icon = {
                     Icon(

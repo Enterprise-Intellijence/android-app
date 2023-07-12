@@ -180,7 +180,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                         isFollowing.value = false
                     }) {
                         Text(stringResource(id = R.string.unfollow),
-                            color = MaterialTheme.colorScheme.onSurface,)
+                            color = MaterialTheme.colorScheme.inverseOnSurface,)
                     }
                 } else {
                     Button(onClick = {
@@ -188,7 +188,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                         isFollowing.value = true
                     }) {
                         Text(stringResource(id = R.string.follow),
-                        color = MaterialTheme.colorScheme.onSurface,)
+                        color = MaterialTheme.colorScheme.inverseOnSurface,)
                     }
                 }
             } else {

@@ -1,5 +1,6 @@
 package com.enterprise.android_app.view.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,7 +45,7 @@ fun SellerRow(user: UserBasicDTO, onClick: () -> Unit ,onAskSellerClick: () -> U
             )
 
             Column(modifier = Modifier.padding(15.dp)) {
-                Text(text = user.username)
+                Text(text = user.username, Modifier.clickable { onClick() })
                 if (rating != null) {
                     RatingBar(
                         modifier = Modifier.padding(0.dp, 5.dp),

@@ -5,8 +5,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.navigation.NavHostController
 import com.enterprise.android_app.model.persistence.AppDatabase
 import com.enterprise.android_app.navigation.AppRouter
+import com.enterprise.android_app.navigation.Graph
 import com.enterprise.android_app.navigation.Screen
 import io.swagger.client.apis.UserControllerApi
 import io.swagger.client.models.AddressDTO
@@ -35,6 +38,12 @@ object CurrentDataUtils {
     private var _defaultAddress: MutableState<AddressDTO?> = mutableStateOf(null)
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
+    private var _mainGraphId = mutableStateOf(0)
+
+    var mainGraphId: Int
+        get() = _mainGraphId.value
+        set(newValue) { _mainGraphId.value = newValue }
+
 
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")

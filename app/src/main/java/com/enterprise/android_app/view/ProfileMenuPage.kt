@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
@@ -54,6 +55,8 @@ import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.model.CurrentDataUtils.visitedUser
+import com.enterprise.android_app.navigation.Graph
+import com.enterprise.android_app.navigation.MainPageGraph
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.navigation.Screen

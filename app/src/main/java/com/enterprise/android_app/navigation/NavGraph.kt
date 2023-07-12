@@ -46,6 +46,7 @@ fun NavGraph(navController: NavHostController) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.startGraph(navController: NavHostController) {
     navigation(
         startDestination = Screen.StartScreen.route,
@@ -56,6 +57,7 @@ fun NavGraphBuilder.startGraph(navController: NavHostController) {
         composable(Screen.LoginScreen.route) { LoginPage(navController) }
         composable(Screen.SignUpScreen.route) { SignUpPage(navController) }
     }
+
 }
 
 @Composable
@@ -68,8 +70,13 @@ fun MainPageGraph(navController: NavHostController) {
     ) {
         composable(Navigation.HomePage.route) { HomePage(navController) }
         composable(Navigation.SearchPage.route + "?query={query}",
-            arguments = listOf(navArgument("query") { nullable = true; defaultValue = null} )
-        ) { backStackEntry ->  SearchPage(navController, backStackEntry.arguments?.getString("query")) }
+            arguments = listOf(navArgument("query") { nullable = true; defaultValue = null })
+        ) { backStackEntry ->
+            SearchPage(
+                navController,
+                backStackEntry.arguments?.getString("query")
+            )
+        }
         composable(Navigation.MessagesPage.route) { MessagesPage(navController) }
         composable(Navigation.ProfileMenuPage.route) { ProfileMenuPage(navController) }
         composable(
@@ -90,7 +97,10 @@ fun MainPageGraph(navController: NavHostController) {
             Navigation.ProductScreen.route + "?productId={productId}",
             arguments = listOf(navArgument("productId") {})
         ) { backStackEntry ->
-            ProductScreen(navController = navController, productId = backStackEntry.arguments?.getString("productId")!!)
+            ProductScreen(
+                navController = navController,
+                productId = backStackEntry.arguments?.getString("productId")!!
+            )
         }
         composable(
             Navigation.EditProductPage.route + "?productId={productId}",
@@ -100,7 +110,7 @@ fun MainPageGraph(navController: NavHostController) {
         }
         composable(
             Navigation.NewProductPage.route + "?productId={productId}",
-            arguments = listOf(navArgument("productId") {defaultValue = ""})
+            arguments = listOf(navArgument("productId") { defaultValue = "" })
         ) { backStackEntry ->
             NewProductPage(navController, backStackEntry.arguments?.getString("productId")!!)
         }
@@ -110,14 +120,23 @@ fun MainPageGraph(navController: NavHostController) {
         // composable(Navigation.ImageSelectorComponent.route) { ImageSelectorComponent(navController) }
         composable(Navigation.ProfileDetailsPage.route) { ProfileDetailsPage(navController) }
         composable(Navigation.AddEditShippingScreen.route) { AddEditShippingScreen(navController) }
-        composable(Navigation.AddEditPaymentMethodScreen.route){ AddEditPaymentMethodScreen(navController)}
+        composable(Navigation.AddEditPaymentMethodScreen.route) {
+            AddEditPaymentMethodScreen(
+                navController
+            )
+        }
         composable(
             Navigation.SingleOrderPage.route + "?orderId={orderId}",
             arguments = listOf(navArgument("orderId") {})
         ) { backStackEntry ->
-            SingleOrderPage(navController = navController, orderId = backStackEntry.arguments?.getString("orderId")!!)
+            SingleOrderPage(
+                navController = navController,
+                orderId = backStackEntry.arguments?.getString("orderId")!!
+            )
         }
+
     }
+
 }
 
 object Graph {

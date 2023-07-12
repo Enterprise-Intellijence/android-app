@@ -645,8 +645,8 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
      * @return ProductsIdBody
      */
     @Suppress("UNCHECKED_CAST")
-    fun updateProduct(body: ProductsIdBody, id: kotlin.String): ProductsIdBody {
-        val localVariableBody: kotlin.Any? = body
+    fun updateProduct(body: ProductDTO, id: kotlin.String): ProductDTO {
+        val localVariableBody: ProductDTO = body
         val localVariableConfig = RequestConfig(
                 RequestMethod.PUT,
                 "/api/v1/products/{id}".replace("{" + "id" + "}", "$id")
@@ -656,7 +656,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ProductsIdBody
+            ResponseType.Success -> (response as Success<*>).data as ProductDTO
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

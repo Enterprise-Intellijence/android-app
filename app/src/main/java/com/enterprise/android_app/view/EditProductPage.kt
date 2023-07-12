@@ -24,11 +24,14 @@ fun EditProductPage(navController: NavHostController, productId: String) {
         Row() {
             Spacer(modifier = Modifier.weight(1f))
 
-            // TODO: da validare
             Button(onClick = {
-                editProductPageViewModel.deleteProduct(productId)
-                mToast(context, "Product deleted")
-                navController.navigate(Navigation.HomePage.route)},
+                val deleted = editProductPageViewModel.deleteProduct(productId)
+                if(deleted) {
+                    mToast(context, "Product deleted")
+                    navController.navigate(Navigation.HomePage.route)
+                }
+                else mToast(context, "Can't delete product with orders active")
+                },
             modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = "Delete product")
             }

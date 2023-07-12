@@ -50,9 +50,7 @@ fun MainScreen() {
 
                 MainPageGraph(navController = navController)
 
-                BackHandler {
-                    navController.popBackStack()
-                }
+                BackHandler { navController.popBackStack() }
             }
         }
     )

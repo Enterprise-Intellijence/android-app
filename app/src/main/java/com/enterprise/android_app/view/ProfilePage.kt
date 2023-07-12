@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -40,12 +42,14 @@ import coil.transform.RoundedCornersTransformation
 import com.enterprise.android_app.R
 import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.Navigation
+import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.view.components.Closet
 import com.enterprise.android_app.view.components.Reviews
 import com.enterprise.android_app.view_models.ProfileViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cubes
+import compose.icons.fontawesomeicons.solid.ExclamationCircle
 import compose.icons.fontawesomeicons.solid.PencilAlt
 
 @Composable
@@ -167,7 +171,8 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 5.dp)
+                .padding(top = 5.dp, end= 15.dp),
+            horizontalAlignment = Alignment.End
         ) {
 
             if (visitedUser.value?.id != CurrentDataUtils.currentUser?.id) {
@@ -183,12 +188,29 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                             color = MaterialTheme.colorScheme.inverseOnSurface,)
                     }
                 } else {
-                    Button(onClick = {
+                    Button(
+                        onClick = {
                         profileViewModel.follow()
                         isFollowing.value = true
                     }) {
                         Text(stringResource(id = R.string.follow),
                         color = MaterialTheme.colorScheme.inverseOnSurface,)
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(1f),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    IconButton(onClick = {
+                        navController.navigate(Navigation.ReportUserPage.route)
+                    }) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
+                            contentDescription = "report",
+                            tint = Secondary,
+                            modifier = Modifier.height(20.dp)
+                        )
                     }
                 }
             } else {

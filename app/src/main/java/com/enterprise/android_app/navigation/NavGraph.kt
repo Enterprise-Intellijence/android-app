@@ -80,8 +80,7 @@ fun MainPageGraph(navController: NavHostController) {
         }
         composable(Navigation.MessagesPage.route) { MessagesPage(navController) }
         composable(Navigation.ProfileMenuPage.route) { ProfileMenuPage(navController) }
-        composable(
-            Navigation.ProfilePage.route + "?visitedUserId={visitedUserId}",
+        composable(Navigation.ProfilePage.route + "?visitedUserId={visitedUserId}",
             arguments = listOf(navArgument("visitedUserId") {})
         ) { backStackEntry ->
             ProfilePage(navController, backStackEntry.arguments?.getString("visitedUserId")!!)

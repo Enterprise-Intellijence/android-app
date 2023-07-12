@@ -18,6 +18,8 @@ import com.enterprise.android_app.view.MessagesPage
 import com.enterprise.android_app.view.ProfileMenuPage
 import com.enterprise.android_app.view.ProfilePage
 import com.enterprise.android_app.view.PurchasePage
+import com.enterprise.android_app.view.ReportProductPage
+import com.enterprise.android_app.view.ReportUserPage
 import com.enterprise.android_app.view.SearchPage
 import com.enterprise.android_app.view.SelectAddressPage
 import com.enterprise.android_app.view.SelectPaymentMethodPage
@@ -74,15 +76,11 @@ fun MainPageGraph(navController: NavHostController) {
         composable(Navigation.SearchPage.route + "?query={query}",
             arguments = listOf(navArgument("query") { nullable = true; defaultValue = null })
         ) { backStackEntry ->
-            SearchPage(
-                navController,
-                backStackEntry.arguments?.getString("query")
-            )
+            SearchPage(navController, backStackEntry.arguments?.getString("query"))
         }
         composable(Navigation.MessagesPage.route) { MessagesPage(navController) }
         composable(Navigation.ProfileMenuPage.route) { ProfileMenuPage(navController) }
-        composable(
-            Navigation.ProfilePage.route + "?visitedUserId={visitedUserId}",
+        composable(Navigation.ProfilePage.route + "?visitedUserId={visitedUserId}",
             arguments = listOf(navArgument("visitedUserId") {})
         ) { backStackEntry ->
             ProfilePage(navController, backStackEntry.arguments?.getString("visitedUserId")!!)
@@ -99,10 +97,7 @@ fun MainPageGraph(navController: NavHostController) {
             Navigation.ProductScreen.route + "?productId={productId}",
             arguments = listOf(navArgument("productId") {})
         ) { backStackEntry ->
-            ProductScreen(
-                navController = navController,
-                productId = backStackEntry.arguments?.getString("productId")!!
-            )
+            ProductScreen(navController, backStackEntry.arguments?.getString("productId")!!)
         }
         composable(
             Navigation.EditProductPage.route + "?productId={productId}",
@@ -122,19 +117,24 @@ fun MainPageGraph(navController: NavHostController) {
         // composable(Navigation.ImageSelectorComponent.route) { ImageSelectorComponent(navController) }
         composable(Navigation.ProfileDetailsPage.route) { ProfileDetailsPage(navController) }
         composable(Navigation.AddEditShippingScreen.route) { AddEditShippingScreen(navController) }
-        composable(Navigation.AddEditPaymentMethodScreen.route) {
-            AddEditPaymentMethodScreen(
-                navController
-            )
-        }
+        composable(Navigation.AddEditPaymentMethodScreen.route) { AddEditPaymentMethodScreen(navController) }
         composable(
             Navigation.SingleOrderPage.route + "?orderId={orderId}",
             arguments = listOf(navArgument("orderId") {})
         ) { backStackEntry ->
-            SingleOrderPage(
-                navController = navController,
-                orderId = backStackEntry.arguments?.getString("orderId")!!
-            )
+            SingleOrderPage(navController,backStackEntry.arguments?.getString("orderId")!!)
+        }
+        composable(
+            Navigation.ReportUserPage.route + "?reportedUserId={reportedUserId}",
+            arguments = listOf(navArgument("reportedUserId") { defaultValue = "" })
+        ) { backStackEntry ->
+            ReportUserPage(navController, backStackEntry.arguments?.getString("reportedUserId")!!)
+        }
+        composable(
+            Navigation.ReportProductPage.route + "?reportedProductId={reportedProductId}",
+            arguments = listOf(navArgument("reportedProductId") { defaultValue = "" })
+        ) { backStackEntry ->
+            ReportProductPage(navController, backStackEntry.arguments?.getString("reportedProductId")!!)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.enterprise.android_app.model
 
 import android.app.Application
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -53,8 +54,6 @@ object CurrentDataUtils {
     var accessToken: String
         get() = _accessToken.value
         set(newValue) { _accessToken.value = newValue }
-
-
 
     val showLoadingScreen: MutableState<Boolean>
         get() = _showLoadingScreen

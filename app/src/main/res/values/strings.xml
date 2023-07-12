@@ -108,4 +108,6 @@
     <string name="passwordMissmatch">Passwords don\'t match</string>
     <string name="bioNotUpdated">Bio not updated</string>
     <string name="conversations">Messages</string>
+    <string name="paymentUpdated">Payment inserted</string>
+    <string name="paymentNotUpdated">Payment not updated</string>
 </resources>

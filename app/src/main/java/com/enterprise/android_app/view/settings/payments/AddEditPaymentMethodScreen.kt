@@ -39,6 +39,7 @@ import com.enterprise.android_app.model.CurrentDataUtils
 import com.enterprise.android_app.navigation.MainRouter
 import com.enterprise.android_app.navigation.Navigation
 import com.enterprise.android_app.ui.theme.TransparentGreenButton
+import com.enterprise.android_app.view.settings.profiles.mToast
 import com.enterprise.android_app.view_models.PaymentViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -59,6 +60,24 @@ fun AddEditPaymentMethodScreen(navController: NavHostController) {
     val expireDate= remember { mutableStateOf(payment.value?.expiryDate ?: LocalDate.now()) }
     val ownerText= remember { mutableStateOf(payment.value?.owner ?: "") }
     val isDefaultBoolean = remember { mutableStateOf((payment.value?.isDefault ?: false) as Boolean) }
+
+    val mContext = LocalContext.current
+    val mText = stringResource(id = R.string.paymentUpdated)
+    val notUpdated = stringResource(id = R.string.paymentNotUpdated)
+    val updated = paymentViewModel.updated
+
+    val localUpdate = paymentViewModel.localUpdated
+
+    if(localUpdate.value){
+        localUpdate.value = false
+        if(updated.value){
+            mToast(mContext, mText)
+
+        }
+        else{
+            mToast(mContext, notUpdated)
+        }
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier
@@ -104,6 +123,13 @@ fun AddEditPaymentMethodScreen(navController: NavHostController) {
             )
             showDatePicker(context = LocalContext.current as Activity, date = expireDate)
         }
+        Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
+        ) {
+            Text(text = stringResource(id = R.string.setAsDefault))
+            RadioButton(selected = isDefaultBoolean.value, onClick = { isDefaultBoolean.value = !isDefaultBoolean.value })
+        }
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -132,18 +158,13 @@ fun AddEditPaymentMethodScreen(navController: NavHostController) {
                         )
 
                     }
+                    navController.navigate(Navigation.PaymentsPage.route)
                 },
                 buttonName = if(payment.value?.id!=null)"Edit" else "Create"
             )
         }
         //Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 40.dp, bottom = 15.dp)
-        ) {
-            Text(text = stringResource(id = R.string.setAsDefault))
-            RadioButton(selected = isDefaultBoolean.value, onClick = { isDefaultBoolean.value = !isDefaultBoolean.value })
-        }
+
 
 
 
@@ -154,25 +175,8 @@ fun AddEditPaymentMethodScreen(navController: NavHostController) {
 @Composable
 fun showDatePicker(context: Context, date: MutableState<LocalDate> ){
 
-/*    val year: Int
-    val month: Int
-    val day: Int
-
-    val calendar = Calendar.getInstance()
-    year = calendar.get(date.value.year)
-    month = calendar.get(date.value.month.value)
-    day = calendar.get(date.value.dayOfMonth)
-    calendar.time = Date()*/
     val calendar = Calendar.getInstance()
     calendar.time = Date.from(date.value.atStartOfDay().toInstant(java.time.ZoneOffset.UTC))
-
-/*
-    val datePickerDialog = DatePickerDialog(
-        context,
-        {_: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = LocalDate.of(year,month,dayOfMonth) *//*"$dayOfMonth/$month/$year"*//*
-        }, year, month, day
-    )*/
 
     val datePickerDialog = DatePickerDialog(
         context,
@@ -183,15 +187,6 @@ fun showDatePicker(context: Context, date: MutableState<LocalDate> ){
         calendar.get(Calendar.MONTH),
         calendar.get(Calendar.DAY_OF_MONTH)
     )
-
-/*    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
-    ) {*/
-
-        //Text(text = "Selected Date: ${date.value}")
-        //Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
         }) {

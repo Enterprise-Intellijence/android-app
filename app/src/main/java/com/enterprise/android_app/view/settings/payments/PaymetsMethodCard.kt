@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -42,6 +44,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Calendar
 import compose.icons.fontawesomeicons.solid.Edit
+import compose.icons.fontawesomeicons.solid.PeopleArrows
 import compose.icons.fontawesomeicons.solid.PersonBooth
 import compose.icons.fontawesomeicons.solid.Trash
 import io.swagger.client.models.PaymentMethodDTO
@@ -51,6 +54,8 @@ fun PaymentsMethodCard(navController: NavController,payment: MutableState<Paymen
     val paymentViewModel = PaymentViewModel()
 
     val mContext = LocalContext.current
+
+
 
     Card(
         modifier = Modifier
@@ -107,17 +112,21 @@ fun PaymentsMethodCard(navController: NavController,payment: MutableState<Paymen
 
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(imageVector = FontAwesomeIcons.Solid.Calendar,
-                    contentDescription = "Phone Number",
-                    modifier = Modifier.height(12.dp))
-                Text(text = stringResource(id = R.string.expDate)+" ${payment.value?.expiryDate}")
+                Text(
+                    text = stringResource(id = R.string.expDate ),
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Text(text = payment.value?.expiryDate.toString())
 
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(imageVector = FontAwesomeIcons.Solid.PersonBooth,
-                    contentDescription = "Owner",
-                    modifier = Modifier.height(12.dp))
-                Text(text = stringResource(id = R.string.owner)+" ${payment.value?.owner}")
+                Text(
+                    text = stringResource(id = R.string.owner ),
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                payment.value?.owner?.let { Text(text = it) }
 
             }
             if(payment.value?.isDefault==true){

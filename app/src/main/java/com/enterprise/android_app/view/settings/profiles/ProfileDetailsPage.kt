@@ -62,6 +62,7 @@ import com.enterprise.android_app.view_models.UserViewModel
 fun ProfileDetailsPage(navController: NavHostController) {
 
 
+    val context = LocalContext.current
     val userViewModel = remember {
         UserViewModel()
     }
@@ -117,7 +118,22 @@ fun ProfileDetailsPage(navController: NavHostController) {
                         .padding(0.dp)
                 )
                 ImageSelectorComponent(onChange = { uri, stream ->
-                    imageViewModel.saveChange(uri, stream!!)
+                    if(user.value?.photoProfile != null && user.value?.photoProfile?.urlPhoto!= "") {
+                        val updated = imageViewModel.updateUserImage(uri, stream!!)
+                        if(updated) {
+                            mToast(context, "User image updated")
+                            // TODO: prendere la nuova immagine e mostrarla
+                        }
+                        else mToast(context, "Error on update of user image")
+                    }
+                    else {
+                        val saved = imageViewModel.saveImage(uri, stream!!)
+                        if(saved) {
+                            mToast(context, "User image saved")
+                            // TODO: prendere la nuova immagine e mostrarla
+                        }
+                        else mToast(context, "Error on save of user image")
+                    }
                 })
                 /*Row() {
                     Column(modifier = Modifier

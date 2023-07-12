@@ -64,6 +64,22 @@ class ProfileViewModel() : ViewModel() {
         }
     }
 
+    fun loadNextProductPageForVisitedUser() {
+        coroutineScope.launch {
+            try {
+                val newProducts = withContext(Dispatchers.IO) {
+                    productControllerApi.getFilteredProducts(userId = visitedUser.value?.id!!, page = currentProductPage)
+                }
+                val productsToAdd = newProducts.content?.toList() ?: emptyList()
+                productList.addAll(productsToAdd)
+                currentProductPage++
+                areProducts.value = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     fun loadNextReviewPage() {
         coroutineScope.launch {
             try {

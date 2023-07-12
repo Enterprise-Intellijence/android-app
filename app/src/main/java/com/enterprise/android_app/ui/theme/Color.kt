@@ -16,7 +16,7 @@ val DarkGreen = Color(0xFF023020)
 
 
 val md_theme_light_primary = Color(0xFF6750A4)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_onPrimary = Color(0xFFEBE2FA)
 val md_theme_light_primaryContainer = Color(0xFFEADDFF)
 val md_theme_light_onPrimaryContainer = Color(0xFF21005D)
 val md_theme_light_secondary = Color(0xFF625B71)

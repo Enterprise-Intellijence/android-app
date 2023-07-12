@@ -651,7 +651,7 @@ class ProductControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiCl
                 RequestMethod.PUT,
                 "/api/v1/products/{id}".replace("{" + "id" + "}", "$id")
         )
-        val response = request<ProductsIdBody>(
+        val response = request<ProductDTO>(
                 localVariableConfig, localVariableBody
         )
 

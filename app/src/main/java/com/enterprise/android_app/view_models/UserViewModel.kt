@@ -26,6 +26,7 @@ class UserViewModel(): ViewModel() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     public val updated : MutableState<Boolean> = mutableStateOf(false)
     val localUpdated: MutableState<Boolean> = mutableStateOf(false)
+    val logoutRequired: MutableState<Boolean> = mutableStateOf(false)
 
     //val for the DB
     //private val _application = application
@@ -58,16 +59,43 @@ class UserViewModel(): ViewModel() {
         coroutineScope.launch {
             try{
                 withContext(Dispatchers.IO){
-                    if (oldPassword!="" && newPassword!="")
-                        userControllerApi.changePassword(oldPassword = oldPassword,newPassword = newPassword)
+                    userControllerApi.changePassword(oldPassword = oldPassword,newPassword = newPassword)
+
                 }
+                updated.value = true
+
             } catch (e: java.lang.Exception){
+                updated.value = false
                 e.printStackTrace()
             }
+            logoutRequired.value = true
 
         }
     }
 
+    fun changeUsername(userDTO: UserDTO) {
+
+        coroutineScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    userControllerApi.updateUser(userDTO,userDTO.id)
+                    CurrentDataUtils.logout()
+
+
+                }
+                CurrentDataUtils.retrieveCurrentUser()
+                updated.value = true
+
+
+            } catch (e: Exception) {
+                updated.value = false
+                e.printStackTrace()
+            }
+            localUpdated.value = true
+        }
+
+
+    }
 
 
 

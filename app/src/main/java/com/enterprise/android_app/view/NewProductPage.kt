@@ -400,7 +400,7 @@ fun ImagesContainer(imageUri: List<Uri?>, onDelete: (Uri) -> Unit) {
 
                 } else {
                     val source = ImageDecoder
-                        .createSource(context.contentResolver,it)
+                        .createSource(context.contentResolver, it)
                     bitmap.value = ImageDecoder.decodeBitmap(source)
                 }
 

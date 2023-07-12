@@ -186,32 +186,35 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                 }
                 item {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                        Button(
-                            onClick = {
-                                if (UserServices.isProductLiked(product.id!!)) {
-                                    UserServices.removeLikedProduct(product.id!!)
-                                } else {
-                                    UserServices.addLikedProduct(product.id!!)
-                                }
-                            },
-                            colors = ButtonDefaults.outlinedButtonColors(),
-                            shape = RectangleShape,
-                            modifier = Modifier
-                                .weight(1f)
-                                .heightIn(min = 54.dp)
-                                .border(
-                                    0.dp,
-                                    Color.Transparent
+                        if (product?.seller?.id!! != CurrentDataUtils.currentUser?.id){
+                            Button(
+                                onClick = {
+                                    if (UserServices.isProductLiked(product.id!!)) {
+                                        UserServices.removeLikedProduct(product.id!!)
+                                    } else {
+                                        UserServices.addLikedProduct(product.id!!)
+                                    }
+                                },
+                                colors = ButtonDefaults.outlinedButtonColors(),
+                                shape = RectangleShape,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .heightIn(min = 54.dp)
+                                    .border(
+                                        0.dp,
+                                        Color.Transparent
+                                    )
+                            ) {
+
+                                Icon(
+                                    if (UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                    contentDescription = "Favourite",
+                                    modifier = Modifier.padding(end = 5.dp)
                                 )
-                        ) {
-                            Icon(
-                                if (UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                                contentDescription = "Favourite",
-                                modifier = Modifier.padding(end = 5.dp)
-                            )
-                            Text(text = stringResource(id = R.string.favourite))
-                        }
+                                Text(text = stringResource(id = R.string.favourite))
+                            }
                         VerticalDivider(color = Color.Gray)
+                    }
                         Button(
                             onClick = {
                                 val url = productPageViewModel.getProductShareLink(product)

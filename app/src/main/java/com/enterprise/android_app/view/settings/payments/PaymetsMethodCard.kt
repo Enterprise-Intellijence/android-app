@@ -93,7 +93,7 @@ fun PaymentsMethodCard(navController: NavController,payment: MutableState<Paymen
                         IconButton(
                             onClick = {
                                 payment.value?.id?.let { paymentViewModel.deletePayment(it) }
-
+                                navController.navigate(Navigation.PaymentsPage.route)
                             }
 
                         ) {

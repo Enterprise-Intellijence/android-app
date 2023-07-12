@@ -10,15 +10,17 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import io.swagger.client.models.OrderBasicDTO
-import io.swagger.client.models.OrderDTO
 
 
 @Composable
 fun LazyGridOrderCard(
     orders: SnapshotStateList<OrderBasicDTO>,
     lazyGridState: LazyGridState,
-    onLoadMore: () -> Unit
+    onLoadMore: () -> Unit,
+    navController: NavHostController,
+    function: () -> Unit
 
 ){
     LazyVerticalGrid(
@@ -29,7 +31,7 @@ fun LazyGridOrderCard(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
         itemsIndexed(orders){ index, order ->
-            OrderCard(order = order)
+            OrderCard(order = order, navController )
             val contentSize = orders.size
             if (index == contentSize - 1 && lazyGridState.firstVisibleItemIndex + lazyGridState.layoutInfo.visibleItemsInfo.size >= contentSize){
                 onLoadMore()

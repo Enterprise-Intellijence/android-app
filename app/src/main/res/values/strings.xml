@@ -106,4 +106,5 @@
     <string name="repeatNewPassword">Repeat new password</string>
     <string name="passwordTooShort">Password too short</string>
     <string name="passwordMissmatch">Passwords don\'t match</string>
+    <string name="conversations">Messages</string>
 </resources>

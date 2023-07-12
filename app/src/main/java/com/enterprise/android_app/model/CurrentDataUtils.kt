@@ -35,6 +35,8 @@ object CurrentDataUtils {
     private var _defaultAddress: MutableState<AddressDTO?> = mutableStateOf(null)
     private var _currentAddresses = mutableStateListOf<AddressDTO>()
     private var _defaultPaymentMethod: MutableState<PaymentMethodDTO?> = mutableStateOf(null)
+    var inChat: MutableState<Boolean> = mutableStateOf(false)
+    val chatUser = mutableStateOf(null as UserBasicDTO?)
 
 
     private var _refreshTokenDB: MutableState<String> = mutableStateOf("")

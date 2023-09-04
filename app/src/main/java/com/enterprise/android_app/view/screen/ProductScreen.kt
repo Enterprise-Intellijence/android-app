@@ -65,6 +65,9 @@ import com.enterprise.android_app.view.components.SellerRow
 import com.enterprise.android_app.view.components.TabProductComponent
 import com.enterprise.android_app.view.components.VerticalDivider
 import com.enterprise.android_app.view_models.ProductPageViewModel
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.ExclamationCircle
 import io.swagger.client.models.ProductDTO
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -140,7 +143,6 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                                 .fillMaxWidth()
-                                .height(110.dp)
                         ) {
                             Button(
                                 onClick = {
@@ -177,7 +179,30 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                             ) {
                                 Text(text = stringResource(R.string.make_an_offer))
                             }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Button(
+                                onClick = {
+                                    navController.navigate(Navigation.ReportProductPage.route + "?reportedProductId=${productId}")
+                                },
+                                colors = ButtonDefaults.outlinedButtonColors(),
+                                modifier = Modifier
+                                    .height(45.dp)
+                                    .fillMaxWidth()
+                                    .padding(start = 20.dp, end = 20.dp)
+                                    .border(
+                                        1.dp,
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(7.dp)
+                                    ),
+                                shape = RoundedCornerShape(7.dp)
+                            ) {
+                                Text(text = stringResource(R.string.report_product))
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
 
@@ -186,13 +211,13 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                 }
                 item {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                        if (product?.seller?.id!! != CurrentDataUtils.currentUser?.id){
+                        if (product.seller.id!! != CurrentDataUtils.currentUser?.id){
                             Button(
                                 onClick = {
-                                    if (UserServices.isProductLiked(product.id!!)) {
-                                        UserServices.removeLikedProduct(product.id!!)
+                                    if (UserServices.isProductLiked(product.id)) {
+                                        UserServices.removeLikedProduct(product.id)
                                     } else {
-                                        UserServices.addLikedProduct(product.id!!)
+                                        UserServices.addLikedProduct(product.id)
                                     }
                                 },
                                 colors = ButtonDefaults.outlinedButtonColors(),
@@ -207,7 +232,7 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                             ) {
 
                                 Icon(
-                                    if (UserServices.isProductLiked(product.id!!)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                    if (UserServices.isProductLiked(product.id)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                     contentDescription = "Favourite",
                                     modifier = Modifier.padding(end = 5.dp)
                                 )

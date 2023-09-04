@@ -171,7 +171,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 5.dp, end= 15.dp),
+                .padding(top = 5.dp, end = 15.dp),
             horizontalAlignment = Alignment.End
         ) {
 
@@ -208,7 +208,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                         Icon(
                             imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
                             contentDescription = "report",
-                            tint = Secondary,
+                            tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.height(20.dp)
                         )
                     }

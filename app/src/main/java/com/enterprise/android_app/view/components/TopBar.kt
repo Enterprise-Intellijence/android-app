@@ -46,6 +46,7 @@ import com.enterprise.android_app.ui.theme.Secondary
 import com.enterprise.android_app.view.UserPictureAndName
 import com.enterprise.android_app.view_models.MessagePageViewModel
 import com.enterprise.android_app.view_models.ProfileViewModel
+import com.enterprise.android_app.view_models.ReportedViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
@@ -196,14 +197,6 @@ fun TopBarGeneric(navController: NavHostController) {
                             )
                         }
 
-                        route != null && route.contains(Navigation.ReportUserPage.route) -> {
-                            Text(
-                                text = stringResource(id = R.string.report_user),
-                                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-
                         route != null && route.contains(Navigation.MessagesPage.route) -> {
                             if (inChat.value) {
                                 chatUser.value?.let {
@@ -219,6 +212,17 @@ fun TopBarGeneric(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
+                        }
+
+                        route != null && route.contains(Navigation.ReportProductPage.route) -> {
+                            Text(
+                                text = "Report product" ,
+                                style = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = TextAlign.Center
+                            )
                         }
 
                         else -> Text(

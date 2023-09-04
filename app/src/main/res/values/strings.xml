@@ -111,5 +111,7 @@
     <string name="paymentUpdated">Payment inserted</string>
     <string name="paymentNotUpdated">Payment not updated</string>
     <string name="new_product">Add product</string>
-    <string name="report_user">Report User</string>
+    <string name="report">Report</string>
+    <string name="report_product">Report product</string>
+    <string name="report_placeholder">Write your report here</string>
 </resources>

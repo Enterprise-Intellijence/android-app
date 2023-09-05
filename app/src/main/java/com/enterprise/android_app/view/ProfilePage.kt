@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -203,7 +204,7 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                     horizontalAlignment = Alignment.End
                 ) {
                     IconButton(onClick = {
-                        navController.navigate(Navigation.ReportUserPage.route)
+                        navController.navigate(Navigation.ReportUserPage.route + "?reportedUserId=${visitedUser.value?.id}")
                     }) {
                         Icon(
                             imageVector = FontAwesomeIcons.Solid.ExclamationCircle,
@@ -215,7 +216,9 @@ fun ProfileInfo(profileViewModel: ProfileViewModel, navController: NavController
                 }
             } else {
                 Button(onClick = { navController.navigate(Navigation.ProfileDetailsPage.route)}) {
-                    Text(stringResource(id = R.string.edit_profile))
+                    Text(
+                        stringResource(id = R.string.edit_profile),
+                        fontSize = 12.sp,)
                 }
             }
         }

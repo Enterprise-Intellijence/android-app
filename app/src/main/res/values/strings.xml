@@ -114,4 +114,7 @@
     <string name="report">Report</string>
     <string name="report_product">Report product</string>
     <string name="report_placeholder">Write your report here</string>
+    <string name="report_text_limit_reached">Report description must be less than 200 characters</string>
+    <string name="report_start_name">"You are reporting product: "</string>
+    <string name="report_end_name">Make sure to write a meaningful report, your feedback is important for us!</string>
 </resources>

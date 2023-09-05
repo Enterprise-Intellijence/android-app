@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -65,9 +66,16 @@ import com.enterprise.android_app.view.components.SellerRow
 import com.enterprise.android_app.view.components.TabProductComponent
 import com.enterprise.android_app.view.components.VerticalDivider
 import com.enterprise.android_app.view_models.ProductPageViewModel
+import compose.icons.AllIcons
 import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.regular.ShareSquare
+import compose.icons.fontawesomeicons.solid.CommentDollar
 import compose.icons.fontawesomeicons.solid.ExclamationCircle
+import compose.icons.fontawesomeicons.solid.PencilAlt
+import compose.icons.fontawesomeicons.solid.ShareAlt
+import compose.icons.fontawesomeicons.solid.ShoppingCart
 import io.swagger.client.models.ProductDTO
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -116,7 +124,6 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                                 .fillMaxWidth()
-                                .height(110.dp)
                         ) {
                             Button(
                                 onClick = {
@@ -134,8 +141,56 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                     ),
                                 shape = RoundedCornerShape(7.dp)
                             ) {
+                                Icon(
+                                    FontAwesomeIcons.Solid.PencilAlt,
+                                    contentDescription = "Buy now",
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .size(20.dp)
+                                )
                                 Text(text = stringResource(R.string.edit))
                             }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(
+                            onClick = {
+                                val url = productPageViewModel.getProductShareLink(product)
+                                val text = "Hey, check out this product on Svinted: ${product.title} for ${product.productCost.price} ${product.productCost.currency}\n\n$url"
+
+
+
+                                val sendIntent: Intent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, text)
+                                    type = "text/plain"
+                                }
+                                val shareIntent = Intent.createChooser(sendIntent, null)
+
+                                ContextCompat.startActivity(context, shareIntent, null)
+
+                            },
+                            colors = ButtonDefaults.outlinedButtonColors(),
+                            modifier = Modifier
+                                .height(45.dp)
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, end = 20.dp)
+                                .border(
+                                    1.dp,
+                                    MaterialTheme.colorScheme.primary,
+                                    RoundedCornerShape(7.dp)
+                                ),
+                            shape = RoundedCornerShape(7.dp)
+                        ) {
+                            Icon(
+                                FontAwesomeIcons.Solid.ShareAlt,
+                                contentDescription = "Share",
+                                modifier = Modifier
+                                    .padding(end = 5.dp)
+                                    .size(20.dp)
+                            )
+                            Text(text = stringResource(R.string.share))
                         }
                     }
                 } else {
@@ -154,10 +209,18 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                     .padding(start = 20.dp, end = 20.dp),
                                 shape = RoundedCornerShape(7.dp)
                             ) {
+                                Icon(
+                                    FontAwesomeIcons.Solid.ShoppingCart,
+                                    contentDescription = "Buy now",
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .size(20.dp)
+                                )
                                 Text(text = stringResource(R.string.buy_now))
                             }
 
                             Spacer(modifier = Modifier.height(10.dp))
+
                             Button(
                                 onClick = {
                                     CurrentDataUtils.chatUserId.value = product.seller.id
@@ -177,14 +240,58 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                     ),
                                 shape = RoundedCornerShape(7.dp)
                             ) {
+                                Icon(
+                                    FontAwesomeIcons.Solid.CommentDollar,
+                                    contentDescription = "Buy now",
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .size(20.dp)
+                                )
                                 Text(text = stringResource(R.string.make_an_offer))
                             }
 
                             Spacer(modifier = Modifier.height(10.dp))
 
+                            if (product.seller.id != CurrentDataUtils.currentUser?.id) {
+                                Button(
+                                    onClick = {
+                                        navController.navigate(Navigation.ReportProductPage.route + "?reportedProductId=${productId}")
+                                    },
+                                    colors = ButtonDefaults.outlinedButtonColors(),
+                                    modifier = Modifier
+                                        .height(45.dp)
+                                        .fillMaxWidth()
+                                        .padding(start = 20.dp, end = 20.dp)
+                                        .border(
+                                            1.dp,
+                                            MaterialTheme.colorScheme.primary,
+                                            RoundedCornerShape(7.dp)
+                                        ),
+                                    shape = RoundedCornerShape(7.dp)
+                                ) {
+
+                                    Icon(
+                                        FontAwesomeIcons.Solid.ExclamationCircle,
+                                        contentDescription = "Buy now",
+                                        modifier = Modifier
+                                            .padding(end = 5.dp)
+                                            .size(20.dp)
+                                    )
+                                    Text(text = stringResource(R.string.report_product))
+                                }
+                            }
+                        }
+
+
+                        if (product.seller.id != CurrentDataUtils.currentUser?.id){
+                            Spacer(modifier = Modifier.height(10.dp))
                             Button(
                                 onClick = {
-                                    navController.navigate(Navigation.ReportProductPage.route + "?reportedProductId=${productId}")
+                                    if (UserServices.isProductLiked(product.id)) {
+                                        UserServices.removeLikedProduct(product.id)
+                                    } else {
+                                        UserServices.addLikedProduct(product.id)
+                                    }
                                 },
                                 colors = ButtonDefaults.outlinedButtonColors(),
                                 modifier = Modifier
@@ -198,84 +305,61 @@ fun ProductScreen(navController: NavHostController, productId: String) {
                                     ),
                                 shape = RoundedCornerShape(7.dp)
                             ) {
-                                Text(text = stringResource(R.string.report_product))
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
-                }
-
-                item {
-                    Divider(Modifier.fillMaxWidth(), color = Color.Gray)
-                }
-                item {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                        if (product.seller.id!! != CurrentDataUtils.currentUser?.id){
-                            Button(
-                                onClick = {
-                                    if (UserServices.isProductLiked(product.id)) {
-                                        UserServices.removeLikedProduct(product.id)
-                                    } else {
-                                        UserServices.addLikedProduct(product.id)
-                                    }
-                                },
-                                colors = ButtonDefaults.outlinedButtonColors(),
-                                shape = RectangleShape,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .heightIn(min = 54.dp)
-                                    .border(
-                                        0.dp,
-                                        Color.Transparent
-                                    )
-                            ) {
 
                                 Icon(
                                     if (UserServices.isProductLiked(product.id)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                     contentDescription = "Favourite",
-                                    modifier = Modifier.padding(end = 5.dp)
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .size(20.dp)
                                 )
                                 Text(text = stringResource(id = R.string.favourite))
                             }
-                        VerticalDivider(color = Color.Gray)
-                    }
-                        Button(
-                            onClick = {
-                                val url = productPageViewModel.getProductShareLink(product)
-                                val text = "Hey, check out this product on Svinted: ${product.title} for ${product.productCost.price} ${product.productCost.currency}\n\n$url"
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Button(
+                                onClick = {
+                                    val url = productPageViewModel.getProductShareLink(product)
+                                    val text = "Hey, check out this product on Svinted: ${product.title} for ${product.productCost.price} ${product.productCost.currency}\n\n$url"
 
 
 
-                                val sendIntent: Intent = Intent().apply {
-                                    action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, text)
-                                    type = "text/plain"
-                                }
-                                val shareIntent = Intent.createChooser(sendIntent, null)
+                                    val sendIntent: Intent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(Intent.EXTRA_TEXT, text)
+                                        type = "text/plain"
+                                    }
+                                    val shareIntent = Intent.createChooser(sendIntent, null)
 
-                                ContextCompat.startActivity(context, shareIntent, null)
+                                    ContextCompat.startActivity(context, shareIntent, null)
 
-                            },
-                            colors = ButtonDefaults.outlinedButtonColors(),
-                            shape = RectangleShape,
-                            modifier = Modifier
-                                .weight(1f)
-                                .heightIn(min = 54.dp)
-                                .border(
-                                    0.dp,
-                                    Color.Transparent
+                                },
+                                colors = ButtonDefaults.outlinedButtonColors(),
+                                modifier = Modifier
+                                    .height(45.dp)
+                                    .fillMaxWidth()
+                                    .padding(start = 20.dp, end = 20.dp)
+                                    .border(
+                                        1.dp,
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(7.dp)
+                                    ),
+                                shape = RoundedCornerShape(7.dp)
+                            ) {
+                                Icon(
+                                    FontAwesomeIcons.Solid.ShareAlt,
+                                    contentDescription = "Share",
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .size(20.dp)
                                 )
-                        ) {
-                            Icon(
-                                Icons.Filled.Share,
-                                contentDescription = "Share",
-                                modifier = Modifier.padding(end = 5.dp)
-                            )
-                            Text(text = stringResource(R.string.share))
+                                Text(text = stringResource(R.string.share))
+                            }
                         }
                     }
                 }
+
                 item {
                     Box(
                         modifier = Modifier

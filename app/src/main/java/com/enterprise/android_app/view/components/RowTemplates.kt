@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.enterprise.android_app.R
 import com.enterprise.android_app.controller.models.FilterOptions
@@ -63,10 +64,12 @@ fun SellerRow(user: UserBasicDTO, onClick: () -> Unit ,onAskSellerClick: () -> U
             Button(
                 onClick = onAskSellerClick,
                 modifier = Modifier
-                    .padding(end = 25.dp, start = 55.dp)
+                    .padding(end = 25.dp, start = 50.dp)
                     .weight(1f)
             ) {
-                Text(text = stringResource(id = R.string.ask_seller))
+                Text(
+                    text = stringResource(id = R.string.ask_seller),
+                fontSize = 12.sp)
             }
         }
     }

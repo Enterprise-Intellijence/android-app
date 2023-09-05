@@ -17,15 +17,18 @@ import kotlinx.coroutines.withContext
 class ReportedViewModel(): ViewModel() {
 
     val ReportControllerApi: ReportControllerApi = ReportControllerApi()
-    val reportedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     val userControllerApi: UserControllerApi = UserControllerApi()
     val productControllerApi: ProductControllerApi = ProductControllerApi()
+    private var _reportedUser: MutableState<UserBasicDTO?> = mutableStateOf(null)
     private var _reportedProduct: MutableState<ProductDTO?> = mutableStateOf(null)
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     val reportedProduct: ProductDTO?
         get() = _reportedProduct.value
+
+    val reportedUser: UserBasicDTO?
+        get() = _reportedUser.value
 
     fun report(report: ReportDTO) {
         coroutineScope.launch {
@@ -40,12 +43,9 @@ class ReportedViewModel(): ViewModel() {
     }
 
     fun loadReportedUser(userId: String) {
-        coroutineScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                val newReportedUser = withContext(Dispatchers.IO) {
-                    userControllerApi.userById(userId)
-                }
-                reportedUser.value = newReportedUser
+                _reportedUser.value = userControllerApi.userById(userId)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -11,8 +11,8 @@
  */
 package io.swagger.client.models
 
-import io.swagger.client.models.ProductBasicDTO
 import io.swagger.client.models.UserBasicDTO
+import java.time.LocalDateTime
 
 /**
  * 
@@ -26,15 +26,15 @@ import io.swagger.client.models.UserBasicDTO
  * @param status 
  * @param adminFollowedReport 
  */
-data class ReportDTO (
+data class ReportDTO(
 
-    val id: kotlin.String? = null,
+    val id: String? = null,
     val reporterUser: UserBasicDTO? = null,
-    val description: kotlin.String? = null,
+    val description: String? = null,
     val reportedUser: UserBasicDTO? = null,
-    val reportedProduct: ProductBasicDTO? = null,
-    val date: java.time.LocalDateTime? = null,
-    val lastUpdate: java.time.LocalDateTime? = null,
+    val reportedProduct: ProductDTO? = null,
+    val date: LocalDateTime? = null,
+    val lastUpdate: LocalDateTime? = null,
     val status: Status? = null,
     val adminFollowedReport: UserBasicDTO? = null
 ) {

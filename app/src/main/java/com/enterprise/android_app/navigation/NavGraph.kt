@@ -139,7 +139,7 @@ fun MainPageGraph(navController: NavHostController) {
         }
         composable(
             Navigation.ReportUserPage.route + "?reportedUserId={reportedUserId}",
-            arguments = listOf(navArgument("reportedUserId") { defaultValue = "" })
+            arguments = listOf(navArgument("reportedUserId") {})
         ) { backStackEntry ->
             ReportUserPage(navController, backStackEntry.arguments?.getString("reportedUserId")!!)
         }

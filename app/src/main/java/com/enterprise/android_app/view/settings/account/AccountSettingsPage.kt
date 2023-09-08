@@ -30,6 +30,11 @@ fun AccountSettingsPage(navController: NavController){
             ChangePasswordComponent(navController)
         }
 
+        Row(modifier = Modifier.padding(bottom = 10.dp)) {
+            StatusComponent(navController)
+        }
+
+
     }
 
 }

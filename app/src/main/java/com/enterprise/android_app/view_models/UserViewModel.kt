@@ -71,6 +71,17 @@ class UserViewModel(): ViewModel() {
         }
     }
 
+    fun changeStatus(userID: String, status: String){
+        coroutineScope.launch {
+            try{
+                withContext(Dispatchers.IO){
+                    userControllerApi.userHoliday(userID)
+                    println("Status Changed")
+                }
+            }catch (e: java.lang.Exception){}
+        }
+    }
+
     fun changeUsername(userDTO: UserDTO) {
 
         coroutineScope.launch {

@@ -603,4 +603,32 @@ class UserControllerApi(basePath: kotlin.String = BasePath.BASE_PATH) : ApiClien
             ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
         }
     }
+
+
+    /**
+     *
+     *
+     * @param id
+     * @return void
+     */
+    fun userHoliday(id: kotlin.String): Unit {
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>().apply {
+            put("id", listOf(id.toString()))
+        }
+        val localVariableConfig = RequestConfig(
+            RequestMethod.POST,
+            "/api/v1/users/userHoliday", query = localVariableQuery
+        )
+        val response = request<Any?>(
+            localVariableConfig
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> Unit
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+        }
+    }
 }

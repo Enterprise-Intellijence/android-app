@@ -1,4 +1,4 @@
-package com.enterprise.android_app.view
+    package com.enterprise.android_app.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
